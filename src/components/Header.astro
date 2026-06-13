@@ -1,0 +1,75 @@
+---
+import { type Lang, site, pick, localePath } from '../i18n/content';
+
+interface Props {
+  lang: Lang;
+  altUrl: string;
+  active?: 'home' | 'blog';
+}
+
+const { lang, altUrl, active } = Astro.props;
+const s = pick(site, lang);
+
+// Build nav from staged site.json. The first three are in-page anchors that
+// must resolve against the language homepage; "Blog" is an absolute route.
+const homeHref = localePath(lang, '/');
+const blogHref = localePath(lang, '/blog/');
+
+const navItems = s.nav.map((item) => {
+  const isHash = item.href.startsWith('#');
+  const href = isHash ? `${homeHref}${item.href}` : item.href;
+  const isBlog = item.href.includes('blog');
+  return { label: item.label, href, isBlog };
+});
+
+---
+
+<header class="site-header">
+  <nav class="nav" aria-label={lang === 'zh' ? '主导航' : 'Primary'}>
+    <a class="nav__brand" href={homeHref}>
+      {s.siteTitle}
+      {lang === 'en' && <span class="zh">张坤</span>}
+      {lang === 'zh' && <span class="zh">Kun Zhang</span>}
+    </a>
+
+    <div class="nav__links">
+      {
+        navItems.map((item) => (
+          <a
+            href={item.href}
+            aria-current={item.isBlog && active === 'blog' ? 'page' : undefined}
+          >
+            {item.label}
+          </a>
+        ))
+      }
+    </div>
+
+    <div class="nav__tools">
+      <!-- Language toggle: links to the equivalent page in the other language. -->
+      <a
+        class="toggle toggle__lang"
+        href={altUrl}
+        aria-label={s.langToggleLabel}
+        title={s.langToggleLabel}
+      >
+        <span class={lang === 'en' ? 'on' : ''}>EN</span>
+        <span class="sep" aria-hidden="true">/</span>
+        <span class={lang === 'zh' ? 'on' : ''}>中</span>
+      </a>
+
+      <!-- Theme toggle: persisted in localStorage, wired up in BaseLayout. -->
+      <button
+        id="theme-toggle"
+        class="toggle toggle__theme"
+        type="button"
+        aria-label={s.themeToggleLabel}
+        title={s.themeToggleLabel}
+        aria-pressed="false"
+      >
+        <span data-icon="sun" aria-hidden="true">☀</span>
+        <span data-icon="moon" aria-hidden="true" style="display:none">☾</span>
+      </button>
+    </div>
+  </nav>
+</header>

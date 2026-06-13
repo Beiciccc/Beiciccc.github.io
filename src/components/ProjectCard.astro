@@ -1,0 +1,88 @@
+---
+import { type Lang } from '../i18n/content';
+
+interface Repo {
+  name: string;
+  url: string;
+  desc: string;
+  lang: string;
+  stars: number;
+  featured: boolean;
+}
+
+interface Props {
+  repo: Repo;
+  lang: Lang;
+  kicker: string;
+}
+
+const { repo, lang, kicker } = Astro.props;
+
+// Map a primary language to a small swatch colour.
+const langColors: Record<string, string> = {
+  Python: '#3572A5',
+  'Jupyter Notebook': '#DA5B0B',
+};
+const langColor = langColors[repo.lang] ?? 'var(--accent-2)';
+
+const starsLabel = lang === 'zh' ? '星标' : 'stars';
+const repoLabel = lang === 'zh' ? '查看仓库' : 'View repository';
+---
+
+<article class="card project-card">
+  <span class="eyebrow">{kicker}</span>
+  <h3>
+    <a href={repo.url} target="_blank" rel="noopener" aria-label={`${repo.name} — ${repoLabel}`}>
+      {repo.name}
+    </a>
+  </h3>
+  <p>{repo.desc}</p>
+  <div class="card__foot">
+    {
+      repo.lang && (
+        <span class="project-card__lang">
+          <span class="lang-dot" style={`background:${langColor}`} aria-hidden="true" />
+          {repo.lang}
+        </span>
+      )
+    }
+    <span class="project-card__stars" title={`${repo.stars} ${starsLabel}`}>
+      <span aria-hidden="true">★</span> {repo.stars}
+    </span>
+    <a class="project-card__link" href={repo.url} target="_blank" rel="noopener">
+      GitHub <span aria-hidden="true">↗</span>
+    </a>
+  </div>
+</article>
+
+<style>
+  .project-card h3 {
+    font-size: 1.12rem;
+    overflow-wrap: anywhere;
+    word-break: normal;
+  }
+  .card__foot {
+    flex-wrap: wrap;
+  }
+  .project-card__lang,
+  .project-card__stars {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+  }
+  .lang-dot {
+    width: 9px;
+    height: 9px;
+    border-radius: 999px;
+    display: inline-block;
+  }
+  .project-card__link {
+    margin-left: auto;
+    color: var(--accent-2);
+    font-family: var(--font-mono);
+  }
+  .project-card__link:hover {
+    color: var(--accent);
+    text-decoration: none;
+  }
+</style>

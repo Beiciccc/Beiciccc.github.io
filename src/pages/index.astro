@@ -1,0 +1,26 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Hero from '../components/Hero.astro';
+import About from '../components/About.astro';
+import Research from '../components/Research.astro';
+import SelectedWork from '../components/SelectedWork.astro';
+import Contact from '../components/Contact.astro';
+import { site, pick } from '../i18n/content';
+
+const lang = 'en';
+const s = pick(site, lang);
+---
+
+<BaseLayout
+  lang={lang}
+  title={s.siteTitle + ' — NLP & LLM Research'}
+  description={s.siteDescription}
+  altUrl="/zh/"
+  active="home"
+>
+  <Hero lang={lang} />
+  <About lang={lang} />
+  <Research lang={lang} />
+  <SelectedWork lang={lang} />
+  <Contact lang={lang} />
+</BaseLayout>

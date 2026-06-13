@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" role="img" aria-label="Kun Zhang — NLP & LLM research">
+  <rect width="1200" height="630" fill="#fbfaf7"/>
+  <rect x="0" y="0" width="14" height="630" fill="#1b3a6b"/>
+  <g font-family="'JetBrains Mono', ui-monospace, monospace">
+    <circle cx="90" cy="150" r="6" fill="#2f6f6a"/>
+    <text x="110" y="156" font-size="24" letter-spacing="3" fill="#2f6f6a">MSC · NLP &amp; LLM</text>
+  </g>
+  <text x="84" y="300" font-family="Georgia, 'Times New Roman', serif" font-size="104"
+        font-weight="600" fill="#1a2233" letter-spacing="-2">Kun Zhang</text>
+  <text x="88" y="372" font-family="Georgia, serif" font-size="44" fill="#5a6479">张坤</text>
+  <text x="90" y="468" font-family="Inter, system-ui, sans-serif" font-size="30" fill="#5a6479">
+    NLP and large language models — building and studying
+  </text>
+  <text x="90" y="512" font-family="Inter, system-ui, sans-serif" font-size="30" fill="#5a6479">
+    models, with public experiment logs.
+  </text>
+  <text x="90" y="588" font-family="'JetBrains Mono', monospace" font-size="22" fill="#1b3a6b">
+    Beiciccc.github.io
+  </text>
+</svg>

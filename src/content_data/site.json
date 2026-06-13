@@ -1,0 +1,36 @@
+{
+  "en": {
+    "siteTitle": "Kun Zhang",
+    "siteDescription": "Kun Zhang — MSc Advanced Computer Science at the University of Leeds. NLP and LLM research, plus public Kaggle and ML experiment logs.",
+    "nav": [
+      { "label": "About", "href": "#about" },
+      { "label": "Research", "href": "#research" },
+      { "label": "Work", "href": "#projects" },
+      { "label": "Blog", "href": "/blog/" }
+    ],
+    "footer": "© 2026 Kun Zhang · Built with notes from public GitHub and Kaggle work · London / Leeds, UK",
+    "themeToggleLabel": "Toggle dark mode",
+    "langToggleLabel": "切换到中文 / Switch to Chinese",
+    "blogTitle": "Blog",
+    "blogIntro": "Working notes on NLP, LLMs, and lessons from Kaggle and ML experiments.",
+    "readMore": "Read more",
+    "backHome": "Home"
+  },
+  "zh": {
+    "siteTitle": "张坤",
+    "siteDescription": "张坤 —— 利兹大学高级计算机科学硕士。专注自然语言处理与大语言模型研究，并公开分享 Kaggle 与机器学习实验记录。",
+    "nav": [
+      { "label": "关于", "href": "#about" },
+      { "label": "研究", "href": "#research" },
+      { "label": "项目", "href": "#projects" },
+      { "label": "博客", "href": "/zh/blog/" }
+    ],
+    "footer": "© 2026 张坤 · 内容整理自公开的 GitHub 与 Kaggle 工作记录 · 英国伦敦 / 利兹",
+    "themeToggleLabel": "切换深色模式",
+    "langToggleLabel": "Switch to English / 切换到英文",
+    "blogTitle": "博客",
+    "blogIntro": "关于自然语言处理、大语言模型，以及 Kaggle 与机器学习实验心得的笔记。",
+    "readMore": "阅读全文",
+    "backHome": "首页"
+  }
+}

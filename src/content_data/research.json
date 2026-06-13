@@ -1,0 +1,54 @@
+{
+  "en": {
+    "heading": "Research Interests",
+    "intro": "I work at the intersection of natural language processing and large language models, with a hands-on, experiment-driven approach to evaluation and applied machine learning.",
+    "items": [
+      {
+        "title": "Natural Language Processing",
+        "body": "Language-centered problems such as legal information retrieval and document-grounded extraction, including citation retrieval over Swiss legal text and handwriting-to-structured-data pipelines.",
+        "icon": "📝"
+      },
+      {
+        "title": "Large Language Models",
+        "body": "LLM reasoning and adaptation, including parameter-efficient fine-tuning (LoRA/PEFT) workflows and OCR-plus-evidence pipelines for document-grounded tasks.",
+        "icon": "🤖"
+      },
+      {
+        "title": "Evaluation & Benchmarks",
+        "body": "Reproducible benchmarking and careful scoring, from reasoning benchmarks like ARC-AGI to threshold tuning, leaderboard tracking, and hashed manifests for verifiable runs.",
+        "icon": "📊"
+      },
+      {
+        "title": "Applied Machine Learning",
+        "body": "Reproducible pipelines across diverse Kaggle and ML competitions — bioacoustics, detection, tabular prediction, and more — with public experiment logs and submission artifacts.",
+        "icon": "🧪"
+      }
+    ]
+  },
+  "zh": {
+    "heading": "研究方向",
+    "intro": "我的工作处于自然语言处理与大语言模型的交叉地带，注重动手实验，并将其延伸到模型评测与应用型机器学习。",
+    "items": [
+      {
+        "title": "自然语言处理",
+        "body": "聚焦以语言为核心的问题，如法律信息检索与基于文档的信息抽取，包括瑞士法律文本的引用检索，以及手写内容转结构化数据的流程。",
+        "icon": "📝"
+      },
+      {
+        "title": "大语言模型",
+        "body": "关注大语言模型的推理与适配，涵盖参数高效微调（LoRA/PEFT）流程，以及面向文档任务的 OCR 加证据检索流程。",
+        "icon": "🤖"
+      },
+      {
+        "title": "评测与基准",
+        "body": "重视可复现的基准评测与严谨的评分，从 ARC-AGI 等推理基准，到阈值调优、排行榜跟踪，以及用于可验证实验的哈希清单。",
+        "icon": "📊"
+      },
+      {
+        "title": "应用型机器学习",
+        "body": "在多样的 Kaggle 与机器学习竞赛中构建可复现流程——涵盖生物声学、目标检测、表格预测等——并公开实验日志与提交产物。",
+        "icon": "🧪"
+      }
+    ]
+  }
+}

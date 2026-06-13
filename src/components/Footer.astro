@@ -1,0 +1,28 @@
+---
+import { type Lang, site, contact, pick, localePath } from '../i18n/content';
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+const s = pick(site, lang);
+const c = pick(contact, lang);
+---
+
+<footer class="site-footer">
+  <div class="inner">
+    <p class="foot-meta">{s.footer}</p>
+    <nav aria-label={lang === 'zh' ? '页脚导航' : 'Footer'}>
+      <a href={localePath(lang, '/')}>{s.backHome}</a>
+      <a href={localePath(lang, '/blog/')}>{s.blogTitle}</a>
+      {
+        c.links.map((link) => (
+          <a href={link.href} rel="me noopener" target={link.href.startsWith('http') ? '_blank' : undefined}>
+            {link.label}
+          </a>
+        ))
+      }
+    </nav>
+  </div>
+</footer>

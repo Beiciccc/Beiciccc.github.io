@@ -1,0 +1,46 @@
+---
+import { type Lang, research, pick } from '../i18n/content';
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+const r = pick(research, lang);
+const eyebrow = lang === 'zh' ? '研究' : 'Research';
+---
+
+<section id="research" class="section" aria-labelledby="research-heading">
+  <p class="section-mark">{eyebrow}</p>
+  <h2 id="research-heading">{r.heading}</h2>
+  <p class="lede research__intro">{r.intro}</p>
+
+  <div class="grid research__grid">
+    {
+      r.items.map((item) => (
+        <article class="card research__card">
+          <span class="research__icon" aria-hidden="true">{item.icon}</span>
+          <h3>{item.title}</h3>
+          <p>{item.body}</p>
+        </article>
+      ))
+    }
+  </div>
+</section>
+
+<style>
+  .research__intro {
+    max-width: 64ch;
+    margin-bottom: 2.4rem;
+  }
+  .research__card h3 {
+    margin-top: 0.6rem;
+  }
+  .research__icon {
+    font-size: 1.6rem;
+    line-height: 1;
+    display: inline-block;
+  }
+  .research__card p {
+    margin-bottom: 0;
+  }
+</style>

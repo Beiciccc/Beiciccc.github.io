@@ -1,0 +1,67 @@
+---
+import { type Lang, projects, pick } from '../i18n/content';
+import ProjectCard from './ProjectCard.astro';
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+const p = pick(projects, lang);
+const eyebrow = lang === 'zh' ? '作品' : 'Work';
+
+// Featured repos float to the top within each group; the rest keep their order.
+const groups = p.groups.map((group) => ({
+  ...group,
+  repos: [...group.repos].sort((a, b) => Number(b.featured) - Number(a.featured)),
+}));
+---
+
+<section id="projects" class="section" aria-labelledby="work-heading">
+  <p class="section-mark">{eyebrow}</p>
+  <h2 id="work-heading">{p.heading}</h2>
+  <p class="lede work__intro">{p.intro}</p>
+
+  {
+    groups.map((group) => (
+      <div class="work__group">
+        <div class="work__group-head">
+          <h3 class="work__group-title">{group.title}</h3>
+          <p class="work__group-blurb">{group.blurb}</p>
+        </div>
+        <div class="grid">
+          {group.repos.map((repo) => (
+            <ProjectCard repo={repo} lang={lang} kicker={group.title} />
+          ))}
+        </div>
+      </div>
+    ))
+  }
+</section>
+
+<style>
+  .work__intro {
+    max-width: 66ch;
+    margin-bottom: 2.6rem;
+  }
+  .work__group {
+    margin-top: 3rem;
+  }
+  .work__group:first-of-type {
+    margin-top: 0;
+  }
+  .work__group-head {
+    margin-bottom: 1.4rem;
+    padding-bottom: 0.9rem;
+    border-bottom: 1px solid var(--border);
+  }
+  .work__group-title {
+    font-size: 1.45rem;
+    margin: 0 0 0.25rem;
+  }
+  .work__group-blurb {
+    color: var(--muted);
+    font-size: 0.98rem;
+    margin: 0;
+    max-width: 64ch;
+  }
+</style>

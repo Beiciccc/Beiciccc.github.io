@@ -1,0 +1,402 @@
+{
+  "en": {
+    "heading": "Selected Work",
+    "intro": "A working archive of competition pipelines and coursework — most repos are public experiment logs and reproducible runs across NLP/LLM, ML, and cloud systems.",
+    "groups": [
+      {
+        "title": "NLP & LLM",
+        "blurb": "Language-focused work spanning legal information retrieval, LLM reasoning challenges, and document-grounded extraction.",
+        "repos": [
+          {
+            "name": "swiss-legal-ir-experiments",
+            "url": "https://github.com/Beiciccc/swiss-legal-ir-experiments",
+            "desc": "Sanitized experiment archive for Swiss legal citation retrieval, tracking submissions, public scores, and threshold-tuning diagnostics.",
+            "lang": "",
+            "stars": 0,
+            "featured": true
+          },
+          {
+            "name": "NVIDIA-Nemotron-Model-Reasoning-Challenge",
+            "url": "https://github.com/Beiciccc/NVIDIA-Nemotron-Model-Reasoning-Challenge",
+            "desc": "Remote-first Kaggle workflow for the NVIDIA Nemotron Model Reasoning Challenge, including a LoRA/PEFT adapter submission loop.",
+            "lang": "Jupyter Notebook",
+            "stars": 0,
+            "featured": true
+          },
+          {
+            "name": "lava-challenge-2026",
+            "url": "https://github.com/Beiciccc/lava-challenge-2026",
+            "desc": "Reproducible experiments and submissions for the LAVA Challenge 2026, with OCR and candidate-evidence caching for document-grounded tasks.",
+            "lang": "Python",
+            "stars": 0,
+            "featured": false
+          },
+          {
+            "name": "handwritten-to-data-experiments",
+            "url": "https://github.com/Beiciccc/handwritten-to-data-experiments",
+            "desc": "Experiment notes and score tables for the Kaggle Handwritten to Data competition (handwriting-to-structured-data extraction).",
+            "lang": "",
+            "stars": 0,
+            "featured": false
+          }
+        ]
+      },
+      {
+        "title": "ML & Kaggle Competitions",
+        "blurb": "Public experiment logs, reproducible pipelines, and submission artifacts across a wide range of Kaggle and ML competitions.",
+        "repos": [
+          {
+            "name": "birdclef-2026-experiments",
+            "url": "https://github.com/Beiciccc/birdclef-2026-experiments",
+            "desc": "Public experiment workspace for the BirdCLEF+ 2026 bioacoustic code competition, with experiment logs and leaderboard snapshots.",
+            "lang": "",
+            "stars": 0,
+            "featured": true
+          },
+          {
+            "name": "arc-prize-2026-arc-agi-2-experiments",
+            "url": "https://github.com/Beiciccc/arc-prize-2026-arc-agi-2-experiments",
+            "desc": "Experiment notes, leaderboard snapshots, and dataset references for the ARC Prize 2026 ARC-AGI-2 reasoning benchmark.",
+            "lang": "",
+            "stars": 0,
+            "featured": true
+          },
+          {
+            "name": "predicting-stellar-class",
+            "url": "https://github.com/Beiciccc/predicting-stellar-class",
+            "desc": "Kaggle Playground S6E6 project classifying stellar objects (GALAXY / STAR / QSO) with a reproducible training and inference setup.",
+            "lang": "Python",
+            "stars": 0,
+            "featured": true
+          },
+          {
+            "name": "neural-debris-removal-experiments",
+            "url": "https://github.com/Beiciccc/neural-debris-removal-experiments",
+            "desc": "Public experiment log and submission artifacts for the Kaggle Neural Debris Removal in streak-detection models competition.",
+            "lang": "",
+            "stars": 0,
+            "featured": true
+          },
+          {
+            "name": "predicting-f1-pit-stops",
+            "url": "https://github.com/Beiciccc/predicting-f1-pit-stops",
+            "desc": "Kaggle Playground S6E5 project for binary classification of Formula 1 pit-stop outcomes, with experiment logs and blending utilities.",
+            "lang": "Jupyter Notebook",
+            "stars": 0,
+            "featured": false
+          },
+          {
+            "name": "3lc-multi-vehicle-detection-challenge",
+            "url": "https://github.com/Beiciccc/3lc-multi-vehicle-detection-challenge",
+            "desc": "YOLOv8n-from-scratch training, inference, and submission pipeline for the Kaggle 3LC Multi Vehicle Detection Challenge.",
+            "lang": "Python",
+            "stars": 0,
+            "featured": false
+          },
+          {
+            "name": "stock-market-signal-experiments",
+            "url": "https://github.com/Beiciccc/stock-market-signal-experiments",
+            "desc": "Experiment archive for the Kaggle Stock Market Signal next-day returns task, using TabICL-based signals and rank blending.",
+            "lang": "Python",
+            "stars": 0,
+            "featured": false
+          },
+          {
+            "name": "orbit-wars-experiment-log",
+            "url": "https://github.com/Beiciccc/orbit-wars-experiment-log",
+            "desc": "Public notes and result summaries for the Kaggle Orbit Wars simulation competition, limited to experiment logs and leaderboard snapshots.",
+            "lang": "",
+            "stars": 0,
+            "featured": false
+          },
+          {
+            "name": "arc-prize-2026-arc-agi-3-public-records",
+            "url": "https://github.com/Beiciccc/arc-prize-2026-arc-agi-3-public-records",
+            "desc": "Contest-facing records (experiment outputs, evaluation summaries, submission traces) for ARC Prize 2026 ARC-AGI-3.",
+            "lang": "",
+            "stars": 0,
+            "featured": false
+          },
+          {
+            "name": "rogii-wellbore-geology-prediction",
+            "url": "https://github.com/Beiciccc/rogii-wellbore-geology-prediction",
+            "desc": "Experiment code and competition notes for the Rogii wellbore geology prediction task.",
+            "lang": "Python",
+            "stars": 0,
+            "featured": false
+          },
+          {
+            "name": "neurogolf-2026",
+            "url": "https://github.com/Beiciccc/neurogolf-2026",
+            "desc": "Sanitized project mirror for the Kaggle NeuroGolf 2026 competition, recording submissions, experiments, and best public results.",
+            "lang": "",
+            "stars": 0,
+            "featured": false
+          },
+          {
+            "name": "bank-customer-churn-challenge-research",
+            "url": "https://github.com/Beiciccc/bank-customer-churn-challenge-research",
+            "desc": "Research notes and modeling for the Kaggle bank customer churn challenge (ROC AUC, churn-probability prediction).",
+            "lang": "Python",
+            "stars": 0,
+            "featured": false
+          },
+          {
+            "name": "freuid-challenge-2026",
+            "url": "https://github.com/Beiciccc/freuid-challenge-2026",
+            "desc": "Notes and reproducibility materials for the FREUID Challenge 2026 (IJCAI-ECAI) on identity-document fraud detection.",
+            "lang": "",
+            "stars": 0,
+            "featured": false
+          },
+          {
+            "name": "neural-debris-removal-streak-detection",
+            "url": "https://github.com/Beiciccc/neural-debris-removal-streak-detection",
+            "desc": "Experiment archive for RetinaNet-based unlearning and confidence calibration in the Neural Debris Removal streak-detection competition.",
+            "lang": "Python",
+            "stars": 0,
+            "featured": false
+          },
+          {
+            "name": "stocks-predict-challenge",
+            "url": "https://github.com/Beiciccc/stocks-predict-challenge",
+            "desc": "Public project record for the Kaggle stocks-challenge (RankIC metric, cross-stock generalization on anonymized features).",
+            "lang": "",
+            "stars": 0,
+            "featured": false
+          },
+          {
+            "name": "cvpr-2026-children-challenge-reproducible-runs",
+            "url": "https://github.com/Beiciccc/cvpr-2026-children-challenge-reproducible-runs",
+            "desc": "Reproducible experiment artifacts with hashed manifests for the CVPR 2026 AI Children Challenge (keypoint-based features).",
+            "lang": "Python",
+            "stars": 0,
+            "featured": false
+          },
+          {
+            "name": "motion-s-text-to-sign-experiments",
+            "url": "https://github.com/Beiciccc/motion-s-text-to-sign-experiments",
+            "desc": "Reproducible artifacts for the Kaggle Motion-S hierarchical text-to-motion (sign language) generation competition.",
+            "lang": "Jupyter Notebook",
+            "stars": 0,
+            "featured": false
+          }
+        ]
+      },
+      {
+        "title": "Systems & Cloud",
+        "blurb": "Coursework and applied systems work on cloud and edge infrastructure.",
+        "repos": [
+          {
+            "name": "coursework2-k8s-cloud-edge-vnf",
+            "url": "https://github.com/Beiciccc/coursework2-k8s-cloud-edge-vnf",
+            "desc": "Coursework benchmarking Kubernetes for a telecom DNS virtual network function across cloud-like (kind) and edge-like (K3s) deployments.",
+            "lang": "Python",
+            "stars": 0,
+            "featured": true
+          }
+        ]
+      }
+    ]
+  },
+  "zh": {
+    "heading": "精选作品",
+    "intro": "一份持续更新的竞赛流程与课程作业存档——大多为公开的实验记录与可复现实验，覆盖自然语言处理与大语言模型、机器学习以及云系统。",
+    "groups": [
+      {
+        "title": "自然语言处理与大语言模型",
+        "blurb": "围绕语言的工作，涵盖法律信息检索、大语言模型推理挑战以及基于文档的信息抽取。",
+        "repos": [
+          {
+            "name": "swiss-legal-ir-experiments",
+            "url": "https://github.com/Beiciccc/swiss-legal-ir-experiments",
+            "desc": "瑞士法律引用检索实验存档（脱敏），记录提交、公开分数与阈值调优诊断。",
+            "lang": "",
+            "stars": 0,
+            "featured": true
+          },
+          {
+            "name": "NVIDIA-Nemotron-Model-Reasoning-Challenge",
+            "url": "https://github.com/Beiciccc/NVIDIA-Nemotron-Model-Reasoning-Challenge",
+            "desc": "面向 NVIDIA Nemotron 模型推理挑战的远程优先 Kaggle 工作流，包含 LoRA/PEFT 适配器提交流程。",
+            "lang": "Jupyter Notebook",
+            "stars": 0,
+            "featured": true
+          },
+          {
+            "name": "lava-challenge-2026",
+            "url": "https://github.com/Beiciccc/lava-challenge-2026",
+            "desc": "LAVA Challenge 2026 的可复现实验与提交，包含面向文档任务的 OCR 与候选证据缓存。",
+            "lang": "Python",
+            "stars": 0,
+            "featured": false
+          },
+          {
+            "name": "handwritten-to-data-experiments",
+            "url": "https://github.com/Beiciccc/handwritten-to-data-experiments",
+            "desc": "Kaggle Handwritten to Data 竞赛（手写内容转结构化数据抽取）的实验笔记与分数表。",
+            "lang": "",
+            "stars": 0,
+            "featured": false
+          }
+        ]
+      },
+      {
+        "title": "机器学习与 Kaggle 竞赛",
+        "blurb": "覆盖多种 Kaggle 与机器学习竞赛的公开实验记录、可复现流程与提交产物。",
+        "repos": [
+          {
+            "name": "birdclef-2026-experiments",
+            "url": "https://github.com/Beiciccc/birdclef-2026-experiments",
+            "desc": "BirdCLEF+ 2026 生物声学代码竞赛的公开实验工作区，含实验日志与排行榜快照。",
+            "lang": "",
+            "stars": 0,
+            "featured": true
+          },
+          {
+            "name": "arc-prize-2026-arc-agi-2-experiments",
+            "url": "https://github.com/Beiciccc/arc-prize-2026-arc-agi-2-experiments",
+            "desc": "ARC Prize 2026 ARC-AGI-2 推理基准的实验笔记、排行榜快照与数据集索引。",
+            "lang": "",
+            "stars": 0,
+            "featured": true
+          },
+          {
+            "name": "predicting-stellar-class",
+            "url": "https://github.com/Beiciccc/predicting-stellar-class",
+            "desc": "Kaggle Playground S6E6 项目，对恒星天体（星系/恒星/类星体）分类，配有可复现的训练与推理流程。",
+            "lang": "Python",
+            "stars": 0,
+            "featured": true
+          },
+          {
+            "name": "neural-debris-removal-experiments",
+            "url": "https://github.com/Beiciccc/neural-debris-removal-experiments",
+            "desc": "Kaggle Neural Debris Removal（条纹检测模型去碎片）竞赛的公开实验日志与提交产物。",
+            "lang": "",
+            "stars": 0,
+            "featured": true
+          },
+          {
+            "name": "predicting-f1-pit-stops",
+            "url": "https://github.com/Beiciccc/predicting-f1-pit-stops",
+            "desc": "Kaggle Playground S6E5 项目，对一级方程式进站结果进行二分类，含实验日志与融合工具。",
+            "lang": "Jupyter Notebook",
+            "stars": 0,
+            "featured": false
+          },
+          {
+            "name": "3lc-multi-vehicle-detection-challenge",
+            "url": "https://github.com/Beiciccc/3lc-multi-vehicle-detection-challenge",
+            "desc": "Kaggle 3LC 多车辆检测挑战的 YOLOv8n 从零训练、推理与提交流程。",
+            "lang": "Python",
+            "stars": 0,
+            "featured": false
+          },
+          {
+            "name": "stock-market-signal-experiments",
+            "url": "https://github.com/Beiciccc/stock-market-signal-experiments",
+            "desc": "Kaggle 股市信号次日收益预测任务的实验存档，使用基于 TabICL 的信号与排名融合。",
+            "lang": "Python",
+            "stars": 0,
+            "featured": false
+          },
+          {
+            "name": "orbit-wars-experiment-log",
+            "url": "https://github.com/Beiciccc/orbit-wars-experiment-log",
+            "desc": "Kaggle Orbit Wars 仿真竞赛的公开笔记与结果摘要，仅含实验日志与排行榜快照。",
+            "lang": "",
+            "stars": 0,
+            "featured": false
+          },
+          {
+            "name": "arc-prize-2026-arc-agi-3-public-records",
+            "url": "https://github.com/Beiciccc/arc-prize-2026-arc-agi-3-public-records",
+            "desc": "ARC Prize 2026 ARC-AGI-3 的竞赛记录（实验输出、评估摘要、提交追踪）。",
+            "lang": "",
+            "stars": 0,
+            "featured": false
+          },
+          {
+            "name": "rogii-wellbore-geology-prediction",
+            "url": "https://github.com/Beiciccc/rogii-wellbore-geology-prediction",
+            "desc": "Rogii 井筒地质预测任务的实验代码与竞赛笔记。",
+            "lang": "Python",
+            "stars": 0,
+            "featured": false
+          },
+          {
+            "name": "neurogolf-2026",
+            "url": "https://github.com/Beiciccc/neurogolf-2026",
+            "desc": "Kaggle NeuroGolf 2026 竞赛的脱敏项目镜像，记录提交、实验与最佳公开成绩。",
+            "lang": "",
+            "stars": 0,
+            "featured": false
+          },
+          {
+            "name": "bank-customer-churn-challenge-research",
+            "url": "https://github.com/Beiciccc/bank-customer-churn-challenge-research",
+            "desc": "Kaggle 银行客户流失挑战（ROC AUC，流失概率预测）的研究笔记与建模。",
+            "lang": "Python",
+            "stars": 0,
+            "featured": false
+          },
+          {
+            "name": "freuid-challenge-2026",
+            "url": "https://github.com/Beiciccc/freuid-challenge-2026",
+            "desc": "FREUID Challenge 2026（IJCAI-ECAI）身份证件欺诈检测的笔记与可复现材料。",
+            "lang": "",
+            "stars": 0,
+            "featured": false
+          },
+          {
+            "name": "neural-debris-removal-streak-detection",
+            "url": "https://github.com/Beiciccc/neural-debris-removal-streak-detection",
+            "desc": "Neural Debris Removal 条纹检测竞赛中基于 RetinaNet 的去学习与置信度校准实验存档。",
+            "lang": "Python",
+            "stars": 0,
+            "featured": false
+          },
+          {
+            "name": "stocks-predict-challenge",
+            "url": "https://github.com/Beiciccc/stocks-predict-challenge",
+            "desc": "Kaggle stocks-challenge 的公开项目记录（RankIC 指标，匿名特征上的跨股票泛化）。",
+            "lang": "",
+            "stars": 0,
+            "featured": false
+          },
+          {
+            "name": "cvpr-2026-children-challenge-reproducible-runs",
+            "url": "https://github.com/Beiciccc/cvpr-2026-children-challenge-reproducible-runs",
+            "desc": "CVPR 2026 AI Children Challenge 的可复现实验产物，含哈希清单（基于关键点特征）。",
+            "lang": "Python",
+            "stars": 0,
+            "featured": false
+          },
+          {
+            "name": "motion-s-text-to-sign-experiments",
+            "url": "https://github.com/Beiciccc/motion-s-text-to-sign-experiments",
+            "desc": "Kaggle Motion-S 分层文本到动作（手语）生成竞赛的可复现产物。",
+            "lang": "Jupyter Notebook",
+            "stars": 0,
+            "featured": false
+          }
+        ]
+      },
+      {
+        "title": "系统与云计算",
+        "blurb": "围绕云与边缘基础设施的课程与系统实践工作。",
+        "repos": [
+          {
+            "name": "coursework2-k8s-cloud-edge-vnf",
+            "url": "https://github.com/Beiciccc/coursework2-k8s-cloud-edge-vnf",
+            "desc": "课程作业：在类云（kind）与类边缘（K3s）部署中，对电信 DNS 虚拟网络功能进行 Kubernetes 性能基准评测。",
+            "lang": "Python",
+            "stars": 0,
+            "featured": true
+          }
+        ]
+      }
+    ]
+  }
+}

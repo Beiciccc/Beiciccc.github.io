@@ -1,0 +1,120 @@
+---
+import { getCollection, render } from 'astro:content';
+import type { GetStaticPaths } from 'astro';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { baseSlug, formatDate, localePath, ui } from '../../i18n/content';
+
+export const getStaticPaths = (async () => {
+  const all = await getCollection('blog');
+  const en = all.filter((p) => p.data.lang === 'en' && !p.data.draft);
+  // Base slugs that have a Chinese counterpart → used to decide if the lang
+  // toggle should point at a translated post or fall back to the ZH blog index.
+  const zhSlugs = new Set(
+    all.filter((p) => p.data.lang === 'zh' && !p.data.draft).map((p) => baseSlug(p.filePath))
+  );
+
+  return en.map((post) => {
+    const slug = baseSlug(post.filePath);
+    return {
+      params: { slug },
+      props: { post, hasZh: zhSlugs.has(slug), slug },
+    };
+  });
+}) satisfies GetStaticPaths;
+
+const { post, hasZh, slug } = Astro.props;
+const { Content } = await render(post);
+
+const lang = 'en';
+const t = ui[lang];
+// Toggle to the translated post when it exists, else the ZH blog index.
+// Trailing slashes so the alt/hreflang URL byte-matches the target page's
+// emitted canonical (directory pages are served with a trailing slash).
+const altUrl = hasZh ? localePath('zh', `/blog/${slug}/`) : localePath('zh', '/blog/');
+---
+
+<BaseLayout
+  lang={lang}
+  title={post.data.title + ' — Kun Zhang'}
+  description={post.data.description}
+  altUrl={altUrl}
+  active="blog"
+>
+  <article class="section post-page">
+    <a class="post-page__back" href={localePath(lang, '/blog/')}>{t.backToBlog}</a>
+
+    <header class="post-page__head">
+      {post.data.tags?.[0] && <p class="section-mark">{post.data.tags[0]}</p>}
+      <h1>{post.data.title}</h1>
+      <div class="post-page__meta meta">
+        <time datetime={post.data.pubDate.toISOString()}>
+          {t.publishedOn} {formatDate(post.data.pubDate, lang)}
+        </time>
+      </div>
+      {
+        post.data.tags && (
+          <ul class="tags post-page__tags">
+            {post.data.tags.map((tag) => (
+              <li class="tag">{tag}</li>
+            ))}
+          </ul>
+        )
+      }
+    </header>
+
+    <div class="prose post-page__body">
+      <Content />
+    </div>
+
+    <footer class="post-page__foot">
+      <a class="btn btn--ghost" href={localePath(lang, '/blog/')}>{t.backToBlog}</a>
+    </footer>
+  </article>
+</BaseLayout>
+
+<style>
+  .post-page {
+    max-width: var(--readw);
+  }
+  .post-page__back {
+    font-family: var(--font-mono);
+    font-size: 0.82rem;
+    color: var(--muted);
+    display: inline-block;
+    margin-bottom: 2rem;
+  }
+  .post-page__back:hover {
+    color: var(--accent);
+    text-decoration: none;
+  }
+  .post-page__head {
+    margin-bottom: 2.6rem;
+    padding-bottom: 1.6rem;
+    border-bottom: 1px solid var(--border);
+  }
+  .post-page__head h1 {
+    font-size: clamp(2rem, 4vw, 2.7rem);
+  }
+  .post-page__meta {
+    margin-top: 0.8rem;
+  }
+  .post-page__tags {
+    list-style: none;
+    padding: 0;
+    margin: 1.1rem 0 0;
+  }
+  .post-page__body :global(h1:first-child) {
+    /* The markdown body repeats the title as an H1; hide that duplicate. */
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+  }
+  .post-page__foot {
+    margin-top: 3rem;
+    padding-top: 1.6rem;
+    border-top: 1px solid var(--border);
+  }
+</style>

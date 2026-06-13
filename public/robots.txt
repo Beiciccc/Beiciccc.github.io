@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://beiciccc.github.io/sitemap-index.xml

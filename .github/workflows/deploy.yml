@@ -1,0 +1,50 @@
+# Deploy Astro site to GitHub Pages
+# Place this file at: .github/workflows/deploy.yml
+# Repo: Beiciccc/Beiciccc.github.io (USER site, served at https://beiciccc.github.io)
+#
+# One-time setup in the repo: Settings -> Pages -> Build and deployment ->
+# Source = "GitHub Actions".
+name: Deploy to GitHub Pages
+
+on:
+  # Deploy on every push to the default branch.
+  push:
+    branches: [main]
+  # Allow manual runs from the Actions tab.
+  workflow_dispatch:
+
+# Grant the GITHUB_TOKEN the permissions required to deploy to GitHub Pages.
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Allow one concurrent deployment; do not cancel an in-progress production deploy.
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Install, build, and upload your site
+        uses: withastro/action@v3
+        with:
+          # node-version is optional; the action defaults to a current LTS.
+          # Pinned here for reproducible builds.
+          node-version: 20
+          # package-manager and build command are auto-detected from the lockfile.
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

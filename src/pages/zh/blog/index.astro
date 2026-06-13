@@ -1,0 +1,35 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import PostList from '../../../components/PostList.astro';
+import { site, pick } from '../../../i18n/content';
+
+const lang = 'zh';
+const s = pick(site, lang);
+
+const posts = (await getCollection('blog', ({ data }) => data.lang === 'zh' && !data.draft)).sort(
+  (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
+);
+---
+
+<BaseLayout
+  lang={lang}
+  title={s.blogTitle + ' — ' + s.siteTitle}
+  description={s.blogIntro}
+  altUrl="/blog/"
+  active="blog"
+>
+  <section class="section blog-index" aria-labelledby="blog-heading">
+    <p class="section-mark">博客</p>
+    <h1 id="blog-heading">{s.blogTitle}</h1>
+    <p class="lede blog-index__intro">{s.blogIntro}</p>
+    <PostList posts={posts} lang={lang} />
+  </section>
+</BaseLayout>
+
+<style>
+  .blog-index__intro {
+    max-width: 60ch;
+    margin-bottom: 2.6rem;
+  }
+</style>

@@ -1,0 +1,72 @@
+---
+import { type Lang, contact, pick } from '../i18n/content';
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+const c = pick(contact, lang);
+const eyebrow = lang === 'zh' ? '联系' : 'Contact';
+---
+
+<section id="contact" class="section contact" aria-labelledby="contact-heading">
+  <p class="section-mark">{eyebrow}</p>
+  <h2 id="contact-heading">{c.heading}</h2>
+  <p class="lede contact__intro">{c.intro}</p>
+
+  <ul class="contact__list">
+    {
+      c.links.map((link) => (
+        <li class="contact__item">
+          <span class="contact__label">{link.label}</span>
+          <a
+            href={link.href}
+            target={link.href.startsWith('http') ? '_blank' : undefined}
+            rel={link.href.startsWith('http') ? 'noopener' : undefined}
+          >
+            {link.value}
+            {link.href.startsWith('http') && <span aria-hidden="true"> ↗</span>}
+          </a>
+        </li>
+      ))
+    }
+  </ul>
+</section>
+
+<style>
+  .contact__intro {
+    max-width: 60ch;
+    margin-bottom: 2rem;
+  }
+  .contact__list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    gap: 0;
+    max-width: 540px;
+  }
+  .contact__item {
+    display: flex;
+    align-items: baseline;
+    gap: 1.5rem;
+    padding: 1rem 0;
+    border-top: 1px solid var(--border);
+  }
+  .contact__item:last-child {
+    border-bottom: 1px solid var(--border);
+  }
+  .contact__label {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--muted);
+    width: 5.5rem;
+    flex: none;
+  }
+  .contact__item a {
+    font-size: 1.05rem;
+    word-break: break-word;
+  }
+</style>

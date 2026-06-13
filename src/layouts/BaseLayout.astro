@@ -1,0 +1,126 @@
+---
+import '../styles/global.css';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import { type Lang, htmlLang, ui } from '../i18n/content';
+
+interface Props {
+  lang: Lang;
+  title: string;
+  description: string;
+  /** Absolute path of the equivalent page in the other language (for the lang toggle). */
+  altUrl: string;
+  /** Optional canonical/og path for this page (defaults to Astro.url.pathname). */
+  path?: string;
+  /** Active nav key for aria-current. */
+  active?: 'home' | 'blog';
+}
+
+const { lang, title, description, altUrl, active } = Astro.props;
+const t = ui[lang];
+
+// Single source of truth: the `site` value from astro.config.mjs (lowercase
+// host, matching the GitHub Pages domain). Falls back to the lowercase literal
+// only if Astro.site is somehow unset.
+const siteUrl = Astro.site?.href ?? 'https://beiciccc.github.io/';
+const canonical = new URL(Astro.url.pathname, siteUrl).href;
+const ogImage = new URL('/og-default.svg', siteUrl).href;
+
+// The other language's canonical URL for hreflang alternates.
+const altCanonical = new URL(altUrl, siteUrl).href;
+const enHref = lang === 'en' ? canonical : altCanonical;
+const zhHref = lang === 'zh' ? canonical : altCanonical;
+---
+
+<!doctype html>
+<html lang={htmlLang(lang)} data-theme="light">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="sitemap" href="/sitemap-index.xml" />
+
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <meta name="author" content="Kun Zhang" />
+    <link rel="canonical" href={canonical} />
+
+    <!-- hreflang alternates so EN/ZH versions cross-reference cleanly. -->
+    <link rel="alternate" hreflang="en" href={enHref} />
+    <link rel="alternate" hreflang="zh-Hans" href={zhHref} />
+    <link rel="alternate" hreflang="x-default" href={enHref} />
+
+    <!-- Open Graph / Twitter -->
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:locale" content={lang === 'zh' ? 'zh_CN' : 'en_GB'} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImage} />
+
+    <!-- Design fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Noto+Serif+SC:wght@500;600&family=Noto+Sans+SC:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- No-flash theme bootstrap: set data-theme before first paint. -->
+    <script is:inline>
+      (function () {
+        try {
+          var stored = localStorage.getItem('theme');
+          var theme =
+            stored ||
+            (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+          document.documentElement.setAttribute('data-theme', theme);
+        } catch (e) {
+          /* localStorage unavailable — fall back to the light default already on <html>. */
+        }
+      })();
+    </script>
+  </head>
+  <body>
+    <a class="skip-link" href="#main">{t.skipToContent}</a>
+    <Header lang={lang} altUrl={altUrl} active={active} />
+    <main id="main">
+      <slot />
+    </main>
+    <Footer lang={lang} />
+
+    <!-- Theme + language toggle behaviour (progressively enhanced). -->
+    <script is:inline>
+      (function () {
+        var root = document.documentElement;
+
+        // THEME toggle
+        var themeBtn = document.getElementById('theme-toggle');
+        function syncThemeBtn() {
+          if (!themeBtn) return;
+          var isDark = root.getAttribute('data-theme') === 'dark';
+          themeBtn.setAttribute('aria-pressed', String(isDark));
+          var sun = themeBtn.querySelector('[data-icon="sun"]');
+          var moon = themeBtn.querySelector('[data-icon="moon"]');
+          if (sun) sun.style.display = isDark ? 'none' : 'inline';
+          if (moon) moon.style.display = isDark ? 'inline' : 'none';
+        }
+        if (themeBtn) {
+          syncThemeBtn();
+          themeBtn.addEventListener('click', function () {
+            var next = root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+            root.setAttribute('data-theme', next);
+            try {
+              localStorage.setItem('theme', next);
+            } catch (e) {}
+            syncThemeBtn();
+          });
+        }
+      })();
+    </script>
+  </body>
+</html>

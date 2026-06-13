@@ -1,0 +1,43 @@
+---
+import { type Lang, hero, pick } from '../i18n/content';
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+const h = pick(hero, lang);
+---
+
+<section class="section hero" aria-labelledby="hero-name">
+  <span class="eyebrow">{h.kicker}</span>
+  <h1 id="hero-name">{h.name}</h1>
+  <p class="hero__tagline">{h.tagline}</p>
+  <p class="lede">{h.intro}</p>
+  <div class="hero__actions">
+    <a class="btn" href={h.ctaPrimary.href}>
+      {h.ctaPrimary.label}
+      <span class="btn__arrow" aria-hidden="true">→</span>
+    </a>
+    <a class="btn btn--ghost" href={h.ctaSecondary.href} target="_blank" rel="noopener">
+      {h.ctaSecondary.label}
+      <span aria-hidden="true">↗</span>
+    </a>
+  </div>
+</section>
+
+<style>
+  .hero__tagline {
+    font-family: var(--font-display);
+    font-size: clamp(1.3rem, 2.4vw, 1.7rem);
+    line-height: 1.35;
+    font-weight: 500;
+    color: var(--text);
+    max-width: 24ch;
+    margin: 0.2rem 0 1rem;
+    text-wrap: balance;
+  }
+  :global(:lang(zh)) .hero__tagline {
+    max-width: 28ch;
+    line-height: 1.5;
+  }
+</style>

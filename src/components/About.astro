@@ -1,0 +1,36 @@
+---
+import { type Lang } from '../i18n/content';
+import { Content as AboutEn } from '../content_data/about.en.md';
+import { Content as AboutZh } from '../content_data/about.zh.md';
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+
+const heading = lang === 'zh' ? '关于' : 'About';
+const eyebrow = lang === 'zh' ? '简介' : 'About';
+---
+
+<section id="about" class="section" aria-labelledby="about-heading">
+  <p class="section-mark">{eyebrow}</p>
+  <h2 id="about-heading">{heading}</h2>
+  <div class="about__body prose">
+    {lang === 'en' ? <AboutEn /> : <AboutZh />}
+  </div>
+</section>
+
+<style>
+  .about__body {
+    margin-left: 0;
+    margin-right: 0;
+    max-width: 64ch;
+  }
+  .about__body :global(p) {
+    color: var(--muted);
+    font-size: 1.08rem;
+  }
+  :global(:lang(zh)) .about__body {
+    max-width: 42em;
+  }
+</style>

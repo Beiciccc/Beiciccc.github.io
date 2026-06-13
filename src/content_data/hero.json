@@ -1,0 +1,18 @@
+{
+  "en": {
+    "kicker": "MSc · NLP & LLM",
+    "name": "Kun Zhang",
+    "tagline": "I build and study language models — and I learn fastest by shipping experiments in the open.",
+    "intro": "MSc Advanced Computer Science at the University of Leeds, focused on NLP and large language models. Most of what I know comes from hands-on competition work, all of it documented in public.",
+    "ctaPrimary": { "label": "See my work", "href": "#projects" },
+    "ctaSecondary": { "label": "GitHub", "href": "https://github.com/Beiciccc" }
+  },
+  "zh": {
+    "kicker": "硕士 · 自然语言处理与大语言模型",
+    "name": "张坤",
+    "tagline": "我既动手构建语言模型，也研究它们——而我学得最快的方式，是把实验公开地做出来。",
+    "intro": "利兹大学高级计算机科学硕士，专注于自然语言处理与大语言模型。我的大部分经验来自亲手参与的竞赛实践，并且全程公开记录。",
+    "ctaPrimary": { "label": "查看我的项目", "href": "#projects" },
+    "ctaSecondary": { "label": "GitHub", "href": "https://github.com/Beiciccc" }
+  }
+}
