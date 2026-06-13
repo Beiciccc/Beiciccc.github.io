@@ -32,7 +32,7 @@ const altUrl = hasEn ? `/blog/${slug}/` : '/blog/';
 
 <BaseLayout
   lang={lang}
-  title={post.data.title + ' — 张坤'}
+  title={post.data.title + ' — 张鲲'}
   description={post.data.description}
   altUrl={altUrl}
   active="blog"
@@ -40,7 +40,7 @@ const altUrl = hasEn ? `/blog/${slug}/` : '/blog/';
   <article class="section post-page">
     <a class="post-page__back" href={localePath(lang, '/blog/')}>{t.backToBlog}</a>
 
-    <header class="post-page__head">
+    <header class="post-page__head reveal">
       {post.data.tags?.[0] && <p class="section-mark">{post.data.tags[0]}</p>}
       <h1>{post.data.title}</h1>
       <div class="post-page__meta meta">
@@ -74,9 +74,9 @@ const altUrl = hasEn ? `/blog/${slug}/` : '/blog/';
     max-width: var(--readw);
   }
   .post-page__back {
-    font-family: var(--font-mono);
-    font-size: 0.82rem;
-    color: var(--muted);
+    font-size: 0.92rem;
+    font-weight: 500;
+    color: var(--accent);
     display: inline-block;
     margin-bottom: 2rem;
   }
@@ -87,7 +87,7 @@ const altUrl = hasEn ? `/blog/${slug}/` : '/blog/';
   .post-page__head {
     margin-bottom: 2.6rem;
     padding-bottom: 1.6rem;
-    border-bottom: 1px solid var(--border);
+    border-bottom: 1px solid var(--hairline);
   }
   .post-page__head h1 {
     font-size: clamp(2rem, 4vw, 2.7rem);
@@ -100,13 +100,12 @@ const altUrl = hasEn ? `/blog/${slug}/` : '/blog/';
     padding: 0;
     margin: 1.1rem 0 0;
   }
+  /* Defensive: the page already renders the post title as the document H1, and
+     the markdown bodies start at H2 (no leading '# Title'). If a body ever
+     reintroduces a leading H1, fully remove it from layout AND the a11y tree
+     (display:none) so there is never a second top-level heading. */
   .post-page__body :global(h1:first-child) {
-    position: absolute;
-    width: 1px;
-    height: 1px;
-    overflow: hidden;
-    clip: rect(0 0 0 0);
-    white-space: nowrap;
+    display: none;
   }
   .post-page__foot {
     margin-top: 3rem;

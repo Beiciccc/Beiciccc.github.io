@@ -1,20 +1,23 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" role="img" aria-label="Kun Zhang — NLP & LLM research">
-  <rect width="1200" height="630" fill="#fbfaf7"/>
-  <rect x="0" y="0" width="14" height="630" fill="#1b3a6b"/>
-  <g font-family="'JetBrains Mono', ui-monospace, monospace">
-    <circle cx="90" cy="150" r="6" fill="#2f6f6a"/>
-    <text x="110" y="156" font-size="24" letter-spacing="3" fill="#2f6f6a">MSC · NLP &amp; LLM</text>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" role="img" aria-label="Kun Zhang 张鲲 — NLP &amp; LLM research">
+  <defs>
+    <linearGradient id="ink" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#1d1d1f"/>
+      <stop offset="1" stop-color="#0071e3"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="630" fill="#f5f5f7"/>
+  <rect x="0" y="0" width="1200" height="630" fill="#fbfbfd"/>
+  <rect x="84" y="120" width="56" height="6" rx="3" fill="#0071e3"/>
+  <g font-family="-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', Inter, system-ui, sans-serif">
+    <text x="84" y="172" font-size="26" font-weight="600" letter-spacing="0.5" fill="#0071e3">MSc · NLP &amp; LLM</text>
+    <text x="80" y="320" font-size="120" font-weight="700" fill="url(#ink)" letter-spacing="-4">Kun Zhang</text>
+    <text x="84" y="392" font-family="'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif" font-size="48" font-weight="600" fill="#6e6e73" letter-spacing="2">张鲲</text>
+    <text x="84" y="476" font-size="32" font-weight="400" fill="#6e6e73">
+      NLP and large language models — building and studying
+    </text>
+    <text x="84" y="520" font-size="32" font-weight="400" fill="#6e6e73">
+      models, with public experiment logs.
+    </text>
+    <text x="84" y="586" font-size="24" font-weight="500" fill="#1d1d1f">beiciccc.github.io</text>
   </g>
-  <text x="84" y="300" font-family="Georgia, 'Times New Roman', serif" font-size="104"
-        font-weight="600" fill="#1a2233" letter-spacing="-2">Kun Zhang</text>
-  <text x="88" y="372" font-family="Georgia, serif" font-size="44" fill="#5a6479">张坤</text>
-  <text x="90" y="468" font-family="Inter, system-ui, sans-serif" font-size="30" fill="#5a6479">
-    NLP and large language models — building and studying
-  </text>
-  <text x="90" y="512" font-family="Inter, system-ui, sans-serif" font-size="30" fill="#5a6479">
-    models, with public experiment logs.
-  </text>
-  <text x="90" y="588" font-family="'JetBrains Mono', monospace" font-size="22" fill="#1b3a6b">
-    Beiciccc.github.io
-  </text>
 </svg>

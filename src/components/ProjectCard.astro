@@ -14,9 +14,14 @@ interface Props {
   repo: Repo;
   lang: Lang;
   kicker: string;
+  /** Bento span class, e.g. "tile-4 tile-tall" — appended to the card class.
+      Empty string falls back to the auto-fit grid sizing. */
+  size?: string;
+  /** Stagger index for the scroll-reveal cascade. */
+  index?: number;
 }
 
-const { repo, lang, kicker } = Astro.props;
+const { repo, lang, kicker, size = '', index = 0 } = Astro.props;
 
 // Map a primary language to a small swatch colour.
 const langColors: Record<string, string> = {
@@ -29,7 +34,7 @@ const starsLabel = lang === 'zh' ? '星标' : 'stars';
 const repoLabel = lang === 'zh' ? '查看仓库' : 'View repository';
 ---
 
-<article class="card project-card">
+<article class={`card project-card reveal ${size}`.trim()} style={`--i:${index}`}>
   <span class="eyebrow">{kicker}</span>
   <h3>
     <a href={repo.url} target="_blank" rel="noopener" aria-label={`${repo.name} — ${repoLabel}`}>
@@ -57,9 +62,16 @@ const repoLabel = lang === 'zh' ? '查看仓库' : 'View repository';
 
 <style>
   .project-card h3 {
-    font-size: 1.12rem;
+    font-size: 1.2rem;
     overflow-wrap: anywhere;
     word-break: normal;
+  }
+  /* The visual-anchor tile reads bigger. */
+  .project-card.tile-4 h3 {
+    font-size: clamp(1.4rem, 2.4vw, 1.9rem);
+  }
+  .project-card.tile-4 p {
+    font-size: 1.08rem;
   }
   .card__foot {
     flex-wrap: wrap;
@@ -79,7 +91,7 @@ const repoLabel = lang === 'zh' ? '查看仓库' : 'View repository';
   .project-card__link {
     margin-left: auto;
     color: var(--accent-2);
-    font-family: var(--font-mono);
+    font-weight: 500;
   }
   .project-card__link:hover {
     color: var(--accent);

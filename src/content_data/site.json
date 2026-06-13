@@ -17,15 +17,15 @@
     "backHome": "Home"
   },
   "zh": {
-    "siteTitle": "张坤",
-    "siteDescription": "张坤 —— 利兹大学高级计算机科学硕士。专注自然语言处理与大语言模型研究，并公开分享 Kaggle 与机器学习实验记录。",
+    "siteTitle": "张鲲",
+    "siteDescription": "张鲲 —— 利兹大学高级计算机科学硕士。专注自然语言处理与大语言模型研究，并公开分享 Kaggle 与机器学习实验记录。",
     "nav": [
       { "label": "关于", "href": "#about" },
       { "label": "研究", "href": "#research" },
       { "label": "项目", "href": "#projects" },
       { "label": "博客", "href": "/zh/blog/" }
     ],
-    "footer": "© 2026 张坤 · 内容整理自公开的 GitHub 与 Kaggle 工作记录 · 英国伦敦 / 利兹",
+    "footer": "© 2026 张鲲 · 内容整理自公开的 GitHub 与 Kaggle 工作记录 · 英国伦敦 / 利兹",
     "themeToggleLabel": "切换深色模式",
     "langToggleLabel": "Switch to English / 切换到英文",
     "blogTitle": "博客",

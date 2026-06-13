@@ -7,8 +7,6 @@ tags: ["kaggle", "机器学习", "可复现", "反思", "实验"]
 draft: false
 ---
 
-# 做了许多 Kaggle 竞赛，教会我如何诚实地做机器学习
-
 我在 GitHub 上留着很多竞赛仓库，但它们大多不是奖杯，而是实验记录：笔记、分数表、排行榜快照，还有脱敏后的提交追踪。这些项目跨过了一些彼此毫不相干的世界——[BirdCLEF+ 2026](https://github.com/Beiciccc/birdclef-2026-experiments) 里的鸟类音频、[ARC Prize](https://github.com/Beiciccc/arc-prize-2026-arc-agi-2-experiments) 里的抽象推理网格、[瑞士法律信息检索](https://github.com/Beiciccc/swiss-legal-ir-experiments) 里的法律引用检索，还有车辆检测、F1 进站、恒星分类，甚至文本转手语生成。像这样在不同领域之间跳来跳去，教给我的与其说是某个具体领域的知识，不如说是*如何工作*。有几条经验反复出现。
 
 ## 把日志写给别人看，哪怕那个"别人"是几周后的自己

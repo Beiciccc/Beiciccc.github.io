@@ -14,53 +14,100 @@ const groups = p.groups.map((group) => ({
   ...group,
   repos: [...group.repos].sort((a, b) => Number(b.featured) - Number(a.featured)),
 }));
+
+/**
+ * Bento span class for a tile, given its index and the group size, mapped to
+ * the 6-col `.grid--bento` canvas. Tiles are always laid out gap-free:
+ *  - 1 item  → one full-width tile (tile-6)
+ *  - 2 items → two half tiles (tile-3 each)
+ *  - 3+      → a tall 4-wide anchor + two stacked 2-wide tiles fill the first
+ *              band (cols 5–6, rows 1–2); the remaining items flow three-up as
+ *              even 2-wide tiles. The trailing partial row is widened so it
+ *              never leaves a ragged gap: a lone last tile becomes full-width,
+ *              and a last pair becomes two thirds.
+ */
+function tileSize(i: number, count: number): string {
+  if (count === 1) return 'tile-6';
+  if (count === 2) return 'tile-3';
+  if (i === 0) return 'tile-4 tile-tall';
+
+  // Items at index 1 and 2 sit in the right column beside the tall anchor.
+  // Everything from index 3 on flows three-up; balance the final row.
+  const rest = count - 3; // number of three-up tiles
+  if (rest > 0 && i >= 3) {
+    const posInRest = i - 3;
+    const fullRows = Math.floor(rest / 3) * 3;
+    const remainder = rest - fullRows; // 0, 1, or 2 tiles in the last row
+    if (posInRest >= fullRows) {
+      if (remainder === 1) return 'tile-6';
+      if (remainder === 2) return 'tile-3';
+    }
+  }
+  return 'tile-2';
+}
 ---
 
-<section id="projects" class="section" aria-labelledby="work-heading">
-  <p class="section-mark">{eyebrow}</p>
-  <h2 id="work-heading">{p.heading}</h2>
-  <p class="lede work__intro">{p.intro}</p>
+<section
+  id="projects"
+  class="section section--bleed section--dark section--wide"
+  aria-labelledby="work-heading"
+>
+  <div class="work__inner">
+    <div class="work__head section--center reveal" style="--i:0">
+      <p class="section-mark">{eyebrow}</p>
+      <h2 id="work-heading">{p.heading}</h2>
+      <p class="lede work__intro">{p.intro}</p>
+    </div>
 
-  {
-    groups.map((group) => (
-      <div class="work__group">
-        <div class="work__group-head">
-          <h3 class="work__group-title">{group.title}</h3>
-          <p class="work__group-blurb">{group.blurb}</p>
+    {
+      groups.map((group) => (
+        <div class="work__group">
+          <div class="work__group-head reveal" style="--i:1">
+            <h3 class="work__group-title">{group.title}</h3>
+            <p class="work__group-blurb">{group.blurb}</p>
+          </div>
+          <div class="grid grid--bento reveal-stagger">
+            {group.repos.map((repo, i) => (
+              <ProjectCard
+                repo={repo}
+                lang={lang}
+                kicker={group.title}
+                size={tileSize(i, group.repos.length)}
+                index={i}
+              />
+            ))}
+          </div>
         </div>
-        <div class="grid">
-          {group.repos.map((repo) => (
-            <ProjectCard repo={repo} lang={lang} kicker={group.title} />
-          ))}
-        </div>
-      </div>
-    ))
-  }
+      ))
+    }
+  </div>
 </section>
 
 <style>
+  .work__head {
+    margin-bottom: clamp(2.6rem, 5vw, 4rem);
+  }
   .work__intro {
     max-width: 66ch;
-    margin-bottom: 2.6rem;
   }
   .work__group {
-    margin-top: 3rem;
+    margin-top: clamp(48px, 7vw, 80px);
   }
   .work__group:first-of-type {
     margin-top: 0;
   }
+  /* Cleaner Apple feel: no hairline under the group header (matches global). */
   .work__group-head {
-    margin-bottom: 1.4rem;
-    padding-bottom: 0.9rem;
-    border-bottom: 1px solid var(--border);
+    margin-bottom: 1.6rem;
   }
   .work__group-title {
-    font-size: 1.45rem;
-    margin: 0 0 0.25rem;
+    font-size: clamp(1.5rem, 2.4vw, 2rem);
+    letter-spacing: -0.02em;
+    margin: 0 0 0.3rem;
   }
   .work__group-blurb {
     color: var(--muted);
-    font-size: 0.98rem;
+    font-size: 1.05rem;
     margin: 0;
     max-width: 64ch;
   }

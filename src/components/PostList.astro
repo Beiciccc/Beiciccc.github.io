@@ -16,7 +16,7 @@ const { posts, lang } = Astro.props;
       const href = localePath(lang, `/blog/${slug}/`);
       const cat = post.data.tags?.[0];
       return (
-        <article class="post">
+        <article class="post reveal">
           <time class="post__date" datetime={post.data.pubDate.toISOString()}>
             {formatDate(post.data.pubDate, lang)}
           </time>

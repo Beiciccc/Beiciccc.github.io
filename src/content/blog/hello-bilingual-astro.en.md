@@ -7,8 +7,6 @@ tags: ["meta", "welcome", "astro", "bilingual"]
 draft: false
 ---
 
-# Hello, and Welcome
-
 This is the first post on my new personal site, so it's part welcome mat and part colophon — a note about what this place is, how it's built, and what I hope to put here.
 
 I'm Kun. I'm doing an MSc in Advanced Computer Science at the University of Leeds, and most of my time goes into NLP and large language models, with a steady side habit of machine-learning competitions. For a while my writing lived scattered across repository READMEs and competition notebooks. This site is my attempt to gather the better bits in one place, slow down, and actually explain things.

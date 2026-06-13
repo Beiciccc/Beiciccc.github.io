@@ -7,8 +7,6 @@ tags: ["kaggle", "machine-learning", "reproducibility", "reflection", "experimen
 draft: false
 ---
 
-# What Many Kaggle Competitions Taught Me About Doing ML Honestly
-
 I keep a lot of competition repositories on GitHub, and most of them are not trophies. They are experiment logs: notes, score tables, leaderboard snapshots, and sanitized submission traces. Over time these have ranged across some genuinely unrelated worlds — bird audio in [BirdCLEF+ 2026](https://github.com/Beiciccc/birdclef-2026-experiments), abstract reasoning grids in the [ARC Prize](https://github.com/Beiciccc/arc-prize-2026-arc-agi-2-experiments), legal citation retrieval in [Swiss legal IR](https://github.com/Beiciccc/swiss-legal-ir-experiments), vehicle detection, F1 pit stops, stellar classification, even text-to-sign generation. Hopping between domains like this taught me less about any single field and more about how to *work*. A few lessons keep repeating.
 
 ## Write the log as if someone else will read it

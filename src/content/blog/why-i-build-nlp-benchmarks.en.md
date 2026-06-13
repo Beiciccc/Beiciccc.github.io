@@ -7,8 +7,6 @@ tags: ["nlp", "llm", "evaluation", "benchmarks", "reproducibility", "reflection"
 draft: false
 ---
 
-# Why Evaluation and Benchmarks Matter to Me in NLP
-
 When people ask what I find most interesting about working with language models, they often expect me to say "the models." But the honest answer is the part most people skip past: **evaluation**. How do we actually know a system is good? That question turns out to be far harder, and far more interesting, than building the system in the first place.
 
 ## The number is not the result

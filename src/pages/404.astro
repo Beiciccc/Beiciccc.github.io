@@ -12,27 +12,19 @@ const t = ui[lang];
   description="The page you're looking for doesn't exist."
   altUrl="/zh/"
 >
-  <section class="section notfound" aria-labelledby="nf-heading">
-    <p class="section-mark">404</p>
-    <h1 id="nf-heading">{t.notFoundTitle}</h1>
-    <p class="lede">{t.notFoundBody}</p>
-    <p class="notfound__zh">页面未找到 —— 你访问的页面不存在或已被移动。</p>
-    <div class="hero__actions">
-      <a class="btn" href="/">
-        {t.notFoundCta}
-        <span class="btn__arrow" aria-hidden="true">→</span>
-      </a>
-      <a class="btn btn--ghost" href="/zh/">返回中文首页</a>
+  <section class="section notfound section--center" aria-labelledby="nf-heading">
+    <div class="reveal">
+      <p class="section-mark">404</p>
+      <h1 id="nf-heading">{t.notFoundTitle}</h1>
+      <p class="lede">{t.notFoundBody}</p>
+      <p class="notfound__zh">页面未找到 —— 你访问的页面不存在或已被移动。</p>
+      <div class="hero__actions">
+        <a class="btn" href="/">
+          {t.notFoundCta}
+          <span class="btn__arrow" aria-hidden="true">→</span>
+        </a>
+        <a class="btn btn--ghost" href="/zh/">返回中文首页</a>
+      </div>
     </div>
   </section>
 </BaseLayout>
-
-<style>
-  .notfound {
-    min-height: 50vh;
-  }
-  .notfound__zh {
-    color: var(--muted);
-    margin-bottom: 2rem;
-  }
-</style>

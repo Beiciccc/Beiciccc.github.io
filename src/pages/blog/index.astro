@@ -20,16 +20,11 @@ const posts = (await getCollection('blog', ({ data }) => data.lang === 'en' && !
   active="blog"
 >
   <section class="section blog-index" aria-labelledby="blog-heading">
-    <p class="section-mark">{lang === 'en' ? 'Blog' : '博客'}</p>
-    <h1 id="blog-heading">{s.blogTitle}</h1>
-    <p class="lede blog-index__intro">{s.blogIntro}</p>
+    <div class="blog-index__head reveal">
+      <p class="section-mark">{lang === 'en' ? 'Blog' : '博客'}</p>
+      <h1 id="blog-heading">{s.blogTitle}</h1>
+      <p class="lede blog-index__intro">{s.blogIntro}</p>
+    </div>
     <PostList posts={posts} lang={lang} />
   </section>
 </BaseLayout>
-
-<style>
-  .blog-index__intro {
-    max-width: 60ch;
-    margin-bottom: 2.6rem;
-  }
-</style>

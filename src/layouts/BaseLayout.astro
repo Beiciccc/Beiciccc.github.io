@@ -24,7 +24,9 @@ const t = ui[lang];
 // only if Astro.site is somehow unset.
 const siteUrl = Astro.site?.href ?? 'https://beiciccc.github.io/';
 const canonical = new URL(Astro.url.pathname, siteUrl).href;
-const ogImage = new URL('/og-default.svg', siteUrl).href;
+// Social cards must be raster: X/Twitter, Facebook, LinkedIn, Slack, Discord,
+// iMessage do NOT render SVG OpenGraph images. Use the 1200×630 PNG.
+const ogImage = new URL('/og-default.png', siteUrl).href;
 
 // The other language's canonical URL for hreflang alternates.
 const altCanonical = new URL(altUrl, siteUrl).href;
@@ -56,23 +58,32 @@ const zhHref = lang === 'zh' ? canonical : altCanonical;
     <meta property="og:description" content={description} />
     <meta property="og:url" content={canonical} />
     <meta property="og:image" content={ogImage} />
+    <meta property="og:image:type" content="image/png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
     <meta property="og:locale" content={lang === 'zh' ? 'zh_CN' : 'en_GB'} />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content={title} />
     <meta name="twitter:description" content={description} />
     <meta name="twitter:image" content={ogImage} />
 
-    <!-- Design fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Noto+Serif+SC:wght@500;600&family=Noto+Sans+SC:wght@400;500&display=swap"
-      rel="stylesheet"
-    />
+    <!-- Type: SYSTEM font stack only (defined in global.css). No embedded
+         proprietary fonts, no external font requests. -->
 
-    <!-- No-flash theme bootstrap: set data-theme before first paint. -->
+    <!-- No-JS fallback: if scripting is off, reveal-on-scroll content must stay
+         fully visible (covers .reveal and the .reveal--scale variant). -->
+    <noscript>
+      <style>
+        .reveal, .reveal--scale { opacity: 1 !important; transform: none !important; }
+      </style>
+    </noscript>
+
+    <!-- No-flash bootstrap: mark JS-enabled + set data-theme before first paint.
+         `.js` on <html> is what lets the CSS hide .reveal only when JS can
+         animate it back in (progressive enhancement). -->
     <script is:inline>
       (function () {
+        document.documentElement.classList.add('js');
         try {
           var stored = localStorage.getItem('theme');
           var theme =
@@ -102,12 +113,11 @@ const zhHref = lang === 'zh' ? canonical : altCanonical;
         var themeBtn = document.getElementById('theme-toggle');
         function syncThemeBtn() {
           if (!themeBtn) return;
+          // Icon visibility is handled purely by CSS keyed off [data-theme] on
+          // <html> (set before first paint), so there is no JS icon swap/flash.
+          // JS only keeps the a11y pressed-state in sync with the theme.
           var isDark = root.getAttribute('data-theme') === 'dark';
           themeBtn.setAttribute('aria-pressed', String(isDark));
-          var sun = themeBtn.querySelector('[data-icon="sun"]');
-          var moon = themeBtn.querySelector('[data-icon="moon"]');
-          if (sun) sun.style.display = isDark ? 'none' : 'inline';
-          if (moon) moon.style.display = isDark ? 'inline' : 'none';
         }
         if (themeBtn) {
           syncThemeBtn();
@@ -119,6 +129,52 @@ const zhHref = lang === 'zh' ? canonical : altCanonical;
             } catch (e) {}
             syncThemeBtn();
           });
+        }
+      })();
+    </script>
+
+    <!-- Scroll-reveal (IntersectionObserver) + frosted-nav scrolled state.
+         Vanilla, reduced-motion-guarded. No-JS fallback lives in <head>. -->
+    <script is:inline>
+      (function () {
+        var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        var els = document.querySelectorAll('.reveal');
+
+        // Reduced motion or no IO support: show everything, skip animation.
+        if (reduce || !('IntersectionObserver' in window)) {
+          els.forEach(function (el) { el.classList.add('is-visible'); });
+        } else {
+          var io = new IntersectionObserver(
+            function (entries) {
+              entries.forEach(function (e) {
+                if (e.isIntersecting) {
+                  e.target.classList.add('is-visible');
+                  io.unobserve(e.target);
+                }
+              });
+            },
+            { rootMargin: '0px 0px -10% 0px', threshold: 0.12 }
+          );
+          els.forEach(function (el) { io.observe(el); });
+        }
+
+        // Frosted-nav: settle the sticky bar once scrolled past a small threshold.
+        var onScroll = function () {
+          document.body.classList.toggle('scrolled', window.scrollY > 8);
+        };
+        onScroll();
+        window.addEventListener('scroll', onScroll, { passive: true });
+
+        // Optional very-subtle hero scale-on-scroll. Gated on reduced motion:
+        // when reduced motion is preferred, never write --hero-scale.
+        var hero = document.querySelector('.hero--parallax');
+        if (hero && !reduce) {
+          var onHero = function () {
+            var s = Math.max(0.965, 1 - window.scrollY / 4200);
+            hero.style.setProperty('--hero-scale', s.toFixed(4));
+          };
+          onHero();
+          window.addEventListener('scroll', onHero, { passive: true });
         }
       })();
     </script>
