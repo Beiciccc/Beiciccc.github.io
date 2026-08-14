@@ -1,0 +1,66 @@
+{
+  "en": {
+    "heading": "Publications",
+    "intro": "First-author work on how language models are measured — and on language models applied to financial text.",
+    "featuredLabel": "Peer-reviewed",
+    "items": [
+      {
+        "venue": "NLPCC 2026",
+        "badge": "Oral",
+        "status": "accepted",
+        "title": "Same Exam, Different Scores: A Tokenizer-Grounded Audit of Evaluation-Protocol Sensitivity on Chinese Benchmarks",
+        "authors": "Kun Zhang, Chunwei Xia",
+        "track": "Resources and Evaluation track",
+        "summary": "The standard first-token scorer for multiple-choice benchmarks is mathematically undefined for many Chinese models — when a tokenizer maps all four answer labels onto a shared first token, argmax reports a tie-break, not a score. Which model/label-set pairs degenerate follows from the tokenizer alone, so it is predictable on a laptop CPU before any GPU run. We pre-registered those predictions and confirmed 64/64 on the real runs.",
+        "scale": "18 checkpoints · 7 tokenizer families · 12,925 items · ~2.5M released scoring records",
+        "links": [
+          { "label": "Code", "href": "https://github.com/Beiciccc/zh-protocolcube" },
+          { "label": "Artifact (DOI)", "href": "https://doi.org/10.17605/OSF.IO/53C87" }
+        ]
+      }
+    ],
+    "underReview": {
+      "heading": "Under review",
+      "body": "Eight further first-author manuscripts are under review at international AI conferences, plus three at *ACL-affiliated workshops. They extend the same two threads: evaluation methodology and model reliability on one side, financial text and risk on the other. Titles and venues are withheld while review is anonymous; code and artifacts are released as each is accepted.",
+      "areas": [
+        "Benchmark design and scoring protocols",
+        "Context-faithfulness and hallucination measurement",
+        "Agent trajectory attribution",
+        "Financial disclosure text and volatility",
+        "Distribution-free risk control"
+      ]
+    }
+  },
+  "zh": {
+    "heading": "论文",
+    "intro": "第一作者工作，围绕两条主线：如何度量语言模型，以及把语言模型用在金融文本上。",
+    "featuredLabel": "已录用",
+    "items": [
+      {
+        "venue": "NLPCC 2026",
+        "badge": "Oral",
+        "status": "accepted",
+        "title": "Same Exam, Different Scores: A Tokenizer-Grounded Audit of Evaluation-Protocol Sensitivity on Chinese Benchmarks",
+        "authors": "张鲲，夏春薇（通讯）",
+        "track": "Resources and Evaluation 方向",
+        "summary": "主流 MCQ 评测采用的「首 token argmax」打分法，在许多中文模型上数学上是未定义的——当 tokenizer 把四个选项标签映射到同一个首 token 时，argmax 比较的是平局打破策略，而不是模型能力。哪些「模型 × 标签集」组合会退化，只由 tokenizer 决定，因此可以在跑任何 GPU 之前用笔记本 CPU 预测出来。我们预注册了这些预测，并在真实运行中 64/64 全部命中。",
+        "scale": "18 个检查点 · 7 个 tokenizer 家族 · 12,925 道题 · 公开约 250 万条打分记录",
+        "links": [
+          { "label": "代码", "href": "https://github.com/Beiciccc/zh-protocolcube" },
+          { "label": "数据工件 (DOI)", "href": "https://doi.org/10.17605/OSF.IO/53C87" }
+        ]
+      }
+    ],
+    "underReview": {
+      "heading": "在投",
+      "body": "另有 8 篇第一作者论文在国际人工智能会议评审中，3 篇在 *ACL 系 workshop 评审中。它们延续同样的两条主线：一侧是评测方法与模型可靠性，另一侧是金融文本与风险。评审匿名期内不公开标题与投稿会议；每篇录用后即释出代码与工件。",
+      "areas": [
+        "基准设计与打分协议",
+        "上下文忠实性与幻觉度量",
+        "Agent 轨迹归因",
+        "金融披露文本与波动率",
+        "分布无关的风险控制"
+      ]
+    }
+  }
+}

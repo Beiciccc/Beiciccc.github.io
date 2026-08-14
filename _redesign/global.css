@@ -1,0 +1,890 @@
+/* =============================================================================
+   Kun Zhang / 张鲲 — Apple-INSPIRED global stylesheet
+   Bilingual (EN / 简体中文) academic homepage + blog. Light & dark.
+
+   Design language (original, Apple-INSPIRED — no Apple code/markup/fonts/logos):
+   very large tight-tracked display headlines, abundant whitespace, full-bleed
+   alternating light/dark sections, frosted translucent sticky nav, restrained
+   scroll-driven fade/scale reveals, bento-style tile grids, soft rounded
+   corners, subtle gradients, high-contrast minimalist type, smooth easing.
+
+   100% original CSS. System font stack only (no embedded proprietary fonts).
+   Targets the existing Astro component/class structure (Header, Hero, About,
+   Research, SelectedWork, ProjectCard, Contact, PostList, Footer, blog, 404).
+   ========================================================================== */
+
+/* ---- Tokens: LIGHT (default) ---------------------------------------------- */
+:root {
+  /* Grounds — Apple-like near-white + layered surfaces */
+  --bg:            #fbfbfd;   /* page ground */
+  --bg-alt:        #f5f5f7;   /* alternating full-bleed section tint */
+  --surface:       #ffffff;   /* raised tiles / cards */
+  --surface-2:     #f0f0f3;   /* recessed chips, hover wells */
+  --surface-glass: rgba(251, 251, 253, 0.72); /* frosted nav fill */
+
+  /* Ink — contrast-checked against --bg / --bg-alt / --surface (WCAG AA) */
+  --text:          #1d1d1f;   /* near-black, high contrast (16.3:1 on bg) */
+  --text-strong:   #000000;   /* pure black for big display type */
+  --muted:         #6e6e73;   /* secondary copy — 4.66:1 on bg-alt, AA */
+  /* --faint is for fine print TEXT: kept at AA on every ground (was #86868b
+     @ 3.3:1 = FAIL). Use --faint-deco for purely decorative non-text marks. */
+  --faint:         #6e6e73;   /* captions / dates / labels — AA-safe */
+  --faint-deco:    #86868b;   /* decorative only (separators, disabled glyphs) */
+
+  /* Accent — restrained Apple-blue-like link/CTA (AA-tuned for light grounds) */
+  --accent:        #0068d1;   /* 4.94:1 on bg-alt, 5.38:1 on surface — AA text */
+  --accent-hover:  #0071e3;   /* hover fill — white label 4.70:1, AA */
+  --accent-press:  #0061c4;
+  --accent-text:   #ffffff;   /* label on accent fill — 5.0:1+ on all states */
+  --link:          #0066cc;   /* 5.1:1 on bg-alt — AA */
+  --accent-soft:   rgba(0, 104, 209, 0.10);
+
+  /* Back-compat aliases for existing Astro component scoped styles
+     (ProjectCard uses --accent-2; Hero/About reference --font-display). */
+  --accent-2:      var(--accent);
+  --font-display:  var(--font-sans);
+
+  /* Hairlines & borders */
+  --border:        rgba(0, 0, 0, 0.10);
+  --border-strong: rgba(0, 0, 0, 0.18);
+  --hairline:      rgba(0, 0, 0, 0.12);
+
+  /* Code */
+  --code-bg:       #f5f5f7;
+  --code-text:     #1d1d1f;
+
+  /* Soft shadows — diffuse, low-contrast, Apple-grade lift */
+  --shadow-sm:  0 1px 2px rgba(0,0,0,.04), 0 4px 12px -6px rgba(0,0,0,.10);
+  --shadow:     0 2px 6px rgba(0,0,0,.05), 0 14px 34px -14px rgba(0,0,0,.16);
+  --shadow-lg:  0 4px 12px rgba(0,0,0,.06), 0 30px 60px -22px rgba(0,0,0,.22);
+
+  /* Type — SYSTEM font stack only (referencing, never embedding) */
+  --font-sans: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text",
+               "Helvetica Neue", Inter, system-ui, "Segoe UI", Roboto, Arial, sans-serif;
+  --font-cjk:  "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei",
+               "Source Han Sans SC", "Noto Sans SC", sans-serif;
+  --font-mono: ui-monospace, "SF Mono", "SFMono-Regular", "JetBrains Mono",
+               "Cascadia Code", Menlo, Consolas, "Liberation Mono", monospace;
+
+  /* Geometry */
+  --maxw:    1024px;   /* contained content width */
+  --maxw-wide: 1280px; /* wide bento / full sections inner cap */
+  --readw:   720px;    /* article measure */
+  --radius:  18px;     /* tiles */
+  --radius-lg: 28px;   /* hero / large bento tiles */
+  --radius-sm: 12px;   /* small chips, code */
+  --capsule: 980px;    /* pill / capsule buttons */
+
+  /* Motion — Apple-like smooth easing */
+  --ease:   cubic-bezier(.22,.61,.36,1);
+  --ease-out: cubic-bezier(.16,1,.3,1);
+  --t-fast: .25s var(--ease);
+  --t:      .4s var(--ease);
+  --reveal-dur: .7s;
+
+  --nav-h:  48px;
+
+  color-scheme: light;
+}
+
+/* ---- Tokens: DARK --------------------------------------------------------- */
+[data-theme="dark"] {
+  --bg:            #000000;   /* pure-black ground, Apple-style */
+  --bg-alt:        #0a0a0c;   /* faint lift for alternating sections */
+  --surface:       #1d1d1f;   /* raised tiles */
+  --surface-2:     #2a2a2d;   /* recessed wells */
+  --surface-glass: rgba(0, 0, 0, 0.62);
+
+  --text:          #f5f5f7;   /* 19.3:1 on black */
+  --text-strong:   #ffffff;
+  --muted:         #a1a1a6;   /* 8.2:1 on black, 6.5:1 on surface — AA */
+  --faint:         #98989d;   /* fine print — 6.9:1 on black, AA (was #86868b) */
+  --faint-deco:    #86868b;   /* decorative only — 5.8:1 on black */
+
+  /* On black, the bright accent reads great as TEXT (links/eyebrows = 6.96:1),
+     but white LABELS on the bright fill fail AA (3.0:1). So button labels use a
+     near-black inky-blue ink. --accent-text below is the label-on-fill colour. */
+  --accent:        #2997ff;   /* link/eyebrow text on dark — 6.96:1, AA */
+  --accent-hover:  #4aa8ff;   /* text/hover-tint state on dark grounds */
+  --accent-press:  #1f8aef;
+  --accent-text:   #001a33;   /* label on accent FILL — 6.4:1+ on all states, AA */
+  --link:          #2997ff;
+  --accent-soft:   rgba(41, 151, 255, 0.18);
+
+  --accent-2:      var(--accent);
+  --font-display:  var(--font-sans);
+
+  --border:        rgba(255, 255, 255, 0.12);
+  --border-strong: rgba(255, 255, 255, 0.22);
+  --hairline:      rgba(255, 255, 255, 0.14);
+
+  --code-bg:       #161617;
+  --code-text:     #f5f5f7;
+
+  --shadow-sm:  0 1px 2px rgba(0,0,0,.5), 0 6px 16px -8px rgba(0,0,0,.6);
+  --shadow:     0 2px 8px rgba(0,0,0,.55), 0 18px 44px -16px rgba(0,0,0,.7);
+  --shadow-lg:  0 4px 14px rgba(0,0,0,.6), 0 34px 70px -22px rgba(0,0,0,.8);
+
+  color-scheme: dark;
+}
+
+/* ---- Reset ---------------------------------------------------------------- */
+*, *::before, *::after { box-sizing: border-box; }
+* { margin: 0; }
+
+html {
+  -webkit-text-size-adjust: 100%;
+  scroll-behavior: smooth;
+  scroll-padding-top: calc(var(--nav-h) + 18px); /* sticky-nav offset for anchors */
+}
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-sans);
+  font-size: 17px;
+  line-height: 1.55;
+  letter-spacing: -0.003em;          /* faint negative tracking, Apple-like body */
+  font-feature-settings: "kern", "liga", "calt";
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+  transition: background-color var(--t), color var(--t);
+}
+
+img, svg, video { max-width: 100%; height: auto; display: block; }
+ul, ol { padding-left: 1.25em; }
+
+::selection { background: var(--accent-soft); color: var(--text); }
+
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+  border-radius: 6px;
+}
+
+main { display: block; }
+
+/* ---- Type scale — bold, tight, very large fluid display ------------------- */
+h1, h2, h3, h4 {
+  color: var(--text-strong);
+  font-weight: 700;
+  line-height: 1.06;
+  letter-spacing: -0.022em;          /* tight tracking on big type */
+  text-wrap: balance;
+  overflow-wrap: break-word;         /* never let a long token overflow 375px */
+}
+/* Hero-scale headline ~46–108px fluid — big & tight, Apple-grade display */
+h1 {
+  font-size: clamp(2.9rem, 7.6vw, 6rem);
+  font-weight: 700;
+  letter-spacing: -0.035em;          /* tighter tracking scales with size */
+  line-height: 1.02;
+  margin: 0 0 .25em;
+}
+/* Section headline ~34–60px fluid */
+h2 {
+  font-size: clamp(2.1rem, 4.8vw, 3.5rem);
+  letter-spacing: -0.028em;
+  line-height: 1.06;
+  margin: 0 0 .4em;
+}
+h3 {
+  font-size: clamp(1.3rem, 1.8vw, 1.6rem);
+  font-weight: 600;
+  letter-spacing: -0.018em;
+  margin: 0 0 .4em;
+}
+h4 {
+  font-size: 1.1rem;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  margin: 0 0 .3em;
+}
+
+p { margin: 0 0 1.1em; }
+a { color: var(--link); text-decoration: none; transition: color var(--t-fast); }
+a:hover { color: var(--accent-hover); text-decoration: underline; text-underline-offset: 3px; text-decoration-thickness: 1px; }
+strong { font-weight: 600; color: var(--text); }
+
+/* ---- Eyebrow / section mark / meta — flat, Apple-like kicker --------------- */
+.eyebrow,
+.section-mark {
+  display: block;
+  font-size: .82rem;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  color: var(--accent);
+  margin: 0 0 .7rem;
+  text-transform: none;              /* Apple uses sentence-case eyebrows */
+}
+.lede {
+  font-size: clamp(1.18rem, 1.7vw, 1.4rem);
+  line-height: 1.45;
+  font-weight: 400;
+  color: var(--muted);
+  letter-spacing: -0.012em;
+  max-width: 62ch;
+  margin: 0 0 1.6rem;
+  text-wrap: pretty;
+}
+.lede em { font-style: normal; color: var(--text); font-weight: 500; }
+.meta {
+  font-size: .85rem;
+  color: var(--faint);
+  letter-spacing: 0;
+}
+.accent { color: var(--accent); }
+
+/* ---- Layout: contained + FULL-BLEED alternating sections ------------------ */
+.container { max-width: var(--maxw); margin: 0 auto; padding: 0 22px; }
+
+/* Default section: contained, generous vertical rhythm, centered content well */
+.section {
+  position: relative;
+  max-width: var(--maxw);
+  margin: 0 auto;
+  padding: clamp(72px, 11vw, 140px) 22px;
+}
+
+/* FULL-BLEED hook: a section that spans the viewport with its own ground.
+   Engineer adds `.section--bleed` (optionally `.section--tint` / `.section--dark`).
+   Inner content is re-capped via .section--bleed > .container or an inner wrap. */
+.section--bleed {
+  max-width: none;
+  width: 100%;
+  padding-left: 0;
+  padding-right: 0;
+}
+.section--bleed > * { max-width: var(--maxw); margin-inline: auto; padding-inline: 22px; }
+.section--bleed.section--wide > * { max-width: var(--maxw-wide); }
+
+.section--tint { background: var(--bg-alt); }
+/* Black showcase band. Re-scope tokens locally so child components (buttons,
+   ghost borders, hairlines, accent text) render correctly EVEN when the page
+   itself is in light mode — otherwise light borders vanish on black. All values
+   are the AA-checked dark-mode set. */
+.section--dark {
+  background: #000;
+  color: #f5f5f7;
+  --text:          #f5f5f7;
+  --text-strong:   #ffffff;
+  --muted:         #a1a1a6;
+  --faint:         #98989d;
+  --surface:       #1d1d1f;
+  --surface-2:     #2a2a2d;
+  --border:        rgba(255, 255, 255, 0.12);
+  --border-strong: rgba(255, 255, 255, 0.24);
+  --hairline:      rgba(255, 255, 255, 0.14);
+  --accent:        #2997ff;       /* accent TEXT on black — 6.96:1 */
+  --accent-hover:  #4aa8ff;
+  --accent-text:   #001a33;       /* label on accent FILL — AA */
+  --accent-soft:   rgba(41, 151, 255, 0.18);
+}
+.section--dark h1, .section--dark h2, .section--dark h3, .section--dark h4 { color: #fff; }
+.section--dark .lede { color: var(--muted); }
+.section--dark a { color: var(--accent); }
+
+/* Centered headline block (Apple section openers) */
+.section--center { text-align: center; }
+.section--center .lede { margin-left: auto; margin-right: auto; }
+
+hr, .rule {
+  border: 0;
+  height: 1px;
+  background: var(--hairline);
+  margin: clamp(48px, 7vw, 88px) 0;
+}
+
+/* =============================================================================
+   HEADER / NAV — frosted translucent sticky bar
+   ========================================================================== */
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  background: var(--surface-glass);
+  -webkit-backdrop-filter: saturate(180%) blur(20px);
+  backdrop-filter: saturate(180%) blur(20px);
+  border-bottom: 1px solid transparent;     /* hairline appears once scrolled */
+  transition: background var(--t), border-color var(--t), box-shadow var(--t);
+}
+/* Solid-ish state once scrolled (JS toggles .scrolled on <body> or header) */
+.site-header.scrolled,
+body.scrolled .site-header {
+  background: var(--surface-glass);
+  border-bottom-color: var(--hairline);
+  box-shadow: 0 1px 0 rgba(0,0,0,.02);
+}
+
+.nav {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  max-width: var(--maxw-wide);
+  margin: 0 auto;
+  height: var(--nav-h);
+  padding: 0 22px;
+}
+.nav__brand {
+  font-size: 1.05rem;
+  font-weight: 600;
+  letter-spacing: -0.015em;
+  color: var(--text);
+}
+.nav__brand:hover { color: var(--text); text-decoration: none; }
+.nav__brand .zh {
+  font-size: .8rem;
+  font-weight: 400;
+  color: var(--faint);
+  margin-left: .45rem;
+  letter-spacing: 0;
+}
+
+.nav__links { display: flex; align-items: center; gap: .15rem; margin-left: auto; }
+.nav__links a {
+  color: var(--muted);
+  font-size: .82rem;
+  font-weight: 400;
+  letter-spacing: -0.005em;
+  padding: .35rem .7rem;
+  border-radius: var(--capsule);
+  transition: color var(--t-fast), background-color var(--t-fast);
+}
+.nav__links a:hover { color: var(--text); background: var(--surface-2); text-decoration: none; }
+.nav__links a[aria-current="page"] { color: var(--text); font-weight: 500; }
+
+.nav__tools { display: flex; align-items: center; gap: .4rem; margin-left: .65rem; }
+
+/* Capsule toggles (theme + language) */
+.toggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 34px;
+  height: 30px;
+  padding: 0 .6rem;
+  border: 1px solid var(--border);
+  background: transparent;
+  color: var(--muted);
+  border-radius: var(--capsule);
+  font-size: .78rem;
+  font-weight: 500;
+  line-height: 1;
+  cursor: pointer;
+  transition: color var(--t-fast), border-color var(--t-fast), background-color var(--t-fast);
+}
+.toggle:hover { color: var(--text); border-color: var(--border-strong); background: var(--surface-2); text-decoration: none; }
+.toggle__lang { gap: .2rem; letter-spacing: .01em; }
+.toggle__lang .on { color: var(--accent); font-weight: 600; }
+.toggle__lang .sep { color: var(--border-strong); margin: 0 .1rem; }
+
+/* =============================================================================
+   HERO — huge headline + sub + capsule CTAs
+   ========================================================================== */
+.hero {
+  padding-top: clamp(64px, 11vw, 132px);
+  padding-bottom: clamp(48px, 8vw, 96px);
+  text-align: center;                /* Apple hero blocks are centered */
+}
+.hero .eyebrow { margin-bottom: 1rem; color: var(--accent); }
+.hero h1 {
+  max-width: 16ch;
+  margin-inline: auto;
+  background: none;
+}
+/* Optional gradient-ink headline accent hook (engineer can add .hero h1 .grad) */
+.hero h1 .grad {
+  background: linear-gradient(120deg, var(--text-strong), var(--accent));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+.hero .lede {
+  max-width: 52ch;
+  margin: 1.1rem auto 2.2rem;
+  color: var(--muted);
+}
+.hero__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .9rem;
+  align-items: center;
+  justify-content: center;
+}
+.hero__tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .5rem;
+  margin-top: 2rem;
+  justify-content: center;
+}
+/* Subtle parallax/scale hook for the hero (JS sets --hero-scale on scroll) */
+.hero--parallax { transform: scale(var(--hero-scale, 1)); transform-origin: top center; }
+
+/* =============================================================================
+   BUTTONS — Apple-style rounded capsules
+   ========================================================================== */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: .4rem;
+  font-family: inherit;
+  font-weight: 500;
+  font-size: 1rem;
+  line-height: 1.2;
+  letter-spacing: -0.01em;
+  padding: .72rem 1.4rem;
+  border-radius: var(--capsule);
+  background: var(--accent);
+  color: var(--accent-text);
+  border: 1px solid transparent;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background-color var(--t-fast), transform var(--t-fast), box-shadow var(--t-fast), border-color var(--t-fast);
+}
+.btn:hover {
+  background: var(--accent-hover);
+  color: var(--accent-text);
+  text-decoration: none;
+  transform: scale(1.02);
+}
+.btn:active { background: var(--accent-press); transform: scale(.99); }
+
+.btn--ghost {
+  background: transparent;
+  color: var(--accent);
+  border-color: var(--border-strong);
+}
+.btn--ghost:hover {
+  background: var(--accent-soft);
+  border-color: var(--accent);
+  color: var(--accent);
+  transform: scale(1.02);
+}
+/* Tertiary text-link style with chevron (engineer can add .btn--link) */
+.btn--link {
+  background: none;
+  border: none;
+  color: var(--accent);
+  padding: .3rem 0;
+  border-radius: 0;
+}
+.btn--link:hover { background: none; text-decoration: none; }
+.btn--link:hover .btn__arrow { transform: translateX(3px); }
+
+.btn__arrow { transition: transform var(--t-fast); }
+.btn:hover .btn__arrow { transform: translateX(3px); }
+
+/* =============================================================================
+   TAGS / capsule chips
+   ========================================================================== */
+.tags { display: flex; flex-wrap: wrap; gap: .45rem; list-style: none; padding: 0; margin: 0; }
+.tag {
+  font-size: .78rem;
+  font-weight: 500;
+  letter-spacing: -0.005em;
+  color: var(--muted);
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  padding: .26rem .7rem;
+  border-radius: var(--capsule);
+  white-space: nowrap;
+}
+
+/* =============================================================================
+   BENTO GRID — Selected Work + project cards + research tiles
+   ========================================================================== */
+.grid {
+  display: grid;
+  gap: clamp(16px, 1.6vw, 24px);     /* generous, breathes on wide screens */
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+}
+
+/* Explicit bento layout for a 6-col canvas (engineer adds .grid--bento and
+   per-tile span classes; falls back gracefully via auto-fit above). */
+.grid--bento {
+  grid-template-columns: repeat(6, 1fr);
+  grid-auto-rows: minmax(220px, auto);
+}
+.grid--bento .tile-2 { grid-column: span 2; }
+.grid--bento .tile-3 { grid-column: span 3; }
+.grid--bento .tile-4 { grid-column: span 4; }
+.grid--bento .tile-6 { grid-column: span 6; }
+.grid--bento .tile-tall { grid-row: span 2; }
+
+/* Tile / card — rounded, soft-shadow, hover lift */
+.card {
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 28px;
+  box-shadow: var(--shadow-sm);
+  transition: transform var(--t), box-shadow var(--t), border-color var(--t);
+}
+/* Soft top-corner gradient sheen — subtle, original */
+.card::before {
+  content: "";
+  position: absolute;
+  inset: 0 0 auto auto;
+  width: 180px; height: 180px;
+  pointer-events: none;
+  background: radial-gradient(180px 180px at 100% 0%, var(--accent-soft), transparent 70%);
+  opacity: .8;
+}
+.card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-lg);
+  border-color: var(--border-strong);
+}
+.card .eyebrow { margin-bottom: .5rem; }
+.card h3 { margin: .1rem 0 .5rem; }
+.card h3 a { color: inherit; }
+.card h3 a:hover { color: var(--accent); text-decoration: none; }
+.card p { color: var(--muted); font-size: 1rem; line-height: 1.5; margin: 0 0 1.2rem; }
+.card__foot {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-top: auto;
+  font-size: .85rem;
+  color: var(--faint);
+}
+
+/* Research tiles inherit .card; large emoji/icon glyph */
+.research__card .research__icon,
+.research__icon {
+  font-size: 1.9rem;
+  line-height: 1;
+}
+
+/* Work groups — section sub-headers above each bento group */
+.work__group { margin-top: clamp(40px, 6vw, 72px); }
+.work__group:first-of-type { margin-top: 0; }
+.work__group-head {
+  margin-bottom: 1.6rem;
+  padding-bottom: 0;
+  border-bottom: none;               /* override old hairline; cleaner Apple feel */
+}
+.work__group-title {
+  font-size: clamp(1.5rem, 2.4vw, 2rem);
+  letter-spacing: -0.02em;
+  margin: 0 0 .3rem;
+}
+.work__group-blurb { color: var(--muted); font-size: 1.05rem; margin: 0; max-width: 60ch; }
+
+/* ProjectCard specifics */
+.project-card h3 { font-size: 1.25rem; overflow-wrap: anywhere; }
+.project-card__lang,
+.project-card__stars { display: inline-flex; align-items: center; gap: .35rem; }
+.lang-dot { width: 9px; height: 9px; border-radius: var(--capsule); display: inline-block; }
+.project-card__link { margin-left: auto; color: var(--accent); font-weight: 500; }
+.project-card__link:hover { color: var(--accent-hover); text-decoration: none; }
+
+/* =============================================================================
+   BLOG — large editorial rows
+   ========================================================================== */
+.post-list { display: grid; }
+.post {
+  display: grid;
+  grid-template-columns: 9rem 1fr;
+  gap: 2rem;
+  padding: 2.2rem 0;
+  border-top: 1px solid var(--hairline);
+  align-items: start;
+  transition: background var(--t-fast);
+}
+.post:last-child { border-bottom: 1px solid var(--hairline); }
+.post__date {
+  font-size: .85rem;
+  color: var(--faint);
+  padding-top: .55rem;
+  white-space: nowrap;
+}
+.post__cat {
+  display: inline-block;
+  font-size: .8rem;
+  font-weight: 600;
+  color: var(--accent);
+  margin-bottom: .4rem;
+}
+.post__title {
+  font-size: clamp(1.4rem, 2.2vw, 1.9rem);
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  line-height: 1.15;
+  margin: 0 0 .4rem;
+}
+.post__title a {
+  color: var(--text-strong);
+  background-image: linear-gradient(var(--accent), var(--accent));
+  background-size: 0 2px;
+  background-repeat: no-repeat;
+  background-position: 0 100%;
+  transition: background-size var(--t), color var(--t-fast);
+  text-decoration: none;
+}
+.post:hover .post__title a,
+.post__title a:focus-visible { background-size: 100% 2px; color: var(--accent); }
+.post__excerpt { color: var(--muted); font-size: 1.05rem; line-height: 1.5; margin: 0; max-width: 64ch; }
+
+/* Blog index intro spacing (component scoped clone) */
+.blog-index__intro { max-width: 60ch; margin-bottom: 2.6rem; }
+
+/* =============================================================================
+   PROSE / article body
+   ========================================================================== */
+.prose { max-width: var(--readw); margin: 0 auto; font-size: 1.12rem; line-height: 1.7; color: var(--text); }
+.prose > * + * { margin-top: 1.2em; }
+.prose h2 { font-size: clamp(1.6rem, 2.6vw, 2.1rem); margin-top: 1.9em; }
+.prose h3 { font-size: 1.35rem; margin-top: 1.6em; }
+.prose a {
+  color: var(--link);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  text-decoration-thickness: 1px;
+  text-decoration-color: color-mix(in srgb, var(--accent) 45%, transparent);
+}
+.prose a:hover { text-decoration-color: var(--accent); }
+.prose img { border-radius: var(--radius); border: 1px solid var(--border); margin: 2em auto; }
+.prose figcaption { font-size: .85rem; color: var(--faint); text-align: center; margin-top: .7em; }
+.prose li { margin: .4em 0; }
+
+blockquote {
+  margin: 1.9em 0;
+  padding: .3em 0 .3em 1.4rem;
+  border-left: 3px solid var(--accent);
+  font-size: 1.25rem;
+  font-weight: 400;
+  line-height: 1.45;
+  color: var(--text);
+  letter-spacing: -0.012em;
+}
+
+table { width: 100%; border-collapse: collapse; font-size: .98rem; margin: 1.8em 0; }
+th, td { text-align: left; padding: .6rem .85rem; border-bottom: 1px solid var(--hairline); }
+th { font-size: .8rem; font-weight: 600; letter-spacing: 0; color: var(--muted); }
+
+/* =============================================================================
+   CODE
+   ========================================================================== */
+pre, code { font-family: var(--font-mono); font-size: .9em; }
+:not(pre) > code {
+  background: var(--code-bg);
+  color: var(--code-text);
+  padding: .15em .42em;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border);
+}
+pre {
+  background: var(--code-bg);
+  color: var(--code-text);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 1.2rem 1.4rem;
+  overflow-x: auto;
+  line-height: 1.6;
+  margin: 1.8em 0;
+}
+pre code { background: none; border: none; padding: 0; color: inherit; }
+
+/* =============================================================================
+   CONTACT — clean centered block
+   ========================================================================== */
+.contact { text-align: center; }
+.contact .section-mark,
+.contact .lede { margin-left: auto; margin-right: auto; }
+.contact__intro { max-width: 56ch; margin-bottom: 2.4rem; }
+.contact__list {
+  list-style: none;
+  padding: 0;
+  margin: 0 auto;
+  display: grid;
+  gap: 0;
+  max-width: 560px;
+  text-align: left;
+}
+.contact__item {
+  display: flex;
+  align-items: baseline;
+  gap: 1.5rem;
+  padding: 1.1rem 0;
+  border-top: 1px solid var(--hairline);
+}
+.contact__item:last-child { border-bottom: 1px solid var(--hairline); }
+.contact__label {
+  font-size: .78rem;
+  font-weight: 600;
+  letter-spacing: 0;
+  color: var(--faint);
+  width: 6rem;
+  flex: none;
+}
+.contact__item a { font-size: 1.1rem; color: var(--link); word-break: break-word; }
+.contact__item a:hover { color: var(--accent-hover); }
+
+/* =============================================================================
+   BLOG POST PAGE + 404 (component-scoped hooks mirrored globally)
+   ========================================================================== */
+.post-page { max-width: var(--readw); }
+.post-page__head h1 { font-size: clamp(2.2rem, 5vw, 3.4rem); }
+.notfound { min-height: 56vh; text-align: center; }
+.notfound .hero__actions { justify-content: center; }
+.notfound__zh { color: var(--muted); margin-bottom: 2rem; }
+
+/* =============================================================================
+   FOOTER — light, fine print, mini links
+   ========================================================================== */
+.site-footer {
+  border-top: 1px solid var(--hairline);
+  margin-top: clamp(56px, 8vw, 96px);
+  background: var(--bg-alt);
+}
+.site-footer .inner {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem 1.5rem;
+  align-items: center;
+  justify-content: space-between;
+  max-width: var(--maxw);
+  margin: 0 auto;
+  padding: 2.4rem 22px;
+}
+.site-footer .foot-meta { font-size: .82rem; color: var(--faint); }
+.site-footer nav { display: flex; flex-wrap: wrap; gap: 1.3rem; font-size: .85rem; }
+.site-footer a { color: var(--muted); }
+.site-footer a:hover { color: var(--accent); text-decoration: none; }
+
+/* =============================================================================
+   MOTION — restrained Apple-like scroll reveal + utilities
+   ========================================================================== */
+.reveal {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity var(--reveal-dur) var(--ease), transform var(--reveal-dur) var(--ease);
+  will-change: opacity, transform;
+}
+.reveal.is-visible {
+  opacity: 1;
+  transform: none;
+}
+/* Soft scale-in variant for hero / large tiles */
+.reveal--scale { transform: translateY(24px) scale(.985); }
+.reveal--scale.is-visible { transform: none; }
+
+/* Stagger helper: children reveal in sequence (engineer adds .reveal-stagger to
+   a container; sets --i per child inline, e.g. style="--i:1"). */
+.reveal-stagger > .reveal { transition-delay: calc(var(--i, 0) * .08s); }
+
+/* =============================================================================
+   CJK refinement — /zh/ pages
+   ========================================================================== */
+:lang(zh) {
+  font-family: var(--font-cjk);
+  letter-spacing: 0;
+  line-height: 1.7;
+}
+:lang(zh) h1, :lang(zh) h2, :lang(zh) h3, :lang(zh) h4 {
+  font-family: var(--font-cjk);
+  letter-spacing: -0.01em;
+  font-weight: 600;
+  line-height: 1.18;
+}
+:lang(zh) h1 { letter-spacing: -0.012em; }
+:lang(zh) .lede { letter-spacing: 0; line-height: 1.62; }
+:lang(zh) .eyebrow, :lang(zh) .section-mark { letter-spacing: .02em; }
+:lang(zh) .prose { line-height: 1.85; }
+
+/* =============================================================================
+   RESPONSIVE — mobile-first refinements (flawless at 375px & 1280px+)
+   ========================================================================== */
+@media (max-width: 740px) {
+  body { font-size: 16px; }
+  .section { padding: clamp(56px, 14vw, 80px) 20px; }
+  .container, .nav, .section--bleed > *, .site-footer .inner { padding-inline: 20px; }
+
+  /* Nav reflows: brand + tools on row 1, links scroll on row 2 */
+  .nav { flex-wrap: wrap; height: auto; padding-top: .55rem; padding-bottom: .55rem; gap: .5rem; }
+  .nav__tools { margin-left: auto; }
+  .nav__links {
+    order: 3;
+    flex-basis: 100%;
+    margin-left: 0;
+    gap: .1rem;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+  .nav__links::-webkit-scrollbar { display: none; }
+  .nav__links a { padding: .3rem .55rem; font-size: .82rem; }
+
+  .post { grid-template-columns: 1fr; gap: .4rem; padding: 1.8rem 0; }
+  .post__date { padding-top: 0; }
+  .contact__item { flex-direction: column; gap: .25rem; }
+  .contact__label { width: auto; }
+  .site-footer .inner { flex-direction: column; align-items: flex-start; }
+
+  /* Bento collapses to a single column on phones */
+  .grid--bento { grid-template-columns: 1fr; grid-auto-rows: auto; }
+  .grid--bento .tile-2, .grid--bento .tile-3,
+  .grid--bento .tile-4, .grid--bento .tile-6 { grid-column: 1 / -1; }
+  .grid--bento .tile-tall { grid-row: auto; }
+}
+
+/* Tuck the brand subtitle away on the smallest screens */
+@media (max-width: 390px) {
+  .nav__brand .zh { display: none; }
+}
+
+@media (min-width: 1280px) {
+  .section { padding-block: clamp(112px, 9vw, 156px); }
+}
+
+/* =============================================================================
+   FORCED COLORS / Windows High Contrast — glass header fallback
+   ========================================================================== */
+@media (forced-colors: active) {
+  .site-header {
+    background: Canvas;
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+    border-bottom: 1px solid CanvasText;
+  }
+  .toggle, .tag, .card { border: 1px solid CanvasText; }
+  .btn { border: 1px solid CanvasText; }
+}
+
+/* =============================================================================
+   MOTION PREFERENCE — disable all transforms/transitions
+   ========================================================================== */
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after {
+    transition-duration: .01ms !important;
+    animation-duration: .01ms !important;
+    animation-iteration-count: 1 !important;
+  }
+  .reveal { opacity: 1 !important; transform: none !important; }
+  .btn:hover, .card:hover, .hero--parallax { transform: none !important; }
+}
+
+/* =============================================================================
+   SKIP LINK (a11y)
+   ========================================================================== */
+.skip-link {
+  position: absolute;
+  left: -9999px;
+  top: 0;
+  z-index: 2000;
+  background: var(--accent);
+  color: var(--accent-text);
+  padding: .6rem 1.1rem;
+  border-radius: 0 0 var(--radius-sm) 0;
+  font-weight: 600;
+  font-size: .9rem;
+}
+.skip-link:focus { left: 0; text-decoration: none; }

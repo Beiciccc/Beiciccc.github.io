@@ -1,0 +1,30 @@
+{
+  "en": {
+    "kicker": "MSc · NLP & LLM · Evaluation & Reliability",
+    "name": "Kun Zhang",
+    "tagline": "I study how language models are measured — and I ship the code and data so the measurement can be checked.",
+    "intro": "MSc Advanced Computer Science at the University of Leeds. First-author paper at NLPCC 2026 (oral) on why the standard multiple-choice scorer breaks on Chinese benchmarks, with the full artifact released under a DOI. Two threads: evaluation methodology and model reliability; language models on financial text.",
+    "ctaPrimary": {
+      "label": "See publications",
+      "href": "#publications"
+    },
+    "ctaSecondary": {
+      "label": "GitHub",
+      "href": "https://github.com/Beiciccc"
+    }
+  },
+  "zh": {
+    "kicker": "硕士 · 自然语言处理与大语言模型 · 评测与可靠性",
+    "name": "张鲲",
+    "tagline": "我研究语言模型该如何被度量——并把代码与数据一并公开，让度量本身可被检验。",
+    "intro": "利兹大学高级计算机科学硕士。第一作者论文发表于 NLPCC 2026（口头报告），揭示主流 MCQ 打分法在中文基准上失效的机制，完整工件已挂 DOI 公开。两条主线：评测方法与模型可靠性；面向金融文本的大语言模型。",
+    "ctaPrimary": {
+      "label": "查看论文",
+      "href": "#publications"
+    },
+    "ctaSecondary": {
+      "label": "GitHub",
+      "href": "https://github.com/Beiciccc"
+    }
+  }
+}

@@ -1,12 +1,20 @@
 {
   "en": {
     "heading": "Selected Work",
-    "intro": "A working archive of competition pipelines and coursework — most repos are public experiment logs and reproducible runs across NLP/LLM, ML, and cloud systems.",
+    "intro": "Published artifacts first, then a working archive of competition pipelines — most repos are public experiment logs and reproducible runs across NLP/LLM, ML, and cloud systems.",
     "groups": [
       {
         "title": "NLP & LLM",
         "blurb": "Language-focused work spanning legal information retrieval, LLM reasoning challenges, and document-grounded extraction.",
         "repos": [
+          {
+            "name": "zh-protocolcube",
+            "url": "https://github.com/Beiciccc/zh-protocolcube",
+            "desc": "NLPCC 2026 (oral) artifact — tokenizer-grounded audit of MCQ evaluation protocols on Chinese benchmarks. Pre-registered, DOI-archived; `make smoke-test` verifies the headline result in ~5 s.",
+            "lang": "Python",
+            "stars": 0,
+            "featured": true
+          },
           {
             "name": "swiss-legal-ir-experiments",
             "url": "https://github.com/Beiciccc/swiss-legal-ir-experiments",
@@ -201,12 +209,20 @@
   },
   "zh": {
     "heading": "精选作品",
-    "intro": "一份持续更新的竞赛流程与课程作业存档——大多为公开的实验记录与可复现实验，覆盖自然语言处理与大语言模型、机器学习以及云系统。",
+    "intro": "先是已发表工作的配套工件，其后是竞赛与实验的工作档案——多数仓库是公开的实验日志与可复现运行，覆盖 NLP/LLM、机器学习与云系统。",
     "groups": [
       {
         "title": "自然语言处理与大语言模型",
         "blurb": "围绕语言的工作，涵盖法律信息检索、大语言模型推理挑战以及基于文档的信息抽取。",
         "repos": [
+          {
+            "name": "zh-protocolcube",
+            "url": "https://github.com/Beiciccc/zh-protocolcube",
+            "desc": "NLPCC 2026（口头报告）配套工件——中文基准 MCQ 评测协议的 tokenizer 审计。预注册、挂 DOI；`make smoke-test` 约 5 秒即可验证核心结论。",
+            "lang": "Python",
+            "stars": 0,
+            "featured": true
+          },
           {
             "name": "swiss-legal-ir-experiments",
             "url": "https://github.com/Beiciccc/swiss-legal-ir-experiments",

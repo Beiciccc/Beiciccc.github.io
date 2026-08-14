@@ -6,12 +6,13 @@
 import hero from '../content_data/hero.json';
 import research from '../content_data/research.json';
 import projects from '../content_data/projects.json';
+import publications from '../content_data/publications.json';
 import site from '../content_data/site.json';
 import contact from '../content_data/contact.json';
 
 export type Lang = 'en' | 'zh';
 
-export { hero, research, projects, site, contact };
+export { hero, research, projects, publications, site, contact };
 
 /** Pick the language-keyed branch of a `{ en, zh }` content object. */
 export function pick<T>(obj: { en: T; zh: T }, lang: Lang): T {

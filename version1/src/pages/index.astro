@@ -3,6 +3,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import Hero from '../components/Hero.astro';
 import About from '../components/About.astro';
 import Research from '../components/Research.astro';
+import Publications from '../components/Publications.astro';
 import SelectedWork from '../components/SelectedWork.astro';
 import Contact from '../components/Contact.astro';
 import { site, pick } from '../i18n/content';
@@ -21,6 +22,7 @@ const s = pick(site, lang);
   <Hero lang={lang} />
   <About lang={lang} />
   <Research lang={lang} />
+  <Publications lang={lang} />
   <SelectedWork lang={lang} />
   <Contact lang={lang} />
 </BaseLayout>

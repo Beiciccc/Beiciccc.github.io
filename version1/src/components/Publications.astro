@@ -1,0 +1,136 @@
+---
+import { type Lang, publications, pick } from '../i18n/content';
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+const p = pick(publications, lang);
+const eyebrow = lang === 'zh' ? '发表' : 'Publications';
+---
+
+<section id="publications" class="section section--center" aria-labelledby="publications-heading">
+  <div class="pubs__head reveal">
+    <p class="section-mark">{eyebrow}</p>
+    <h2 id="publications-heading">{p.heading}</h2>
+    <p class="lede pubs__intro">{p.intro}</p>
+  </div>
+
+  <div class="pubs__list reveal-stagger">
+    {
+      p.items.map((item, i) => (
+        <article class="card pub reveal" style={`--i:${i}`}>
+          <div class="pub__meta">
+            <span class="pub__venue">{item.venue}</span>
+            {item.badge && <span class="pub__badge">{item.badge}</span>}
+            <span class="pub__status">{p.featuredLabel}</span>
+          </div>
+          <h3 class="pub__title">{item.title}</h3>
+          <p class="pub__authors">{item.authors} · {item.track}</p>
+          <p class="pub__summary">{item.summary}</p>
+          <p class="pub__scale">{item.scale}</p>
+          <p class="pub__links">
+            {item.links.map((l) => (
+              <a class="pub__link" href={l.href} target="_blank" rel="noopener noreferrer">
+                {l.label} ↗
+              </a>
+            ))}
+          </p>
+        </article>
+      ))
+    }
+
+    <article class="card pub pub--review reveal" style={`--i:${p.items.length}`}>
+      <h3 class="pub__title pub__title--sm">{p.underReview.heading}</h3>
+      <p class="pub__summary">{p.underReview.body}</p>
+      <ul class="pub__areas">
+        {p.underReview.areas.map((a) => <li>{a}</li>)}
+      </ul>
+    </article>
+  </div>
+</section>
+
+<style>
+  .pubs__head {
+    margin-bottom: clamp(2.2rem, 4vw, 3.2rem);
+  }
+  .pubs__intro {
+    max-width: 64ch;
+  }
+  .pubs__list {
+    display: grid;
+    gap: clamp(1rem, 2vw, 1.4rem);
+    text-align: left;
+    max-width: 74ch;
+    margin-inline: auto;
+  }
+  .pub__meta {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 0.7rem;
+  }
+  .pub__venue {
+    font-weight: 650;
+    letter-spacing: -0.01em;
+  }
+  .pub__badge {
+    font-size: 0.78rem;
+    font-weight: 650;
+    padding: 0.14em 0.6em;
+    border-radius: 999px;
+    background: var(--accent);
+    color: var(--accent-text);
+  }
+  .pub__status {
+    font-size: 0.78rem;
+    padding: 0.14em 0.6em;
+    border-radius: 999px;
+    background: var(--surface-2);
+    color: var(--tag-text, var(--muted));
+  }
+  .pub__title {
+    margin: 0 0 0.45rem;
+    font-size: clamp(1.02rem, 1.6vw, 1.18rem);
+    line-height: 1.35;
+  }
+  .pub__title--sm {
+    font-size: 1rem;
+  }
+  .pub__authors {
+    margin: 0 0 0.8rem;
+    color: var(--muted);
+    font-size: 0.92rem;
+  }
+  .pub__summary {
+    margin: 0 0 0.8rem;
+  }
+  .pub__scale {
+    margin: 0 0 0.9rem;
+    font-size: 0.88rem;
+    color: var(--faint);
+    font-variant-numeric: tabular-nums;
+  }
+  .pub__links {
+    margin: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+  .pub__link {
+    font-weight: 600;
+    font-size: 0.94rem;
+  }
+  .pub--review {
+    background: var(--bg-alt);
+  }
+  .pub__areas {
+    margin: 0;
+    padding-left: 1.1rem;
+    color: var(--muted);
+    font-size: 0.92rem;
+    display: grid;
+    gap: 0.25rem;
+  }
+</style>

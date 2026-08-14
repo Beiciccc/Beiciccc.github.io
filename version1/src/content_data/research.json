@@ -1,0 +1,54 @@
+{
+  "en": {
+    "heading": "Research Interests",
+    "intro": "Two threads, both first-author: how language models are measured, and how they behave on financial text. I prefer claims that can be falsified before a GPU is switched on, and artifacts that let someone else re-run the check.",
+    "items": [
+      {
+        "title": "Evaluation Methodology & Benchmarks",
+        "body": "Benchmark design, scoring protocols, and the failure modes of automatic scorers — including a pre-registered audit showing first-token scoring is undefined for many Chinese models, confirmed 64/64 against real runs.",
+        "icon": "📊"
+      },
+      {
+        "title": "Model Reliability",
+        "body": "Context-faithfulness versus parametric memory, hallucination measurement, judge reliability, and agent trajectory attribution — measuring when a model stops being grounded in what it was given.",
+        "icon": "🧭"
+      },
+      {
+        "title": "Financial NLP & Risk",
+        "body": "Regulatory disclosure text (10-K/10-Q/8-K, XBRL) as a predictive signal, and distribution-free risk control — including an honest null result on whether disclosure text beats price baselines for volatility.",
+        "icon": "📈"
+      },
+      {
+        "title": "Reproducible Practice",
+        "body": "Pre-registration, frozen configs, pinned model revisions, leakage audits, and citable artifacts. Roughly forty public repositories of competition and experiment records.",
+        "icon": "🧪"
+      }
+    ]
+  },
+  "zh": {
+    "heading": "研究方向",
+    "intro": "两条主线，均为第一作者：语言模型该如何被度量，以及它们在金融文本上的表现。我偏好那些在开 GPU 之前就能被证伪的主张，以及能让别人复跑一遍的工件。",
+    "items": [
+      {
+        "title": "评测方法与基准",
+        "body": "基准设计、打分协议，以及自动打分器的失效模式——包括一项预注册审计：首 token 打分法在许多中文模型上是未定义的，并在真实运行中 64/64 全部验证。",
+        "icon": "📊"
+      },
+      {
+        "title": "模型可靠性",
+        "body": "上下文忠实性与参数记忆的分离、幻觉度量、judge 可靠性、Agent 轨迹归因——度量模型何时不再忠实于给它的材料。",
+        "icon": "🧭"
+      },
+      {
+        "title": "金融 NLP 与风险",
+        "body": "把监管披露文本（10-K/10-Q/8-K、XBRL）作为预测信号，以及分布无关的风险控制——包括一个诚实的零结果：披露文本并未打赢价格基线。",
+        "icon": "📈"
+      },
+      {
+        "title": "可复现实践",
+        "body": "预注册、冻结配置、锁定模型版本、泄漏审计、可引用工件。约四十个公开的竞赛与实验记录仓库。",
+        "icon": "🧪"
+      }
+    ]
+  }
+}
