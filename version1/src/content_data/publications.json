@@ -14,14 +14,31 @@
         "summary": "The standard first-token scorer for multiple-choice benchmarks is mathematically undefined for many Chinese models — when a tokenizer maps all four answer labels onto a shared first token, argmax reports a tie-break, not a score. Which model/label-set pairs degenerate follows from the tokenizer alone, so it is predictable on a laptop CPU before any GPU run. We pre-registered those predictions and confirmed 64/64 on the real runs.",
         "scale": "18 checkpoints · 7 tokenizer families · 12,925 items · ~2.5M released scoring records",
         "links": [
-          { "label": "Code", "href": "https://github.com/Beiciccc/zh-protocolcube" },
-          { "label": "Artifact (DOI)", "href": "https://doi.org/10.17605/OSF.IO/53C87" }
+          {
+            "label": "Code",
+            "href": "https://github.com/Beiciccc/zh-protocolcube"
+          },
+          {
+            "label": "Artifact (DOI)",
+            "href": "https://doi.org/10.17605/OSF.IO/53C87"
+          }
         ]
+      },
+      {
+        "venue": "PRICAI 2026",
+        "badge": "Regular paper",
+        "status": "accepted",
+        "title": "A Point-in-Time Audit of Graph-Snapshot Leakage in GNN Stock Selection",
+        "authors": "Kun Zhang, Chunwei Xia",
+        "track": "23rd PRICAI, main track (Springer LNAI)",
+        "summary": "A performance gap between a snapshot graph and a point-in-time graph is routinely read as leakage. It often is not. Controlling for seed luck and graph stability, no model shows robust leakage across two graph modalities and three model classes: one apparent positive exactly equals its degree-preserved null and collapses under sparsification, the other is a single-seed fluke that becomes sign-unstable over five seeds. A leakage source does exist — end-snapshot-only edges are more predictive of future returns — but the models do not exploit it. Leakable is not leaked.",
+        "scale": "13F filings 2013–2026 · 2 graph modalities × 3 model classes · multi-seed + degree-preserved nulls + sparsity sweep + BH-FDR · ~$0 API cost",
+        "links": []
       }
     ],
     "underReview": {
       "heading": "Under review",
-      "body": "Eight further first-author manuscripts are under review at international AI conferences, plus three at *ACL-affiliated workshops. They extend the same two threads: evaluation methodology and model reliability on one side, financial text and risk on the other. Titles and venues are withheld while review is anonymous; code and artifacts are released as each is accepted.",
+      "body": "Seven further first-author manuscripts are under review at international AI conferences, plus three at *ACL-affiliated workshops. They extend the same two threads: evaluation methodology and model reliability on one side, financial text and risk on the other. Titles and venues are withheld while review is anonymous; code and artifacts are released as each is accepted.",
       "areas": [
         "Benchmark design and scoring protocols",
         "Context-faithfulness and hallucination measurement",
@@ -46,14 +63,31 @@
         "summary": "主流 MCQ 评测采用的「首 token argmax」打分法，在许多中文模型上数学上是未定义的——当 tokenizer 把四个选项标签映射到同一个首 token 时，argmax 比较的是平局打破策略，而不是模型能力。哪些「模型 × 标签集」组合会退化，只由 tokenizer 决定，因此可以在跑任何 GPU 之前用笔记本 CPU 预测出来。我们预注册了这些预测，并在真实运行中 64/64 全部命中。",
         "scale": "18 个检查点 · 7 个 tokenizer 家族 · 12,925 道题 · 公开约 250 万条打分记录",
         "links": [
-          { "label": "代码", "href": "https://github.com/Beiciccc/zh-protocolcube" },
-          { "label": "数据工件 (DOI)", "href": "https://doi.org/10.17605/OSF.IO/53C87" }
+          {
+            "label": "代码",
+            "href": "https://github.com/Beiciccc/zh-protocolcube"
+          },
+          {
+            "label": "数据工件 (DOI)",
+            "href": "https://doi.org/10.17605/OSF.IO/53C87"
+          }
         ]
+      },
+      {
+        "venue": "PRICAI 2026",
+        "badge": "长文",
+        "status": "accepted",
+        "title": "A Point-in-Time Audit of Graph-Snapshot Leakage in GNN Stock Selection",
+        "authors": "张鲲，夏春薇（通讯）",
+        "track": "第 23 届 PRICAI 主会（Springer LNAI）",
+        "summary": "快照图与时点图之间的性能差，通常被直接当作泄漏的证据。多数情况下它不是。在控制了种子运气与图稳定性之后，两种图模态 × 三类模型中没有任何一个显示出稳健的泄漏：一个看似为正的结果恰好等于它自己的保度数零模型，并在稀疏化后归零；另一个只是单种子的偶然，跨五个种子后符号都不稳定。泄漏源确实存在——仅出现在末期快照中的边对未来收益更具预测性——但模型并没有利用它。可泄漏，不等于已泄漏。",
+        "scale": "13F 持仓 2013–2026 · 2 种图模态 × 3 类模型 · 多种子 + 保度数零模型 + 稀疏化扫描 + BH-FDR · API 成本≈0",
+        "links": []
       }
     ],
     "underReview": {
       "heading": "在投",
-      "body": "另有 8 篇第一作者论文在国际人工智能会议评审中，3 篇在 *ACL 系 workshop 评审中。它们延续同样的两条主线：一侧是评测方法与模型可靠性，另一侧是金融文本与风险。评审匿名期内不公开标题与投稿会议；每篇录用后即释出代码与工件。",
+      "body": "另有 7 篇第一作者论文在国际人工智能会议评审中，3 篇在 *ACL 系 workshop 评审中。它们延续同样的两条主线：一侧是评测方法与模型可靠性，另一侧是金融文本与风险。评审匿名期内不公开标题与投稿会议；每篇录用后即释出代码与工件。",
       "areas": [
         "基准设计与打分协议",
         "上下文忠实性与幻觉度量",
