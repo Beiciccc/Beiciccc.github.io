@@ -1,4 +1,4 @@
-I'm Kun Zhang, an MSc Advanced Computer Science student at the University of Leeds, based between London and Leeds. My research interests sit at the intersection of natural language processing and large language models — how they reason, retrieve, and ground their answers in real documents.
+I'm Kun Zhang, an MSc Advanced Computer Science student at the University of Leeds. My research interests sit at the intersection of natural language processing and large language models — how they reason, retrieve, and ground their answers in real documents.
 
 I learn by building. Rather than keeping my work in private notebooks, I treat each project as a public log: reproducible pipelines, honest experiment records, and the diagnostics that didn't quite work alongside the ones that did. That habit shows up across legal information retrieval, LLM reasoning challenges, and document-grounded extraction, as well as a wide range of Kaggle and ML competitions spanning bioacoustics, abstract reasoning benchmarks, computer vision, and tabular modeling.
 
