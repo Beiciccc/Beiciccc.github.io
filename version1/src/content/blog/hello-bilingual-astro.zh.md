@@ -39,4 +39,4 @@ draft: false
 
 ## 谢谢你读到这里
 
-开场白就到这儿。如果上面这些听起来正合你的胃口，欢迎常来——也欢迎写信给我：[pjdf0740@leeds.ac.uk](mailto:pjdf0740@leeds.ac.uk)。更多笔记，很快就来。
+开场白就到这儿。如果上面这些听起来正合你的胃口，欢迎常来——也欢迎写信给我：[kunzhang0098@gmail.com](mailto:kunzhang0098@gmail.com)。更多笔记，很快就来。

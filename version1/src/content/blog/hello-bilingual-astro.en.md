@@ -39,4 +39,4 @@ A note on honesty: I'll write about attempts, dead ends, and things that only ha
 
 ## Thanks for reading
 
-That's the whole introduction. If any of the above sounds like your kind of thing, stick around — and feel free to reach me at [pjdf0740@leeds.ac.uk](mailto:pjdf0740@leeds.ac.uk). More notes soon.
+That's the whole introduction. If any of the above sounds like your kind of thing, stick around — and feel free to reach me at [kunzhang0098@gmail.com](mailto:kunzhang0098@gmail.com). More notes soon.
