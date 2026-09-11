@@ -1,4 +1,12 @@
 ---
+// Self-hosted type (latin subsets only; Vite hashes the woff2 into _astro/).
+// Source Serif 4: roman with the opsz axis (122 KB) + true italic (52 KB).
+// Source Sans 3:  roman, wght axis (29 KB). Imported before global.css so the
+// @font-face rules precede their first use.
+import '@fontsource-variable/source-serif-4/opsz.css';
+import '@fontsource-variable/source-serif-4/wght-italic.css';
+import '@fontsource-variable/source-sans-3/wght.css';
+import serifWoff2 from '@fontsource-variable/source-serif-4/files/source-serif-4-latin-opsz-normal.woff2?url';
 import '../styles/global.css';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
@@ -43,11 +51,16 @@ const xDefault = enHref ?? canonical;
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="color-scheme" content="light dark" />
-    <meta name="theme-color" media="(prefers-color-scheme: light)" content="#fbfbfd" />
-    <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#000000" />
+    <meta name="theme-color" media="(prefers-color-scheme: light)" content="#fbfaf6" />
+    <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#161513" />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
     <link rel="sitemap" href="/sitemap-index.xml" />
+
+    <!-- Only the file the first paint needs (h1 + running text). The italic
+         and the sans arrive via font-display: swap behind metric-matched
+         fallbacks declared in global.css. -->
+    <link rel="preload" as="font" type="font/woff2" crossorigin href={serifWoff2} />
 
     <title>{title}</title>
     <meta name="description" content={description} />
@@ -80,8 +93,6 @@ const xDefault = enHref ?? canonical;
     {jsonLd && (
       <script type="application/ld+json" set:html={JSON.stringify({ '@context': 'https://schema.org', '@graph': jsonLd })} />
     )}
-
-    <!-- Type: system font stack only (global.css). No external font requests. -->
 
     <!-- No-flash bootstrap: mark JS-enabled and apply a stored theme choice
          before first paint. No stored choice = follow the OS (no attribute). -->

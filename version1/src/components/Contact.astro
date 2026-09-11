@@ -10,36 +10,40 @@ const c = pick(contact, lang);
 const pending = c.pending.filter((x) => x.href);
 ---
 
-<section id="contact" class="section" aria-labelledby="contact-heading">
+<!-- Label / value rows. ≥ 900px the <dt> labels hang in the left rail on the
+     same axis as the section head and the paper numbers. -->
+<section id="contact" class="section section--rail" aria-labelledby="contact-heading">
   <div class="section__inner">
     <h2 id="contact-heading">{c.heading}</h2>
-    <p class="lede">{c.intro}</p>
+    <div class="section__body">
+      <p class="lede">{c.intro}</p>
 
-    <dl class="contact__list">
-      {
-        c.links.map((link) => (
-          <div class="contact__item">
-            <dt class="contact__label">{link.label}</dt>
-            <dd>
-              {link.href.endsWith('.pdf') ? (
-                <a href={link.href} type="application/pdf">{link.value}</a>
-              ) : link.href.startsWith('http') ? (
-                <a href={link.href} rel="me noopener noreferrer">{link.value}</a>
-              ) : (
-                <a href={link.href}>{link.value}</a>
-              )}
-            </dd>
-          </div>
-        ))
-      }
-      {
-        pending.map((link) => (
-          <div class="contact__item">
-            <dt class="contact__label">{link.label}</dt>
-            <dd><a href={link.href!} rel="me noopener noreferrer">{link.label}</a></dd>
-          </div>
-        ))
-      }
-    </dl>
+      <dl class="contact__list">
+        {
+          c.links.map((link) => (
+            <div class="contact__item">
+              <dt class="contact__label">{link.label}</dt>
+              <dd>
+                {link.href.endsWith('.pdf') ? (
+                  <a href={link.href} type="application/pdf">{link.value}</a>
+                ) : link.href.startsWith('http') ? (
+                  <a href={link.href} rel="me noopener noreferrer">{link.value}</a>
+                ) : (
+                  <a href={link.href}>{link.value}</a>
+                )}
+              </dd>
+            </div>
+          ))
+        }
+        {
+          pending.map((link) => (
+            <div class="contact__item">
+              <dt class="contact__label">{link.label}</dt>
+              <dd><a href={link.href!} rel="me noopener noreferrer">{link.label}</a></dd>
+            </div>
+          ))
+        }
+      </dl>
+    </div>
   </div>
 </section>

@@ -13,66 +13,72 @@ const sep = lang === 'zh' ? '，' : ', ';
 const paren = (s: string) => (lang === 'zh' ? `（${s}）` : ` (${s})`);
 ---
 
-<section id="publications" class="section" aria-labelledby="publications-heading">
+<!-- Numbered reference list. The [n] is the first child of each item so the
+     CSS subgrid can hang it in the left rail (≥ 900px); below that it shares
+     the first row with the byline. It stays readable text (not aria-hidden):
+     the Research section refers back to these numbers. -->
+<section id="publications" class="section section--rail" aria-labelledby="publications-heading">
   <div class="section__inner">
     <h2 id="publications-heading">{p.heading}</h2>
-    <p class="lede">{p.intro}</p>
+    <div class="section__body">
+      <p class="lede">{p.intro}</p>
 
-    {
-      tiers.map((tier) => {
-        const group = p.items.filter((i) => i.tier === tier);
-        return (
-          <div class="pubs__group">
-            <h3 class="pubs__group-title">{p.groups[tier]}</h3>
-            <ol class="pubs__list" role="list">
-              {group.map((item) => (
-                <li class="pub" id={item.id}>
-                  <p class="pub__byline">
+      {
+        tiers.map((tier) => {
+          const group = p.items.filter((i) => i.tier === tier);
+          return (
+            <div class="pubs__group">
+              <h3 class="pubs__group-title">{p.groups[tier]}</h3>
+              <ol class="pubs__list" role="list">
+                {group.map((item) => (
+                  <li class="pub" id={item.id}>
                     <span class="pub__num">[{pubIndex(item.id)}]</span>
-                    {item.authors.map((a, k) => (
-                      <Fragment>
-                        {k > 0 && sep}
-                        {a.self ? <strong class="pub__self">{a.name}</strong> : a.name}
-                        {a.corresponding && paren(t.pubCorresponding)}
-                      </Fragment>
-                    ))}
-                    <span aria-hidden="true"> · </span>
-                    <span class="pub__venue">{item.venue}</span>
-                    {item.format && (
-                      <span class:list={['pub__format', `pub__format--${item.format.toLowerCase()}`]}>
-                        {paren(item.format)}
-                      </span>
-                    )}
-                  </p>
-                  <h4 class="pub__title" lang="en">{item.title}</h4>
-                  <p class="pub__takeaway">{item.takeaway}</p>
-                  <details class="pub__more">
-                    <summary>{t.pubAbstract}</summary>
-                    <p class="pub__summary">{item.summary}</p>
-                    <p class="pub__scale">{item.venueLong} · {item.scale}</p>
-                  </details>
-                  {(item.pdf || item.links.length > 0) && (
-                    <p class="pub__links">
-                      {item.pdf && <a href={item.pdf} type="application/pdf">{t.pubLinks.pdf}</a>}
-                      {item.links.map((l) => (
-                        <a href={l.href} rel="noopener noreferrer">{l.label}</a>
+                    <p class="pub__byline">
+                      {item.authors.map((a, k) => (
+                        <Fragment>
+                          {k > 0 && sep}
+                          {a.self ? <strong class="pub__self">{a.name}</strong> : a.name}
+                          {a.corresponding && paren(t.pubCorresponding)}
+                        </Fragment>
                       ))}
+                      <span aria-hidden="true"> · </span>
+                      <span class="pub__venue">{item.venue}</span>
+                      {item.format && (
+                        <span class:list={['pub__format', `pub__format--${item.format.toLowerCase()}`]}>
+                          {paren(item.format)}
+                        </span>
+                      )}
                     </p>
-                  )}
-                </li>
-              ))}
-            </ol>
-          </div>
-        );
-      })
-    }
+                    <h4 class="pub__title" lang="en">{item.title}</h4>
+                    <p class="pub__takeaway">{item.takeaway}</p>
+                    <details class="pub__more">
+                      <summary>{t.pubAbstract}</summary>
+                      <p class="pub__summary">{item.summary}</p>
+                      <p class="pub__scale">{item.venueLong} · {item.scale}</p>
+                    </details>
+                    {(item.pdf || item.links.length > 0) && (
+                      <p class="pub__links">
+                        {item.pdf && <a href={item.pdf} type="application/pdf">{t.pubLinks.pdf}</a>}
+                        {item.links.map((l) => (
+                          <a href={l.href} rel="noopener noreferrer">{l.label}</a>
+                        ))}
+                      </p>
+                    )}
+                  </li>
+                ))}
+              </ol>
+            </div>
+          );
+        })
+      }
 
-    {anyMissingPdf && <p class="pubs__note meta">{p.pdfNote}</p>}
+      {anyMissingPdf && <p class="pubs__note meta">{p.pdfNote}</p>}
 
-    <aside class="pub--review" aria-labelledby="ur-heading">
-      <h3 id="ur-heading" class="pubs__group-title">{p.underReview.heading}</h3>
-      <p>{p.underReview.body}</p>
-      <ul class="pub__areas">{p.underReview.areas.map((a) => <li>{a}</li>)}</ul>
-    </aside>
+      <aside class="pub--review" aria-labelledby="ur-heading">
+        <h3 id="ur-heading" class="pubs__group-title">{p.underReview.heading}</h3>
+        <p>{p.underReview.body}</p>
+        <ul class="pub__areas">{p.underReview.areas.map((a) => <li>{a}</li>)}</ul>
+      </aside>
+    </div>
   </div>
 </section>

@@ -1,10 +1,18 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" role="img" aria-label="张鲲 Kun Zhang，博士申请人，大语言模型后训练与对齐">
-  <rect width="1200" height="630" fill="#fbfbfd"/>
-  <rect x="120" y="150" width="56" height="6" rx="3" fill="#0068d1"/>
-  <g font-family="'PingFang SC', 'Noto Sans CJK SC', 'Hiragino Sans GB', 'Liberation Sans', sans-serif">
-    <text x="120" y="268" font-size="92" font-weight="600" fill="#1d1d1f">张鲲 <tspan font-family="-apple-system, 'Helvetica Neue', 'Liberation Sans', sans-serif" font-weight="700" font-size="72" fill="#6e6e73" letter-spacing="-2">Kun Zhang</tspan></text>
-    <text x="120" y="352" font-size="30" font-weight="400" fill="#1d1d1f">博士申请人，2027/28 入学 · 大语言模型后训练与对齐</text>
-    <text x="120" y="400" font-size="30" font-weight="400" fill="#6e6e73">4 篇录用，3 篇在投</text>
-    <text x="120" y="500" font-size="24" font-weight="500" fill="#6e6e73">beiciccc.github.io</text>
+  <!-- 中文卡：宋体名字在前，Kun Zhang 衬线副名；正文行走黑体（与站内「宋标黑文」一致）。
+       rsvg-convert 渲染，只用系统字体名。 -->
+  <rect width="1200" height="630" fill="#fbfaf6"/>
+  <g fill="#1f1d1a">
+    <rect x="120" y="118" width="960" height="1.5"/>
+    <rect x="120" y="123" width="960" height="1.5"/>
+  </g>
+  <g font-family="'Noto Serif CJK SC', 'Source Han Serif SC', 'Songti SC', serif">
+    <text x="120" y="262" font-size="92" font-weight="600" fill="#121110" letter-spacing="2">张鲲 <tspan font-family="'Source Serif 4', 'Noto Serif', 'Liberation Serif', 'DejaVu Serif', Georgia, serif" font-weight="600" font-size="72" fill="#5f5a52" letter-spacing="-1">Kun Zhang</tspan></text>
+  </g>
+  <g font-family="'Source Sans 3', 'Noto Sans CJK SC', 'Source Han Sans SC', 'PingFang SC', 'Noto Sans', sans-serif">
+    <text x="120" y="346" font-size="30" font-weight="400" fill="#1f1d1a">博士申请人，2027/28 入学 · 大语言模型后训练与对齐</text>
+    <text x="120" y="394" font-size="30" font-weight="400" fill="#5f5a52">4 篇录用，3 篇在投</text>
+    <rect x="120" y="486" width="960" height="1" fill="#cbc6bb"/>
+    <text x="120" y="526" font-size="22" font-weight="500" fill="#5f5a52" letter-spacing="0.4">beiciccc.github.io</text>
   </g>
 </svg>

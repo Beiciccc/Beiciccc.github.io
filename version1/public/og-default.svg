@@ -1,10 +1,19 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" role="img" aria-label="Kun Zhang 张鲲, PhD applicant, LLM post-training and alignment">
-  <rect width="1200" height="630" fill="#fbfbfd"/>
-  <rect x="120" y="150" width="56" height="6" rx="3" fill="#0068d1"/>
-  <g font-family="-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', Inter, 'Liberation Sans', system-ui, sans-serif">
-    <text x="120" y="268" font-size="96" font-weight="700" fill="#1d1d1f" letter-spacing="-3">Kun Zhang <tspan font-family="'PingFang SC', 'Noto Sans CJK SC', 'Hiragino Sans GB', sans-serif" font-weight="600" font-size="72" fill="#6e6e73" letter-spacing="0">张鲲</tspan></text>
-    <text x="120" y="352" font-size="30" font-weight="400" fill="#1d1d1f">PhD applicant, entry 2027/28 · LLM post-training and alignment</text>
-    <text x="120" y="400" font-size="30" font-weight="400" fill="#6e6e73">4 accepted, 3 under review</text>
-    <text x="120" y="500" font-size="24" font-weight="500" fill="#6e6e73">beiciccc.github.io</text>
+  <!-- Same system as the site: paper, ink, a double masthead rule, serif name,
+       sans metadata. No colour: the accent is reserved for links on the page.
+       Rendered with rsvg-convert, so only system font names are used. -->
+  <rect width="1200" height="630" fill="#fbfaf6"/>
+  <g fill="#1f1d1a">
+    <rect x="120" y="118" width="960" height="1.5"/>
+    <rect x="120" y="123" width="960" height="1.5"/>
+  </g>
+  <g font-family="'Source Serif 4', 'Noto Serif', 'Liberation Serif', 'DejaVu Serif', Georgia, 'Times New Roman', serif">
+    <text x="120" y="262" font-size="96" font-weight="600" fill="#121110" letter-spacing="-1.5">Kun Zhang <tspan font-family="'Noto Serif CJK SC', 'Source Han Serif SC', 'Songti SC', serif" font-weight="600" font-size="72" fill="#5f5a52" letter-spacing="0">张鲲</tspan></text>
+  </g>
+  <g font-family="'Source Sans 3', 'Noto Sans', 'Liberation Sans', 'DejaVu Sans', 'Helvetica Neue', Arial, sans-serif">
+    <text x="120" y="346" font-size="30" font-weight="400" fill="#1f1d1a">PhD applicant, entry 2027/28 · LLM post-training and alignment</text>
+    <text x="120" y="394" font-size="30" font-weight="400" fill="#5f5a52">4 accepted, 3 under review</text>
+    <rect x="120" y="486" width="960" height="1" fill="#cbc6bb"/>
+    <text x="120" y="526" font-size="22" font-weight="500" fill="#5f5a52" letter-spacing="0.4">beiciccc.github.io</text>
   </g>
 </svg>

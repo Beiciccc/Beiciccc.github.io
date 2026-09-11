@@ -8,18 +8,27 @@ const { lang } = Astro.props;
 const h = pick(hero, lang);
 ---
 
-<section class="section hero" aria-labelledby="hero-name">
+<!-- Title block of the "article". ≥ 900px the kicker sits in the left rail
+     (right-aligned, like a byline column); the name, tagline, intro and the
+     two buttons form the reading column. The double rule under the section
+     is drawn by CSS (.hero .section__inner). -->
+<section class="section section--rail hero" aria-labelledby="hero-name">
   <div class="section__inner">
     <p class="hero__kicker">{h.kicker}</p>
-    <h1 id="hero-name">{h.name}</h1>
-    <p class="hero__tagline">{h.tagline}</p>
-    <p class="lede hero__intro">{h.intro}</p>
-    <div class="hero__actions">
-      <a class="btn" href={h.ctaPrimary.href}>
-        {h.ctaPrimary.label}
-        <span class="btn__arrow" aria-hidden="true">→</span>
-      </a>
-      <a class="btn btn--ghost" href={h.ctaSecondary.href} type="application/pdf">{h.ctaSecondary.label}</a>
+    <div class="section__body">
+      <h1 id="hero-name">{h.name}</h1>
+      <p class="hero__tagline"><em>{h.tagline}</em></p>
+      <p class="lede hero__intro">{h.intro}</p>
+      <div class="hero__actions">
+        <a class="btn" href={h.ctaPrimary.href}>
+          {h.ctaPrimary.label}
+          <!-- U+2192 is not in the self-hosted latin subset; draw the arrow. -->
+          <svg class="btn__arrow" aria-hidden="true" focusable="false" viewBox="0 0 16 16" width="14" height="14">
+            <path d="M2.5 8h11M9 3.5 13.5 8 9 12.5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" />
+          </svg>
+        </a>
+        <a class="btn btn--ghost" href={h.ctaSecondary.href} type="application/pdf">{h.ctaSecondary.label}</a>
+      </div>
     </div>
   </div>
 </section>

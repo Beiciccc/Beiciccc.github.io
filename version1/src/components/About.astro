@@ -10,10 +10,10 @@ const { lang } = Astro.props;
 const heading = lang === 'zh' ? '关于' : 'About';
 ---
 
-<section id="about" class="section" aria-labelledby="about-heading">
+<section id="about" class="section section--rail" aria-labelledby="about-heading">
   <div class="section__inner">
     <h2 id="about-heading">{heading}</h2>
-    <div class="about__body prose">
+    <div class="section__body about__body prose">
       {lang === 'en' ? <AboutEn /> : <AboutZh />}
     </div>
   </div>

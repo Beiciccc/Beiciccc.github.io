@@ -9,32 +9,38 @@ const r = pick(research, lang);
 const paren = (s: string) => (lang === 'zh' ? `（${s}）` : ` (${s})`);
 ---
 
-<section id="research" class="section" aria-labelledby="research-heading">
+<!-- Themes as a definition list. The [n] back-references are their own <dd>
+     (a value of the term) so the subgrid can hang them in the rail on the
+     same right-aligned axis as the paper numbers; below 900px they follow
+     the title inline. -->
+<section id="research" class="section section--rail" aria-labelledby="research-heading">
   <div class="section__inner">
     <h2 id="research-heading">{r.heading}</h2>
-    <p class="lede">{r.intro}</p>
+    <div class="section__body">
+      <p class="lede">{r.intro}</p>
 
-    <dl class="themes">
-      {
-        r.themes.map((th) => (
-          <div class="theme">
-            <dt class="theme__title">
-              {th.title}
+      <dl class="themes">
+        {
+          r.themes.map((th) => (
+            <div class="theme">
+              <dt class="theme__title">
+                {th.title}
+                {th.note && <span class="theme__note">{paren(th.note)}</span>}
+              </dt>
               {th.refs.length > 0 && (
-                <span class="theme__refs">
+                <dd class="theme__refs">
                   {th.refs.map((id) => (
                     <a href={`#${id}`}>[{pubIndex(id)}]</a>
                   ))}
-                </span>
+                </dd>
               )}
-              {th.note && <span class="theme__note">{paren(th.note)}</span>}
-            </dt>
-            <dd class="theme__body">{th.body}</dd>
-          </div>
-        ))
-      }
-    </dl>
+              <dd class="theme__body">{th.body}</dd>
+            </div>
+          ))
+        }
+      </dl>
 
-    <p class="research__outro">{r.outro}</p>
+      <p class="research__outro">{r.outro}</p>
+    </div>
   </div>
 </section>
