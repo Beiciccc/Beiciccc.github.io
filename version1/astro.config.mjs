@@ -9,7 +9,11 @@ import sitemap from '@astrojs/sitemap';
 // Because it is served at the root, do NOT set `base`; it stays '/'.
 export default defineConfig({
   site: 'https://beiciccc.github.io',
-  integrations: [sitemap()],
+  integrations: [
+    sitemap({
+      i18n: { defaultLocale: 'en', locales: { en: 'en', zh: 'zh-Hans' } },
+    }),
+  ],
   i18n: {
     defaultLocale: 'en',
     locales: ['en', 'zh'],

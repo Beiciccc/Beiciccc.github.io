@@ -1,30 +1,30 @@
 {
   "en": {
-    "kicker": "MSc · NLP & LLM · Evaluation & Reliability",
+    "kicker": "PhD applicant, entry 2027/28 · LLM post-training, alignment, evaluation",
     "name": "Kun Zhang",
-    "tagline": "I study how language models are measured — and I ship the code and data so the measurement can be checked.",
-    "intro": "MSc Advanced Computer Science at the University of Leeds. Four first-author papers accepted in 2026 — NLPCC and PRICAI (both oral) at international conferences, plus two at EMNLP workshops (oral; findings) — with code and artifacts released under a DOI. Two threads: evaluation methodology and model reliability; language models on financial text.",
+    "tagline": "Post-training and alignment, on the attribution side: did the gain come from what was trained, or from something cheaper?",
+    "intro": "MSc Advanced Computer Science, University of Leeds, 2025 to 2026. Four first-author papers accepted in 2026: NLPCC and PRICAI, both oral, and two EMNLP workshop papers. Three more under review. Before I report a positive result, I run the control that would produce it for the wrong reason.",
     "ctaPrimary": {
-      "label": "See publications",
+      "label": "Publications",
       "href": "#publications"
     },
     "ctaSecondary": {
-      "label": "GitHub",
-      "href": "https://github.com/Beiciccc"
+      "label": "CV (PDF, 2 pp)",
+      "href": "/cv.pdf"
     }
   },
   "zh": {
-    "kicker": "硕士 · 自然语言处理与大语言模型 · 评测与可靠性",
+    "kicker": "博士申请人，2027/28 入学 · 大语言模型后训练、对齐、评测",
     "name": "张鲲",
-    "tagline": "我研究语言模型该如何被度量——并把代码与数据一并公开，让度量本身可被检验。",
-    "intro": "利兹大学高级计算机科学硕士。2026 年 4 篇第一作者论文录用——国际会议两篇（NLPCC、PRICAI，均为口头报告），EMNLP 研讨会两篇（口头报告；Findings）——代码与数据工件均挂 DOI 公开。两条主线：评测方法与模型可靠性；面向金融文本的大语言模型。",
+    "tagline": "后训练与对齐的归因侧：一次增益来自训练的内容，还是来自更廉价的替代物？",
+    "intro": "利兹大学高级计算机科学硕士，2025 至 2026。2026 年 4 篇第一作者论文录用：NLPCC 与 PRICAI（均口头报告），以及 EMNLP 研讨会两篇。另有 3 篇在投。在报告任何正结果之前，我先跑那个会因错误原因复现它的对照。",
     "ctaPrimary": {
-      "label": "查看论文",
+      "label": "论文",
       "href": "#publications"
     },
     "ctaSecondary": {
-      "label": "GitHub",
-      "href": "https://github.com/Beiciccc"
+      "label": "简历（PDF，2 页）",
+      "href": "/cv.pdf"
     }
   }
 }

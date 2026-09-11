@@ -1,5 +1,3 @@
-I'm Kun Zhang, an MSc Advanced Computer Science student at the University of Leeds. My research interests sit at the intersection of natural language processing and large language models — how they reason, retrieve, and ground their answers in real documents.
+MSc Advanced Computer Science, University of Leeds, September 2025 to September 2026; degree expected December 2026. BSc Computer Science and Technology, Hunan University of Finance and Economics, 2021 to 2025.
 
-I learn by building. Rather than keeping my work in private notebooks, I treat each project as a public log: reproducible pipelines, honest experiment records, and the diagnostics that didn't quite work alongside the ones that did. That habit shows up across legal information retrieval, LLM reasoning challenges, and document-grounded extraction, as well as a wide range of Kaggle and ML competitions spanning bioacoustics, abstract reasoning benchmarks, computer vision, and tabular modeling.
-
-Recently I've been drawn to the parts of NLP that demand both careful engineering and careful evaluation — LoRA/PEFT adapter workflows, OCR-and-evidence pipelines for document tasks, and the unglamorous discipline of making results actually reproducible. I'm happiest when a project forces me to learn something new and then write it down clearly.
+Reviewer for NLPCC 2026 and for the GroundLM workshop at EMNLP 2026. Beyond the papers: [Kaggle Competitions Expert](https://www.kaggle.com/beicicc), top 1% of ranked users, one silver and one bronze medal.

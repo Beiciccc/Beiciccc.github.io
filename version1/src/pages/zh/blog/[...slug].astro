@@ -27,7 +27,7 @@ const lang = 'zh';
 const t = ui[lang];
 // Trailing slashes so the alt/hreflang URL byte-matches the target page's
 // emitted canonical (directory pages are served with a trailing slash).
-const altUrl = hasEn ? `/blog/${slug}/` : '/blog/';
+const altUrl = hasEn ? `/blog/${slug}/` : null;
 ---
 
 <BaseLayout
@@ -35,12 +35,11 @@ const altUrl = hasEn ? `/blog/${slug}/` : '/blog/';
   title={post.data.title + ' — 张鲲'}
   description={post.data.description}
   altUrl={altUrl}
-  active="blog"
 >
   <article class="section post-page">
     <a class="post-page__back" href={localePath(lang, '/blog/')}>{t.backToBlog}</a>
 
-    <header class="post-page__head reveal">
+    <header class="post-page__head">
       {post.data.tags?.[0] && <p class="section-mark">{post.data.tags[0]}</p>}
       <h1>{post.data.title}</h1>
       <div class="post-page__meta meta">

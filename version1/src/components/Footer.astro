@@ -1,5 +1,6 @@
 ---
-import { type Lang, site, contact, pick, localePath } from '../i18n/content';
+import { getCollection } from 'astro:content';
+import { type Lang, site, pick, localePath } from '../i18n/content';
 
 interface Props {
   lang: Lang;
@@ -7,22 +8,31 @@ interface Props {
 
 const { lang } = Astro.props;
 const s = pick(site, lang);
-const c = pick(contact, lang);
+// The blog link only appears once there is at least one published post in
+// this language.
+const published = await getCollection('blog', ({ data }) => data.lang === lang && !data.draft);
+const hasBlog = published.length > 0;
+// Build date, formatted per locale; the page is rebuilt on every deploy.
+const built = new Date();
+const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+const updated =
+  lang === 'zh'
+    ? `${built.getFullYear()} 年 ${built.getMonth() + 1} 月 ${built.getDate()} 日`
+    : `${built.getDate()} ${MONTHS[built.getMonth()]} ${built.getFullYear()}`;
 ---
 
 <footer class="site-footer">
   <div class="inner">
-    <p class="foot-meta">{s.footer}</p>
+    <p class="foot-meta">
+      {s.footer}
+      <span aria-hidden="true"> · </span>
+      <span>{s.footerUpdated} <time datetime={built.toISOString().slice(0, 10)}>{updated}</time></span>
+    </p>
     <nav aria-label={lang === 'zh' ? '页脚导航' : 'Footer'}>
       <a href={localePath(lang, '/')}>{s.backHome}</a>
-      <a href={localePath(lang, '/blog/')}>{s.blogTitle}</a>
-      {
-        c.links.map((link) => (
-          <a href={link.href} rel="me noopener" target={link.href.startsWith('http') ? '_blank' : undefined}>
-            {link.label}
-          </a>
-        ))
-      }
+      {hasBlog && <a href={localePath(lang, '/blog/')}>{s.blogTitle}</a>}
+      <a href="/cv.pdf" type="application/pdf">CV</a>
+      <a href="https://github.com/Beiciccc" rel="me noopener noreferrer">GitHub</a>
     </nav>
   </div>
 </footer>

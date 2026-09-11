@@ -8,38 +8,45 @@ interface Props {
   lang: Lang;
   title: string;
   description: string;
-  /** Absolute path of the equivalent page in the other language (for the lang toggle). */
-  altUrl: string;
-  /** Optional canonical/og path for this page (defaults to Astro.url.pathname). */
-  path?: string;
-  /** Active nav key for aria-current. */
-  active?: 'home' | 'blog';
+  /** Absolute path of the equivalent page in the other language; null when none exists. */
+  altUrl: string | null;
+  /** Optional JSON-LD graph nodes (the homepage passes WebSite + Person). */
+  jsonLd?: Record<string, unknown>[];
 }
 
-const { lang, title, description, altUrl, active } = Astro.props;
+const { lang, title, description, altUrl, jsonLd } = Astro.props;
 const t = ui[lang];
 
-// Single source of truth: the `site` value from astro.config.mjs (lowercase
-// host, matching the GitHub Pages domain). Falls back to the lowercase literal
-// only if Astro.site is somehow unset.
+// Single source of truth: `site` from astro.config.mjs (lowercase host, as
+// served by GitHub Pages) so canonical / og / hreflang URLs are byte-consistent.
 const siteUrl = Astro.site?.href ?? 'https://beiciccc.github.io/';
 const canonical = new URL(Astro.url.pathname, siteUrl).href;
-// Social cards must be raster: X/Twitter, Facebook, LinkedIn, Slack, Discord,
-// iMessage do NOT render SVG OpenGraph images. Use the 1200×630 PNG.
-const ogImage = new URL('/og-default.png', siteUrl).href;
 
-// The other language's canonical URL for hreflang alternates.
-const altCanonical = new URL(altUrl, siteUrl).href;
+// Social cards must be raster (X, Facebook, LinkedIn, Slack, iMessage do not
+// render SVG). One card per language.
+const ogImage = new URL(lang === 'zh' ? '/og-default.zh.png' : '/og-default.png', siteUrl).href;
+const ogAlt =
+  lang === 'zh'
+    ? '张鲲 Kun Zhang，博士申请人，大语言模型后训练与对齐；4 篇录用，3 篇在投'
+    : 'Kun Zhang 张鲲, PhD applicant, LLM post-training and alignment; 4 accepted, 3 under review';
+
+// hreflang alternates. A page without a counterpart only declares itself.
+const altCanonical = altUrl ? new URL(altUrl, siteUrl).href : null;
 const enHref = lang === 'en' ? canonical : altCanonical;
 const zhHref = lang === 'zh' ? canonical : altCanonical;
+const xDefault = enHref ?? canonical;
 ---
 
 <!doctype html>
-<html lang={htmlLang(lang)} data-theme="light">
+<html lang={htmlLang(lang)}>
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="color-scheme" content="light dark" />
+    <meta name="theme-color" media="(prefers-color-scheme: light)" content="#fbfbfd" />
+    <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#000000" />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
     <link rel="sitemap" href="/sitemap-index.xml" />
 
     <title>{title}</title>
@@ -47,13 +54,13 @@ const zhHref = lang === 'zh' ? canonical : altCanonical;
     <meta name="author" content="Kun Zhang" />
     <link rel="canonical" href={canonical} />
 
-    <!-- hreflang alternates so EN/ZH versions cross-reference cleanly. -->
-    <link rel="alternate" hreflang="en" href={enHref} />
-    <link rel="alternate" hreflang="zh-Hans" href={zhHref} />
-    <link rel="alternate" hreflang="x-default" href={enHref} />
+    {enHref && <link rel="alternate" hreflang="en" href={enHref} />}
+    {zhHref && <link rel="alternate" hreflang="zh-Hans" href={zhHref} />}
+    <link rel="alternate" hreflang="x-default" href={xDefault} />
 
     <!-- Open Graph / Twitter -->
     <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Kun Zhang" />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:url" content={canonical} />
@@ -61,121 +68,110 @@ const zhHref = lang === 'zh' ? canonical : altCanonical;
     <meta property="og:image:type" content="image/png" />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content={ogAlt} />
     <meta property="og:locale" content={lang === 'zh' ? 'zh_CN' : 'en_GB'} />
+    {altCanonical && <meta property="og:locale:alternate" content={lang === 'zh' ? 'en_GB' : 'zh_CN'} />}
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content={title} />
     <meta name="twitter:description" content={description} />
     <meta name="twitter:image" content={ogImage} />
+    <meta name="twitter:image:alt" content={ogAlt} />
 
-    <!-- Type: SYSTEM font stack only (defined in global.css). No embedded
-         proprietary fonts, no external font requests. -->
+    {jsonLd && (
+      <script type="application/ld+json" set:html={JSON.stringify({ '@context': 'https://schema.org', '@graph': jsonLd })} />
+    )}
 
-    <!-- No-JS fallback: if scripting is off, reveal-on-scroll content must stay
-         fully visible (covers .reveal and the .reveal--scale variant). -->
-    <noscript>
-      <style>
-        .reveal, .reveal--scale { opacity: 1 !important; transform: none !important; }
-      </style>
-    </noscript>
+    <!-- Type: system font stack only (global.css). No external font requests. -->
 
-    <!-- No-flash bootstrap: mark JS-enabled + set data-theme before first paint.
-         `.js` on <html> is what lets the CSS hide .reveal only when JS can
-         animate it back in (progressive enhancement). -->
+    <!-- No-flash bootstrap: mark JS-enabled and apply a stored theme choice
+         before first paint. No stored choice = follow the OS (no attribute). -->
     <script is:inline>
       (function () {
-        document.documentElement.classList.add('js');
+        var root = document.documentElement;
+        root.classList.add('js');
         try {
-          var stored = localStorage.getItem('theme');
-          var theme =
-            stored ||
-            (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
-          document.documentElement.setAttribute('data-theme', theme);
+          var v = localStorage.getItem('theme');
+          if (v === 'light' || v === 'dark') root.setAttribute('data-theme', v);
         } catch (e) {
-          /* localStorage unavailable — fall back to the light default already on <html>. */
+          /* storage unavailable: follow the OS */
         }
       })();
     </script>
   </head>
   <body>
     <a class="skip-link" href="#main">{t.skipToContent}</a>
-    <Header lang={lang} altUrl={altUrl} active={active} />
+    <Header lang={lang} altUrl={altUrl} />
     <main id="main">
       <slot />
     </main>
     <Footer lang={lang} />
 
-    <!-- Theme + language toggle behaviour (progressively enhanced). -->
     <script is:inline>
       (function () {
         var root = document.documentElement;
 
-        // THEME toggle
-        var themeBtn = document.getElementById('theme-toggle');
-        function syncThemeBtn() {
-          if (!themeBtn) return;
-          // Icon visibility is handled purely by CSS keyed off [data-theme] on
-          // <html> (set before first paint), so there is no JS icon swap/flash.
-          // JS only keeps the a11y pressed-state in sync with the theme.
-          var isDark = root.getAttribute('data-theme') === 'dark';
-          themeBtn.setAttribute('aria-pressed', String(isDark));
+        // THEME: three states, system → light → dark → system. The icon is
+        // keyed off data-state (CSS); the label names the current setting.
+        var btn = document.getElementById('theme-toggle');
+        function stored() {
+          try {
+            var v = localStorage.getItem('theme');
+            return v === 'light' || v === 'dark' ? v : 'system';
+          } catch (e) {
+            return 'system';
+          }
         }
-        if (themeBtn) {
-          syncThemeBtn();
-          themeBtn.addEventListener('click', function () {
-            var next = root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
-            root.setAttribute('data-theme', next);
+        function apply(state) {
+          if (state === 'system') root.removeAttribute('data-theme');
+          else root.setAttribute('data-theme', state);
+          if (!btn) return;
+          btn.setAttribute('data-state', state);
+          var label = btn.getAttribute('data-label-' + state);
+          if (label) {
+            btn.setAttribute('aria-label', label);
+            btn.setAttribute('title', label);
+          }
+        }
+        apply(stored());
+        if (btn) {
+          btn.addEventListener('click', function () {
+            var order = ['system', 'light', 'dark'];
+            var next = order[(order.indexOf(stored()) + 1) % order.length];
             try {
-              localStorage.setItem('theme', next);
+              if (next === 'system') localStorage.removeItem('theme');
+              else localStorage.setItem('theme', next);
             } catch (e) {}
-            syncThemeBtn();
+            apply(next);
           });
         }
-      })();
-    </script>
 
-    <!-- Scroll-reveal (IntersectionObserver) + frosted-nav scrolled state.
-         Vanilla, reduced-motion-guarded. No-JS fallback lives in <head>. -->
-    <script is:inline>
-      (function () {
-        var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-        var els = document.querySelectorAll('.reveal');
-
-        // Reduced motion or no IO support: show everything, skip animation.
-        if (reduce || !('IntersectionObserver' in window)) {
-          els.forEach(function (el) { el.classList.add('is-visible'); });
-        } else {
-          var io = new IntersectionObserver(
-            function (entries) {
-              entries.forEach(function (e) {
-                if (e.isIntersecting) {
-                  e.target.classList.add('is-visible');
-                  io.unobserve(e.target);
-                }
-              });
-            },
-            { rootMargin: '0px 0px -10% 0px', threshold: 0.12 }
-          );
-          els.forEach(function (el) { io.observe(el); });
+        // NAV: settle the sticky bar once scrolled. One rAF-throttled listener.
+        var ticking = false;
+        function onScroll() {
+          if (ticking) return;
+          ticking = true;
+          requestAnimationFrame(function () {
+            document.body.classList.toggle('scrolled', window.scrollY > 8);
+            ticking = false;
+          });
         }
-
-        // Frosted-nav: settle the sticky bar once scrolled past a small threshold.
-        var onScroll = function () {
-          document.body.classList.toggle('scrolled', window.scrollY > 8);
-        };
         onScroll();
         window.addEventListener('scroll', onScroll, { passive: true });
 
-        // Optional very-subtle hero scale-on-scroll. Gated on reduced motion:
-        // when reduced motion is preferred, never write --hero-scale.
-        var hero = document.querySelector('.hero--parallax');
-        if (hero && !reduce) {
-          var onHero = function () {
-            var s = Math.max(0.965, 1 - window.scrollY / 4200);
-            hero.style.setProperty('--hero-scale', s.toFixed(4));
-          };
-          onHero();
-          window.addEventListener('scroll', onHero, { passive: true });
-        }
+        // PRINT: open every abstract for the printed page, then restore.
+        var details = document.querySelectorAll('details.pub__more');
+        window.addEventListener('beforeprint', function () {
+          details.forEach(function (d) {
+            d.setAttribute('data-was-open', d.open ? '1' : '');
+            d.open = true;
+          });
+        });
+        window.addEventListener('afterprint', function () {
+          details.forEach(function (d) {
+            d.open = d.getAttribute('data-was-open') === '1';
+            d.removeAttribute('data-was-open');
+          });
+        });
       })();
     </script>
   </body>

@@ -1,49 +1,40 @@
 ---
-import { type Lang, research, pick } from '../i18n/content';
+import { type Lang, research, pick, pubIndex } from '../i18n/content';
 
 interface Props {
   lang: Lang;
 }
 const { lang } = Astro.props;
 const r = pick(research, lang);
-const eyebrow = lang === 'zh' ? '研究' : 'Research';
+const paren = (s: string) => (lang === 'zh' ? `（${s}）` : ` (${s})`);
 ---
 
-<section id="research" class="section section--center" aria-labelledby="research-heading">
-  <div class="research__head reveal">
-    <p class="section-mark">{eyebrow}</p>
+<section id="research" class="section" aria-labelledby="research-heading">
+  <div class="section__inner">
     <h2 id="research-heading">{r.heading}</h2>
-    <p class="lede research__intro">{r.intro}</p>
-  </div>
+    <p class="lede">{r.intro}</p>
 
-  <div class="grid research__grid reveal-stagger">
-    {
-      r.items.map((item, i) => (
-        <article class="card research__card reveal" style={`--i:${i}`}>
-          <span class="research__icon" aria-hidden="true">{item.icon}</span>
-          <h3>{item.title}</h3>
-          <p>{item.body}</p>
-        </article>
-      ))
-    }
+    <dl class="themes">
+      {
+        r.themes.map((th) => (
+          <div class="theme">
+            <dt class="theme__title">
+              {th.title}
+              {th.refs.length > 0 && (
+                <span class="theme__refs">
+                  {th.refs.map((id) => (
+                    <a href={`#${id}`}>[{pubIndex(id)}]</a>
+                  ))}
+                </span>
+              )}
+              {th.note && <span class="theme__note">{paren(th.note)}</span>}
+            </dt>
+            <dd class="theme__body">{th.body}</dd>
+          </div>
+        ))
+      }
+    </dl>
+
+    <p class="research__outro">{r.outro}</p>
   </div>
 </section>
-
-<style>
-  .research__head {
-    margin-bottom: clamp(2.2rem, 4vw, 3.2rem);
-  }
-  .research__intro {
-    max-width: 64ch;
-  }
-  /* Cards carry left-aligned content even inside the centered section. */
-  .research__grid {
-    text-align: left;
-  }
-  .research__card h3 {
-    margin-top: 0.6rem;
-  }
-  .research__card p {
-    margin-bottom: 0;
-  }
-</style>

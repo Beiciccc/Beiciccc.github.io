@@ -1,20 +1,64 @@
 {
   "en": {
-    "heading": "Get in touch",
-    "intro": "Happy to connect about NLP, LLMs, and Kaggle competition work, or just to swap notes on experiments.",
+    "heading": "Contact",
+    "intro": "Supervision enquiries, paper PDFs before they are posted here, or anything above: email.",
     "links": [
-      { "label": "Email", "value": "kunzhang0098@gmail.com", "href": "mailto:kunzhang0098@gmail.com" },
-      { "label": "GitHub", "value": "@Beiciccc", "href": "https://github.com/Beiciccc" },
-      { "label": "Kaggle", "value": "beicicc", "href": "https://www.kaggle.com/beicicc" }
+      {
+        "label": "Email",
+        "value": "kunzhang0098@gmail.com",
+        "href": "mailto:kunzhang0098@gmail.com"
+      },
+      {
+        "label": "CV",
+        "value": "PDF · 2 pp · Sep 2026",
+        "href": "/cv.pdf"
+      },
+      {
+        "label": "GitHub",
+        "value": "Beiciccc",
+        "href": "https://github.com/Beiciccc"
+      }
+    ],
+    "pending": [
+      {
+        "label": "Google Scholar",
+        "href": null
+      },
+      {
+        "label": "ORCID",
+        "href": null
+      }
     ]
   },
   "zh": {
-    "heading": "联系我",
-    "intro": "欢迎就自然语言处理、大语言模型以及 Kaggle 竞赛交流，也欢迎一起聊聊各类实验心得。",
+    "heading": "联系",
+    "intro": "导师咨询、尚未挂出的论文 PDF，或上面任何一项：请发邮件。",
     "links": [
-      { "label": "邮箱", "value": "kunzhang0098@gmail.com", "href": "mailto:kunzhang0098@gmail.com" },
-      { "label": "GitHub", "value": "@Beiciccc", "href": "https://github.com/Beiciccc" },
-      { "label": "Kaggle", "value": "beicicc", "href": "https://www.kaggle.com/beicicc" }
+      {
+        "label": "邮箱",
+        "value": "kunzhang0098@gmail.com",
+        "href": "mailto:kunzhang0098@gmail.com"
+      },
+      {
+        "label": "简历",
+        "value": "PDF · 2 页 · 2026 年 9 月",
+        "href": "/cv.pdf"
+      },
+      {
+        "label": "GitHub",
+        "value": "Beiciccc",
+        "href": "https://github.com/Beiciccc"
+      }
+    ],
+    "pending": [
+      {
+        "label": "Google Scholar",
+        "href": null
+      },
+      {
+        "label": "ORCID",
+        "href": null
+      }
     ]
   }
 }

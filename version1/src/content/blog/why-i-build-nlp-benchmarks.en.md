@@ -4,7 +4,7 @@ description: "A reflective post on why careful, reproducible evaluation is the p
 pubDate: 2026-05-28
 lang: en
 tags: ["nlp", "llm", "evaluation", "benchmarks", "reproducibility", "reflection"]
-draft: false
+draft: true
 ---
 
 When people ask what I find most interesting about working with language models, they often expect me to say "the models." But the honest answer is the part most people skip past: **evaluation**. How do we actually know a system is good? That question turns out to be far harder, and far more interesting, than building the system in the first place.

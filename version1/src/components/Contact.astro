@@ -6,40 +6,40 @@ interface Props {
 }
 const { lang } = Astro.props;
 const c = pick(contact, lang);
-const eyebrow = lang === 'zh' ? '联系' : 'Contact';
+// Profiles without a URL yet (Scholar, ORCID) are not rendered.
+const pending = c.pending.filter((x) => x.href);
 ---
 
-<section id="contact" class="section contact section--center" aria-labelledby="contact-heading">
-  <div class="contact__head reveal">
-    <p class="section-mark">{eyebrow}</p>
+<section id="contact" class="section" aria-labelledby="contact-heading">
+  <div class="section__inner">
     <h2 id="contact-heading">{c.heading}</h2>
-    <p class="lede contact__intro">{c.intro}</p>
+    <p class="lede">{c.intro}</p>
+
+    <dl class="contact__list">
+      {
+        c.links.map((link) => (
+          <div class="contact__item">
+            <dt class="contact__label">{link.label}</dt>
+            <dd>
+              {link.href.endsWith('.pdf') ? (
+                <a href={link.href} type="application/pdf">{link.value}</a>
+              ) : link.href.startsWith('http') ? (
+                <a href={link.href} rel="me noopener noreferrer">{link.value}</a>
+              ) : (
+                <a href={link.href}>{link.value}</a>
+              )}
+            </dd>
+          </div>
+        ))
+      }
+      {
+        pending.map((link) => (
+          <div class="contact__item">
+            <dt class="contact__label">{link.label}</dt>
+            <dd><a href={link.href!} rel="me noopener noreferrer">{link.label}</a></dd>
+          </div>
+        ))
+      }
+    </dl>
   </div>
-
-  <ul class="contact__list reveal">
-    {
-      c.links.map((link) => (
-        <li class="contact__item">
-          <span class="contact__label">{link.label}</span>
-          <a
-            href={link.href}
-            target={link.href.startsWith('http') ? '_blank' : undefined}
-            rel={link.href.startsWith('http') ? 'noopener' : undefined}
-          >
-            {link.value}
-            {link.href.startsWith('http') && <span aria-hidden="true"> ↗</span>}
-          </a>
-        </li>
-      ))
-    }
-  </ul>
 </section>
-
-<style>
-  .contact__head {
-    margin-bottom: clamp(2rem, 4vw, 3rem);
-  }
-  .contact__intro {
-    max-width: 56ch;
-  }
-</style>

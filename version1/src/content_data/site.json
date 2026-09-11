@@ -1,60 +1,80 @@
 {
   "en": {
     "siteTitle": "Kun Zhang",
-    "siteDescription": "Kun Zhang — MSc Advanced Computer Science at the University of Leeds. NLP and LLM research, plus public Kaggle and ML experiment logs.",
+    "siteDescription": "Kun Zhang. LLM post-training and alignment, on the attribution side. Four first-author papers accepted in 2026, three under review.",
+    "counts": {
+      "accepted": 4,
+      "underReview": 3
+    },
     "nav": [
       {
-        "label": "About",
-        "href": "#about"
+        "label": "Publications",
+        "href": "#publications"
       },
       {
         "label": "Research",
         "href": "#research"
       },
       {
-        "label": "Work",
-        "href": "#projects"
+        "label": "For advisors",
+        "href": "#advisors"
       },
       {
-        "label": "Blog",
-        "href": "/blog/"
+        "label": "About",
+        "href": "#about"
+      },
+      {
+        "label": "CV",
+        "href": "/cv.pdf"
       }
     ],
-    "footer": "© 2026 Kun Zhang · Built with notes from public GitHub and Kaggle work",
-    "themeToggleLabel": "Toggle dark mode",
+    "footer": "© 2026 Kun Zhang",
+    "footerUpdated": "Last updated",
+    "themeToggleLabel": "Theme: light / dark / system",
     "langToggleLabel": "切换到中文 / Switch to Chinese",
-    "blogTitle": "Blog",
-    "blogIntro": "Working notes on NLP, LLMs, and lessons from Kaggle and ML experiments.",
+    "blogTitle": "Notes",
+    "blogIntro": "Research notes. One post per finding, with the numbers that support it.",
     "readMore": "Read more",
-    "backHome": "Home"
+    "backHome": "Home",
+    "homeTitle": "Kun Zhang · PhD applicant · LLM post-training and alignment"
   },
   "zh": {
     "siteTitle": "张鲲",
-    "siteDescription": "张鲲 —— 利兹大学高级计算机科学硕士。专注自然语言处理与大语言模型研究，并公开分享 Kaggle 与机器学习实验记录。",
+    "siteDescription": "张鲲。大语言模型后训练与对齐的归因侧。2026 年 4 篇第一作者论文录用，3 篇在投。",
+    "counts": {
+      "accepted": 4,
+      "underReview": 3
+    },
     "nav": [
       {
-        "label": "关于",
-        "href": "#about"
+        "label": "论文",
+        "href": "#publications"
       },
       {
         "label": "研究",
         "href": "#research"
       },
       {
-        "label": "项目",
-        "href": "#projects"
+        "label": "致导师",
+        "href": "#advisors"
       },
       {
-        "label": "博客",
-        "href": "/zh/blog/"
+        "label": "关于",
+        "href": "#about"
+      },
+      {
+        "label": "简历",
+        "href": "/cv.pdf"
       }
     ],
-    "footer": "© 2026 张鲲 · 内容整理自公开的 GitHub 与 Kaggle 工作记录",
-    "themeToggleLabel": "切换深色模式",
+    "footer": "© 2026 张鲲",
+    "footerUpdated": "更新于",
+    "themeToggleLabel": "主题：浅色 / 深色 / 跟随系统",
     "langToggleLabel": "Switch to English / 切换到英文",
-    "blogTitle": "博客",
-    "blogIntro": "关于自然语言处理、大语言模型，以及 Kaggle 与机器学习实验心得的笔记。",
+    "blogTitle": "笔记",
+    "blogIntro": "研究笔记。一篇一个发现，附支撑它的数字。",
     "readMore": "阅读全文",
-    "backHome": "首页"
+    "backHome": "首页",
+    "homeTitle": "张鲲 · 博士申请人 · 大语言模型后训练与对齐"
   }
 }

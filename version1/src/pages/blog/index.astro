@@ -2,10 +2,11 @@
 import { getCollection } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import PostList from '../../components/PostList.astro';
-import { site, pick } from '../../i18n/content';
+import { site, pick, ui } from '../../i18n/content';
 
 const lang = 'en';
 const s = pick(site, lang);
+const t = ui[lang];
 
 const posts = (await getCollection('blog', ({ data }) => data.lang === 'en' && !data.draft)).sort(
   (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
@@ -14,17 +15,17 @@ const posts = (await getCollection('blog', ({ data }) => data.lang === 'en' && !
 
 <BaseLayout
   lang={lang}
-  title={s.blogTitle + ' — ' + s.siteTitle}
+  title={s.blogTitle + ' · ' + s.siteTitle}
   description={s.blogIntro}
   altUrl="/zh/blog/"
-  active="blog"
 >
   <section class="section blog-index" aria-labelledby="blog-heading">
-    <div class="blog-index__head reveal">
-      <p class="section-mark">{lang === 'en' ? 'Blog' : '博客'}</p>
-      <h1 id="blog-heading">{s.blogTitle}</h1>
+  <div class="section__inner">
+    <div class="blog-index__head">
+            <h1 id="blog-heading">{s.blogTitle}</h1>
       <p class="lede blog-index__intro">{s.blogIntro}</p>
     </div>
-    <PostList posts={posts} lang={lang} />
+    {posts.length > 0 ? <PostList posts={posts} lang={lang} /> : <p class="meta">{t.noPosts}</p>}
+    </div>
   </section>
 </BaseLayout>

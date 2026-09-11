@@ -1,0 +1,30 @@
+---
+import { type Lang, advisors, pick } from '../i18n/content';
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+const a = pick(advisors, lang);
+---
+
+<section id="advisors" class="section section--bleed section--tint advisors" aria-labelledby="advisors-heading">
+  <div class="section__inner">
+    <h2 id="advisors-heading">{a.heading}</h2>
+    <p class="lede">{a.entry}</p>
+
+    <h3>{a.topicsLabel}</h3>
+    <ol class="advisors__topics">
+      {a.topics.map((tp) => <li>{tp}</li>)}
+    </ol>
+
+    <h3>{a.bringLabel}</h3>
+    <p>{a.bring}</p>
+
+    <h3>{a.needLabel}</h3>
+    <p>{a.need}</p>
+
+    <h3>{a.stopsLabel}</h3>
+    <p>{a.stops}</p>
+  </div>
+</section>

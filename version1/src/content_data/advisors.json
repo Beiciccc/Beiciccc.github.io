@@ -1,0 +1,49 @@
+{
+  "_afterNotice": {
+    "when": "Enable only after the AAAI-27 decision, and only if the alignment manuscript is accepted or is no longer under anonymous review anywhere.",
+    "en": {
+      "bring": "A working preference-optimisation pipeline over LoRA adapters, with a matched fine-tuning control and one cross-family replication, at pilot scale. Preference pairs cut from the model's own outputs by a deterministic scorer, with no human annotation and no LLM judge, so an extra control arm costs generation time rather than labelling budget.",
+      "stops": "No reward model trained, no PPO or GRPO, no online reinforcement learning, no verifiable-reward training. One algorithm (DPO), one model family replicated, adapters at rank 16.",
+      "topic1Append": "The starting point is an observation I cannot yet explain: the same recipe carried to a second model family transferred format enforcement and not confidentiality.",
+      "underReviewArea2": "Alignment: attributing post-training gains under matched controls"
+    },
+    "zh": {
+      "bring": "一条可运行的 LoRA 适配器偏好优化流水线，带匹配微调对照与一次跨模型族复现，pilot 规模。偏好对由确定性打分器从模型自身输出里切出，不用人工标注也不用 LLM 裁判，所以多一条对照臂花的是生成时间，不是标注预算。",
+      "stops": "没训过奖励模型，没做过 PPO 或 GRPO，没做过在线强化学习，没做过可验证奖励训练。一种算法（DPO），一个模型族的复现，rank 16 的适配器。",
+      "topic1Append": "起点是一个我还解释不了的观察：同一配方搬到第二个模型族，格式服从迁移了，保密没有。",
+      "underReviewArea2": "对齐：匹配对照下的后训练增益归因"
+    }
+  },
+  "en": {
+    "heading": "For prospective advisors",
+    "entry": "Entry: autumn 2027 or spring 2028. Area: causal attribution for post-training and alignment.",
+    "topicsLabel": "Three topics I want to work on",
+    "topics": [
+      "How far post-trained properties transfer across languages, scales and model families, each success paired with a coarser-proxy control.",
+      "Decomposing a preference-optimisation win rate by freezing one dimension of the pair at a time: content, format, length, and the scorer. Each mechanism that could produce the same number gets its own arm; the same construction then applies to a reward model's accuracy.",
+      "Acceptance criteria for calling an alignment direction a mechanism: necessity and sufficiency separated by construction, scale-matched nulls, a meaningful specificity control. To be applied to refusal and sycophancy directions."
+    ],
+    "bringLabel": "What I bring",
+    "bring": "A working preference-optimisation pipeline over LoRA adapters, at pilot scale, with preference pairs built without human annotation or an LLM judge, so an extra control arm costs generation time rather than labelling budget.",
+    "needLabel": "What I need",
+    "need": "A fully funded position, with the compute to take the training half from under 200 preference pairs and one A100 to research scale. A supervisor who pushes back on the statistics, which are self-taught. For the third topic, co-supervision in model internals.",
+    "stopsLabel": "Where the work stops today",
+    "stops": "No reward model trained, no PPO or GRPO, no online reinforcement learning, no verifiable-reward training. One algorithm, one model family, adapters at rank 16."
+  },
+  "zh": {
+    "heading": "致潜在导师",
+    "entry": "入学：2027 秋或 2028 春。方向：后训练与对齐的因果归因。",
+    "topicsLabel": "想做的三个课题",
+    "topics": [
+      "后训练属性跨语言、跨规模、跨模型族能迁移多远，每一次成功配一个「更粗代理」对照。",
+      "把偏好优化的胜率拆开：每次冻结偏好对的一个维度，内容、格式、长度、打分器。每一种能给出同一数字的机制各得一条臂；同一构造再用于奖励模型的精度。",
+      "把一个对齐方向称作机制的验收标准：按构造分开必要性与充分性、规模匹配的零模型、有意义的特异性对照。用到拒答与迎合方向上。"
+    ],
+    "bringLabel": "我能带来什么",
+    "bring": "一条可运行的 LoRA 适配器偏好优化流水线，pilot 规模；偏好对构造不依赖人工标注也不依赖 LLM 裁判，所以多一条对照臂花的是生成时间，不是标注预算。",
+    "needLabel": "我需要什么",
+    "need": "一个全奖岗位，以及把训练这一半从不到 200 个偏好对与一张 A100 提到研究级所需的算力。一位会对我的统计提出反驳的导师；这些统计是我自学的。课题三需要模型内部机制方向的联合导师。",
+    "stopsLabel": "工作目前停在哪里",
+    "stops": "没训过奖励模型，没做过 PPO 或 GRPO，没做过在线强化学习，没做过可验证奖励训练。一种算法，一个模型族，rank 16 的适配器。"
+  }
+}

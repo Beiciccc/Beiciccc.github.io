@@ -1,158 +1,238 @@
 {
+  "_rules": [
+    "Under review: no venue name, no venue type, no CCF tier, no track name.",
+    "Under review: no forthcoming / to appear / expected; only 'under review' and '在投'.",
+    "Under review: directions at CV Research Themes granularity only; no title words from manuscripts under review (identity-controlled, covariate shift, cross-lingual, point-in-time, disclosure, instruction hierarchy, conformal, SP500Vol).",
+    "On acceptance: move the item into its tier group with title / pdf / links; update hero.intro, underReview.body, site.counts, siteDescription (en/zh), OG images, cv_web L40 and L54; publications.intro's 'three of the four' changes only if the new paper's headline is a surviving null."
+  ],
   "en": {
     "heading": "Publications",
-    "intro": "First-author work on how language models are measured — and on language models applied to financial text. Four papers peer-reviewed and accepted; code and artifacts released as each clears review.",
-    "featuredLabel": "Peer-reviewed",
+    "intro": "First-author work. Three of the four papers below end in a claimed effect that does not survive its control; the fourth is a pre-registered prediction that held.",
+    "groups": {
+      "main": "Conference papers",
+      "workshop": "Workshop papers"
+    },
+    "pdfNote": "Paper PDFs not yet posted here are available by email.",
     "items": [
       {
+        "id": "nlpcc2026",
+        "tier": "main",
         "venue": "NLPCC 2026",
-        "badge": "Oral",
-        "status": "accepted",
+        "venueLong": "Resources and Evaluation track · Springer LNCS",
+        "format": "Oral",
         "title": "Same Exam, Different Scores: A Tokenizer-Grounded Audit of Evaluation-Protocol Sensitivity on Chinese Benchmarks",
-        "authors": "Kun Zhang, Chunwei Xia",
-        "track": "Resources and Evaluation track",
-        "summary": "The standard first-token scorer for multiple-choice benchmarks is mathematically undefined for many Chinese models — when a tokenizer maps all four answer labels onto a shared first token, argmax reports a tie-break, not a score. Which model/label-set pairs degenerate follows from the tokenizer alone, so it is predictable on a laptop CPU before any GPU run. We pre-registered those predictions and confirmed 64/64 on the real runs.",
-        "scale": "18 checkpoints · 7 tokenizer families · 12,925 items · ~2.5M released scoring records",
+        "authors": [
+          {
+            "name": "Kun Zhang",
+            "self": true
+          },
+          {
+            "name": "Chunwei Xia",
+            "corresponding": true
+          }
+        ],
+        "takeaway": "Predicted from tokenizers before any GPU run: 12 of 64 model-by-label-set cells make first-token argmax undefined. All 64 predictions held. The ranking belongs to the scorer.",
+        "summary": "The standard first-token scorer for multiple-choice benchmarks is mathematically undefined for many Chinese models: when a tokenizer maps all four answer labels onto a shared first token, argmax reports a tie-break, not a score. Which model and label-set pairs degenerate follows from the tokenizer alone, so it is predictable on a laptop CPU before any GPU run. We pre-registered those predictions and confirmed 64 of 64 on the real runs. The paper's one inferential contrast goes to the negative control, where the two scorers do not differ (p = 0.453), not to the 12 degenerate cells, whose p-values are tautological.",
+        "scale": "18 checkpoints · 7 tokenizer families · 12,925 items · ~2.5M released scoring records · smoke test ≈ 5 s",
         "links": [
           {
+            "kind": "code",
             "label": "Code",
             "href": "https://github.com/Beiciccc/zh-protocolcube"
           },
           {
+            "kind": "doi",
             "label": "Artifact (DOI)",
             "href": "https://doi.org/10.17605/OSF.IO/53C87"
           }
         ],
-        "tier": "main"
+        "pdf": null
       },
       {
+        "id": "pricai2026",
+        "tier": "main",
         "venue": "PRICAI 2026",
-        "badge": "Oral",
-        "status": "accepted",
+        "venueLong": "Main track, regular paper · Springer LNAI",
+        "format": "Oral",
         "title": "A Point-in-Time Audit of Graph-Snapshot Leakage in GNN Stock Selection",
-        "authors": "Kun Zhang, Chunwei Xia",
-        "track": "23rd PRICAI, main track · regular paper (Springer LNAI)",
-        "summary": "A performance gap between a snapshot graph and a point-in-time graph is routinely read as leakage. It often is not. Controlling for seed luck and graph stability, no model shows robust leakage across two graph modalities and three model classes: one apparent positive exactly equals its degree-preserved null and collapses under sparsification, the other is a single-seed fluke that becomes sign-unstable over five seeds. A leakage source does exist — end-snapshot-only edges are more predictive of future returns — but the models do not exploit it. Leakable is not leaked.",
-        "scale": "13F filings 2013–2026 · 2 graph modalities × 3 model classes · multi-seed + degree-preserved nulls + sparsity sweep + BH-FDR · ~$0 API cost",
+        "authors": [
+          {
+            "name": "Kun Zhang",
+            "self": true
+          },
+          {
+            "name": "Chunwei Xia",
+            "corresponding": true
+          }
+        ],
+        "takeaway": "GNN stock selection: the snapshot-graph gain over point-in-time graphs collapses under multi-seed and degree-preserved nulls. A leakage channel exists; the models do not use it.",
+        "summary": "A performance gap between a snapshot graph and a point-in-time graph is routinely read as leakage. It often is not. Controlling for seed luck and graph stability, no model shows leakage that survives the controls across two graph modalities and three model classes: one apparent positive exactly equals its degree-preserved null and collapses under sparsification, the other is a single-seed fluke that becomes sign-unstable over five seeds. A leakage source does exist: end-snapshot-only edges are more predictive of future returns. But the models do not exploit it. Leakable is not leaked.",
+        "scale": "13F filings 2013–2026 · 2 graph modalities × 3 model classes · multi-seed + degree-preserved nulls + sparsity sweep + BH-FDR",
         "links": [],
-        "tier": "main"
+        "pdf": null
       },
       {
-        "venue": "LUHME 2026 @ EMNLP",
-        "badge": "Oral",
-        "status": "accepted",
+        "id": "luhme2026",
         "tier": "workshop",
+        "venue": "LUHME 2026, workshop at EMNLP 2026",
+        "venueLong": "3rd LUHME workshop · sole author",
+        "format": "Oral",
         "title": "PCP: A Controlled Benchmark for Pragmatic Intention Recognition in Clinical Communication",
-        "authors": "Kun Zhang",
-        "track": "3rd LUHME workshop, EMNLP 2026 · sole author",
+        "authors": [
+          {
+            "name": "Kun Zhang",
+            "self": true
+          }
+        ],
+        "takeaway": "Eleven systems sit at 98.7–99.8% on the controlled split and 79.7–90.6% on grounded cases, so the controlled number was measuring the benchmark's own construction.",
         "summary": "Eleven systems sit within a point or two of ceiling on the controlled split (98.7–99.8%) and fall to 79.7–90.6% once the items are externally grounded. The gap is the finding: a broad controlled probe can hide exactly the difficulty that close distractors expose, so a benchmark that only reports the controlled number is measuring its own construction.",
         "scale": "3,533 items across three splits · 11 systems · 388,630 scored calls · 2,499 blind-validated items",
-        "links": []
+        "links": [],
+        "pdf": null
       },
       {
-        "venue": "GroundLM 2026 @ EMNLP",
-        "badge": "Findings",
-        "status": "accepted",
+        "id": "groundlm2026",
         "tier": "workshop",
+        "venue": "GroundLM 2026, workshop at EMNLP 2026",
+        "venueLong": "GroundLM workshop · sole author",
+        "format": "Findings",
         "title": "Grounding or Lexical Overlap? A Matched-Pair Study of Internals-Based Context-Faithfulness Probes",
-        "authors": "Kun Zhang",
-        "track": "GroundLM workshop, EMNLP 2026 · sole author",
+        "authors": [
+          {
+            "name": "Kun Zhang",
+            "self": true
+          }
+        ],
+        "takeaway": "Internals-based faithfulness probes track lexical overlap at r = 0.99. Hold overlap fixed and the signal halves. The probes read surface agreement, not grounding.",
         "summary": "Internals-based faithfulness probes correlate with plain lexical overlap at r = 0.99. Hold overlap fixed with matched pairs and the signal halves (0.986 → 0.499); on RAGTruth the probes lose to an NLI baseline and to word overlap itself. What the probes measure is largely surface agreement, not grounding.",
         "scale": "4 model families · matched-pair design · RAGTruth + NQ-Swap · single A100",
-        "links": []
+        "links": [],
+        "pdf": null
       }
     ],
     "underReview": {
       "heading": "Under review",
-      "body": "Three further first-author manuscripts are under review — two at a main AI conference, one at a machine-learning conference. They continue the same two threads: evaluation validity and model reliability on one side, financial disclosure text and distribution-free risk control on the other. Titles and venues stay withheld while review is anonymous; code and artifacts are released as each is accepted.",
+      "body": "Three further first-author manuscripts are under review; titles and venues are withheld while review is anonymous. By direction:",
       "areas": [
-        "Point-in-time benchmark design and leakage control",
-        "Cross-lingual instruction hierarchy under capability controls",
-        "Distribution-free error-rate guarantees under covariate shift"
+        "Evaluation validity and leakage control",
+        "Alignment: attributing post-training gains",
+        "Distribution-free error-rate guarantees"
       ]
-    },
-    "tierLabels": {
-      "main": "Peer-reviewed",
-      "workshop": "Workshop · peer-reviewed"
-    },
-    "tally": "4 accepted · 3 under review"
+    }
   },
   "zh": {
     "heading": "论文",
-    "intro": "第一作者工作，围绕两条主线：如何度量语言模型，以及把语言模型用在金融文本上。目前 4 篇通过同行评审录用；每篇过审后即释出代码与工件。",
-    "featuredLabel": "已录用",
+    "intro": "第一作者工作。下面 4 篇里，3 篇以一个未能通过对照的「效应」收尾；第 4 篇是一项预注册预测，全部命中。",
+    "groups": {
+      "main": "会议论文",
+      "workshop": "研讨会论文"
+    },
+    "pdfNote": "尚未挂出的论文 PDF 可邮件索取。",
     "items": [
       {
+        "id": "nlpcc2026",
+        "tier": "main",
         "venue": "NLPCC 2026",
-        "badge": "Oral",
-        "status": "accepted",
+        "venueLong": "Resources and Evaluation 方向 · Springer LNCS",
+        "format": "Oral",
         "title": "Same Exam, Different Scores: A Tokenizer-Grounded Audit of Evaluation-Protocol Sensitivity on Chinese Benchmarks",
-        "authors": "张鲲，夏春伟（通讯）",
-        "track": "Resources and Evaluation 方向",
-        "summary": "主流 MCQ 评测采用的「首 token argmax」打分法，在许多中文模型上数学上是未定义的——当 tokenizer 把四个选项标签映射到同一个首 token 时，argmax 比较的是平局打破策略，而不是模型能力。哪些「模型 × 标签集」组合会退化，只由 tokenizer 决定，因此可以在跑任何 GPU 之前用笔记本 CPU 预测出来。我们预注册了这些预测，并在真实运行中 64/64 全部命中。",
-        "scale": "18 个检查点 · 7 个 tokenizer 家族 · 12,925 道题 · 公开约 250 万条打分记录",
+        "authors": [
+          {
+            "name": "张鲲",
+            "self": true
+          },
+          {
+            "name": "Chunwei Xia",
+            "corresponding": true
+          }
+        ],
+        "takeaway": "开 GPU 之前、只凭 tokenizer 预测：64 个模型×标签集格子里，12 个会让首 token argmax 失去定义。64 项预测全中。排名属于打分器。",
+        "summary": "主流多选题评测采用的「首 token argmax」打分法，在许多中文模型上数学上是未定义的：当 tokenizer 把四个选项标签映射到同一个首 token 时，argmax 比较的是平局打破策略，而不是模型能力。哪些「模型 × 标签集」组合会退化，只由 tokenizer 决定，因此可以在跑任何 GPU 之前用笔记本 CPU 预测出来。我们预注册了这些预测，并在真实运行中 64/64 全部命中。论文唯一一处推断性对比给了阴性对照（两种打分器不相异，p = 0.453），而不是那 12 个退化格子，它们的 p 值是同义反复。",
+        "scale": "18 个检查点 · 7 个 tokenizer 家族 · 12,925 道题 · 公开约 250 万条打分记录 · smoke test ≈ 5 秒",
         "links": [
           {
+            "kind": "code",
             "label": "代码",
             "href": "https://github.com/Beiciccc/zh-protocolcube"
           },
           {
+            "kind": "doi",
             "label": "数据工件 (DOI)",
             "href": "https://doi.org/10.17605/OSF.IO/53C87"
           }
         ],
-        "tier": "main"
+        "pdf": null
       },
       {
+        "id": "pricai2026",
+        "tier": "main",
         "venue": "PRICAI 2026",
-        "badge": "Oral 报告",
-        "status": "accepted",
+        "venueLong": "主会长文 · Springer LNAI",
+        "format": "Oral",
         "title": "A Point-in-Time Audit of Graph-Snapshot Leakage in GNN Stock Selection",
-        "authors": "张鲲，夏春伟（通讯）",
-        "track": "第 23 届 PRICAI 主会 · 长文（Springer LNAI）",
-        "summary": "快照图与时点图之间的性能差，通常被直接当作泄漏的证据。多数情况下它不是。在控制了种子运气与图稳定性之后，两种图模态 × 三类模型中没有任何一个显示出稳健的泄漏：一个看似为正的结果恰好等于它自己的保度数零模型，并在稀疏化后归零；另一个只是单种子的偶然，跨五个种子后符号都不稳定。泄漏源确实存在——仅出现在末期快照中的边对未来收益更具预测性——但模型并没有利用它。可泄漏，不等于已泄漏。",
-        "scale": "13F 持仓 2013–2026 · 2 种图模态 × 3 类模型 · 多种子 + 保度数零模型 + 稀疏化扫描 + BH-FDR · API 成本≈0",
+        "authors": [
+          {
+            "name": "张鲲",
+            "self": true
+          },
+          {
+            "name": "Chunwei Xia",
+            "corresponding": true
+          }
+        ],
+        "takeaway": "GNN 选股：快照图相对逐时点图的优势，在多种子与保度数零模型下归零。泄漏通道存在，模型没有用它。",
+        "summary": "快照图与时点图之间的性能差，通常被直接当作泄漏的证据。多数情况下它不是。在控制了种子运气与图稳定性之后，两种图模态 × 三类模型中没有任何一个显示出能通过对照的泄漏：一个看似为正的结果恰好等于它自己的保度数零模型，并在稀疏化后归零；另一个只是单种子的偶然，跨五个种子后符号都不稳定。泄漏源确实存在：仅出现在末期快照中的边对未来收益更具预测性。但模型并没有利用它。可泄漏，不等于已泄漏。",
+        "scale": "13F 持仓 2013–2026 · 2 种图模态 × 3 类模型 · 多种子 + 保度数零模型 + 稀疏化扫描 + BH-FDR",
         "links": [],
-        "tier": "main"
+        "pdf": null
       },
       {
-        "venue": "LUHME 2026 @ EMNLP",
-        "badge": "Oral 报告",
-        "status": "accepted",
+        "id": "luhme2026",
         "tier": "workshop",
+        "venue": "LUHME 2026，EMNLP 2026 研讨会",
+        "venueLong": "第 3 届 LUHME 研讨会 · 独立作者",
+        "format": "Oral",
         "title": "PCP: A Controlled Benchmark for Pragmatic Intention Recognition in Clinical Communication",
-        "authors": "张鲲（独立作者）",
-        "track": "第 3 届 LUHME 研讨会 · EMNLP 2026",
-        "summary": "十一个系统在受控子集上贴着天花板（98.7–99.8%），一旦题目换成外部真实语料就跌到 79.7–90.6%。这个落差本身就是结论：宽口径的受控探针会恰好掩盖近似干扰项所暴露的真实难度——只报受控分数的基准，衡量的其实是它自己的构造方式。",
+        "authors": [
+          {
+            "name": "张鲲",
+            "self": true
+          }
+        ],
+        "takeaway": "11 个系统在受控子集 98.7–99.8%，在外部真实语料 79.7–90.6%，所以受控分数量的是基准自己的构造。",
+        "summary": "十一个系统在受控子集上贴着天花板（98.7–99.8%），一旦题目换成外部真实语料就跌到 79.7–90.6%。这个落差本身就是结论：宽口径的受控探针会恰好掩盖近似干扰项所暴露的真实难度，只报受控分数的基准，衡量的其实是它自己的构造方式。",
         "scale": "3,533 条题目 · 三个子集 · 11 个系统 · 388,630 次打分调用 · 2,499 条盲验证",
-        "links": []
+        "links": [],
+        "pdf": null
       },
       {
-        "venue": "GroundLM 2026 @ EMNLP",
-        "badge": "Findings",
-        "status": "accepted",
+        "id": "groundlm2026",
         "tier": "workshop",
+        "venue": "GroundLM 2026，EMNLP 2026 研讨会",
+        "venueLong": "GroundLM 研讨会 · 独立作者",
+        "format": "Findings",
         "title": "Grounding or Lexical Overlap? A Matched-Pair Study of Internals-Based Context-Faithfulness Probes",
-        "authors": "张鲲（独立作者）",
-        "track": "GroundLM 研讨会 · EMNLP 2026",
+        "authors": [
+          {
+            "name": "张鲲",
+            "self": true
+          }
+        ],
+        "takeaway": "基于内部表征的忠实性探针与词面重叠相关 r = 0.99。固定重叠，信号减半。探针读的是表层一致，不是 grounding。",
         "summary": "基于模型内部表征的忠实性探针，其打分与最朴素的词面重叠相关系数高达 r = 0.99。用匹配对把重叠度固定住之后，信号直接减半（0.986 → 0.499）；在 RAGTruth 上，它甚至输给 NLI 基线和词面重叠本身。探针度量的主要是表层一致，而不是 grounding。",
         "scale": "4 个模型家族 · 匹配对设计 · RAGTruth + NQ-Swap · 单卡 A100",
-        "links": []
+        "links": [],
+        "pdf": null
       }
     ],
     "underReview": {
       "heading": "在投",
-      "body": "另有 3 篇第一作者论文在评审中——两篇投于人工智能主会，一篇投于机器学习会议。它们延续同样的两条主线：一侧是评测效度与模型可靠性，另一侧是金融披露文本与免分布的风险控制。评审匿名期内不公开标题与投稿会议；每篇录用后即释出代码与工件。",
+      "body": "另有 3 篇第一作者稿件在评审中；匿名评审期内不公开题目与会场。按方向：",
       "areas": [
-        "逐时点基准设计与泄漏控制",
-        "能力受控下的跨语言指令层级",
-        "协变量偏移下的免分布错误率保证"
+        "评测效度与泄漏控制",
+        "对齐：后训练增益的归因",
+        "免分布的错误率保证"
       ]
-    },
-    "tierLabels": {
-      "main": "同行评审录用",
-      "workshop": "研讨会 · 同行评审"
-    },
-    "tally": "4 篇录用 · 3 篇在投"
+    }
   }
 }

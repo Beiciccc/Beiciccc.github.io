@@ -4,7 +4,7 @@ description: "A short welcome to my new bilingual (EN/中文) site, built with A
 pubDate: 2026-06-08
 lang: en
 tags: ["meta", "welcome", "astro", "bilingual"]
-draft: false
+draft: true
 ---
 
 This is the first post on my new personal site, so it's part welcome mat and part colophon — a note about what this place is, how it's built, and what I hope to put here.

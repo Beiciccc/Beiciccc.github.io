@@ -6,24 +6,19 @@ const lang = 'en';
 const t = ui[lang];
 ---
 
-<BaseLayout
-  lang={lang}
-  title="404 — Page not found · Kun Zhang"
-  description="The page you're looking for doesn't exist."
-  altUrl="/zh/"
->
-  <section class="section notfound section--center" aria-labelledby="nf-heading">
-    <div class="reveal">
+<BaseLayout lang={lang} title="404 · Page not found · Kun Zhang" description="The page you are looking for does not exist." altUrl={null}>
+  <section class="section notfound" aria-labelledby="nf-heading">
+    <div class="section__inner">
       <p class="section-mark">404</p>
       <h1 id="nf-heading">{t.notFoundTitle}</h1>
       <p class="lede">{t.notFoundBody}</p>
-      <p class="notfound__zh">页面未找到 —— 你访问的页面不存在或已被移动。</p>
+      <p class="notfound__zh" lang="zh-Hans">{t.notFoundBodyZh}</p>
       <div class="hero__actions">
         <a class="btn" href="/">
           {t.notFoundCta}
           <span class="btn__arrow" aria-hidden="true">→</span>
         </a>
-        <a class="btn btn--ghost" href="/zh/">返回中文首页</a>
+        <a class="btn btn--ghost" href="/zh/" lang="zh-Hans" hreflang="zh-Hans">返回中文首页</a>
       </div>
     </div>
   </section>

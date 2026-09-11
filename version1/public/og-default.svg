@@ -1,23 +1,10 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" role="img" aria-label="Kun Zhang 张鲲 — NLP &amp; LLM research">
-  <defs>
-    <linearGradient id="ink" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0" stop-color="#1d1d1f"/>
-      <stop offset="1" stop-color="#0071e3"/>
-    </linearGradient>
-  </defs>
-  <rect width="1200" height="630" fill="#f5f5f7"/>
-  <rect x="0" y="0" width="1200" height="630" fill="#fbfbfd"/>
-  <rect x="84" y="120" width="56" height="6" rx="3" fill="#0071e3"/>
-  <g font-family="-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', Inter, system-ui, sans-serif">
-    <text x="84" y="172" font-size="26" font-weight="600" letter-spacing="0.5" fill="#0071e3">MSc · NLP &amp; LLM</text>
-    <text x="80" y="320" font-size="120" font-weight="700" fill="url(#ink)" letter-spacing="-4">Kun Zhang</text>
-    <text x="84" y="392" font-family="'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif" font-size="48" font-weight="600" fill="#6e6e73" letter-spacing="2">张鲲</text>
-    <text x="84" y="476" font-size="32" font-weight="400" fill="#6e6e73">
-      NLP and large language models — building and studying
-    </text>
-    <text x="84" y="520" font-size="32" font-weight="400" fill="#6e6e73">
-      models, with public experiment logs.
-    </text>
-    <text x="84" y="586" font-size="24" font-weight="500" fill="#1d1d1f">beiciccc.github.io</text>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" role="img" aria-label="Kun Zhang 张鲲, PhD applicant, LLM post-training and alignment">
+  <rect width="1200" height="630" fill="#fbfbfd"/>
+  <rect x="120" y="150" width="56" height="6" rx="3" fill="#0068d1"/>
+  <g font-family="-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', Inter, 'Liberation Sans', system-ui, sans-serif">
+    <text x="120" y="268" font-size="96" font-weight="700" fill="#1d1d1f" letter-spacing="-3">Kun Zhang <tspan font-family="'PingFang SC', 'Noto Sans CJK SC', 'Hiragino Sans GB', sans-serif" font-weight="600" font-size="72" fill="#6e6e73" letter-spacing="0">张鲲</tspan></text>
+    <text x="120" y="352" font-size="30" font-weight="400" fill="#1d1d1f">PhD applicant, entry 2027/28 · LLM post-training and alignment</text>
+    <text x="120" y="400" font-size="30" font-weight="400" fill="#6e6e73">4 accepted, 3 under review</text>
+    <text x="120" y="500" font-size="24" font-weight="500" fill="#6e6e73">beiciccc.github.io</text>
   </g>
 </svg>

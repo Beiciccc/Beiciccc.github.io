@@ -1,55 +1,55 @@
 ---
-import { type Lang, site, pick, localePath } from '../i18n/content';
+import { type Lang, site, ui, pick, localePath } from '../i18n/content';
 
 interface Props {
   lang: Lang;
-  altUrl: string;
-  active?: 'home' | 'blog';
+  altUrl: string | null;
 }
 
-const { lang, altUrl, active } = Astro.props;
+const { lang, altUrl } = Astro.props;
 const s = pick(site, lang);
-
-// Build nav from staged site.json. The first three are in-page anchors that
-// must resolve against the language homepage; "Blog" is an absolute route.
+const t = ui[lang];
 const homeHref = localePath(lang, '/');
-const blogHref = localePath(lang, '/blog/');
+// When a page has no counterpart in the other language, the toggle falls back
+// to that language's homepage.
+const toggleHref = altUrl ?? localePath(lang === 'en' ? 'zh' : 'en', '/');
+const toggleLang = lang === 'en' ? 'zh-Hans' : 'en';
 
 const navItems = s.nav.map((item) => {
   const isHash = item.href.startsWith('#');
-  const href = isHash ? `${homeHref}${item.href}` : item.href;
-  const isBlog = item.href.includes('blog');
-  return { label: item.label, href, isBlog };
+  const isPdf = item.href.endsWith('.pdf');
+  return { label: item.label, href: isHash ? `${homeHref}${item.href}` : item.href, isPdf };
 });
-
 ---
 
 <header class="site-header">
   <nav class="nav" aria-label={lang === 'zh' ? '主导航' : 'Primary'}>
     <a class="nav__brand" href={homeHref}>
       {s.siteTitle}
-      {lang === 'en' && <span class="zh">张鲲</span>}
-      {lang === 'zh' && <span class="zh">Kun Zhang</span>}
+      {lang === 'en' && <span class="zh" lang="zh-Hans">张鲲</span>}
+      {lang === 'zh' && <span class="zh" lang="en">Kun Zhang</span>}
     </a>
 
     <div class="nav__links">
       {
-        navItems.map((item) => (
-          <a
-            href={item.href}
-            aria-current={item.isBlog && active === 'blog' ? 'page' : undefined}
-          >
-            {item.label}
-          </a>
-        ))
+        navItems.map((item) =>
+          item.isPdf ? (
+            <a href={item.href} type="application/pdf" title={lang === 'zh' ? 'PDF，2 页' : 'PDF, 2 pages'}>
+              {item.label}
+            </a>
+          ) : (
+            <a href={item.href}>{item.label}</a>
+          )
+        )
       }
     </div>
 
     <div class="nav__tools">
-      <!-- Language toggle: links to the equivalent page in the other language. -->
       <a
         class="toggle toggle__lang"
-        href={altUrl}
+        href={toggleHref}
+        hreflang={toggleLang}
+        lang={toggleLang}
         aria-label={s.langToggleLabel}
         title={s.langToggleLabel}
       >
@@ -58,15 +58,20 @@ const navItems = s.nav.map((item) => {
         <span class={lang === 'zh' ? 'on' : ''}>中</span>
       </a>
 
-      <!-- Theme toggle: persisted in localStorage, wired up in BaseLayout. -->
+      <!-- Three-state theme control: system → light → dark → system. Icon and
+           aria-label reflect the *setting*, not the resolved colour. Hidden
+           without JS (html:not(.js)). -->
       <button
         id="theme-toggle"
         class="toggle toggle__theme"
         type="button"
         aria-label={s.themeToggleLabel}
         title={s.themeToggleLabel}
-        aria-pressed="false"
+        data-label-light={t.themeLight}
+        data-label-dark={t.themeDark}
+        data-label-system={t.themeSystem}
       >
+        <span data-icon="system" aria-hidden="true">◐</span>
         <span data-icon="sun" aria-hidden="true">☀</span>
         <span data-icon="moon" aria-hidden="true">☾</span>
       </button>
