@@ -7,7 +7,7 @@
     <rect x="120" y="123" width="960" height="1.5"/>
   </g>
   <g font-family="'Noto Serif CJK SC', 'Source Han Serif SC', 'Songti SC', serif">
-    <text x="120" y="262" font-size="92" font-weight="600" fill="#121110" letter-spacing="2">张鲲 <tspan font-family="'Source Serif 4', 'Noto Serif', 'Liberation Serif', 'DejaVu Serif', Georgia, serif" font-weight="600" font-size="72" fill="#5f5a52" letter-spacing="-1">Kun Zhang</tspan></text>
+    <text x="120" y="262" font-size="92" font-weight="600" font-family="'Source Serif 4 Display', 'Source Serif 4', 'Noto Serif', 'Liberation Serif', 'DejaVu Serif', Georgia, serif" fill="#121110" letter-spacing="2">张鲲 <tspan font-family="'Source Serif 4', 'Noto Serif', 'Liberation Serif', 'DejaVu Serif', Georgia, serif" font-weight="600" font-size="72" fill="#5f5a52" letter-spacing="-1">Kun Zhang</tspan></text>
   </g>
   <g font-family="'Source Sans 3', 'Noto Sans CJK SC', 'Source Han Sans SC', 'PingFang SC', 'Noto Sans', sans-serif">
     <text x="120" y="346" font-size="30" font-weight="400" fill="#1f1d1a">博士申请人，2027/28 入学 · 大语言模型后训练与对齐</text>

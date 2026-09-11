@@ -364,7 +364,16 @@ hr { border: 0; height: 1px; background: var(--hairline); margin: var(--space-7)
     text-align: right;
     margin: 0;
     padding-top: 0.2rem;     /* cap-height of the 15.75px label ≈ first line of the lede */
+    /* The head travels with its section: its grid area spans the whole body,
+       so sticky keeps it in view until the section ends. An opaque ground
+       lets the hanging [n] numbers pass beneath it. */
+    position: sticky;
+    top: calc(var(--nav-h) + var(--space-5));
+    z-index: 1;
+    background: var(--bg);
+    padding-bottom: var(--space-2);
   }
+  .section--tint.section--rail .section__inner > h2 { background: var(--bg-alt); }
   .section--rail .section__body { grid-column: 2; grid-row: 1; }
 
   /* Hanging apparatus: the body becomes a subgrid so [n], the Research
@@ -469,6 +478,7 @@ body.scrolled .site-header { border-bottom-color: var(--hairline); }
   font-size: 1rem;
 }
 .toggle__theme [data-icon] { display: none; }
+.toggle__theme svg[data-icon] { width: 14px; height: 14px; vertical-align: -0.12em; }
 .toggle__theme:not([data-state]) [data-icon="system"],
 .toggle__theme[data-state="system"] [data-icon="system"] { display: inline; }
 .toggle__theme[data-state="light"] [data-icon="sun"]  { display: inline; }
@@ -1155,7 +1165,7 @@ pre code { background: none; border: none; padding: 0; color: inherit; }
   .section--tint { background: none; border-top: 1px solid var(--hairline); }
   h1 { font-size: 22pt; margin-bottom: 8pt; }
   h2 { break-after: avoid; }
-  .section--rail .section__inner > h2 { margin-bottom: 10pt; }
+  .section--rail .section__inner > h2 { margin-bottom: 10pt; position: static; background: none; }
   .hero__tagline { font-size: 13pt; }
   .pub, .theme, .contact__item { break-inside: avoid; }
   .pub--review { border-color: var(--hairline); }

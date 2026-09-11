@@ -8,7 +8,7 @@
     <rect x="120" y="123" width="960" height="1.5"/>
   </g>
   <g font-family="'Source Serif 4', 'Noto Serif', 'Liberation Serif', 'DejaVu Serif', Georgia, 'Times New Roman', serif">
-    <text x="120" y="262" font-size="96" font-weight="600" fill="#121110" letter-spacing="-1.5">Kun Zhang <tspan font-family="'Noto Serif CJK SC', 'Source Han Serif SC', 'Songti SC', serif" font-weight="600" font-size="72" fill="#5f5a52" letter-spacing="0">张鲲</tspan></text>
+    <text x="120" y="262" font-size="96" font-weight="600" font-family="'Source Serif 4 Display', 'Source Serif 4', 'Noto Serif', 'Liberation Serif', 'DejaVu Serif', Georgia, serif" fill="#121110" letter-spacing="-1.5">Kun Zhang <tspan font-family="'Noto Serif CJK SC', 'Source Han Serif SC', 'Songti SC', serif" font-weight="600" font-size="72" fill="#5f5a52" letter-spacing="0">张鲲</tspan></text>
   </g>
   <g font-family="'Source Sans 3', 'Noto Sans', 'Liberation Sans', 'DejaVu Sans', 'Helvetica Neue', Arial, sans-serif">
     <text x="120" y="346" font-size="30" font-weight="400" fill="#1f1d1a">PhD applicant, entry 2027/28 · LLM post-training and alignment</text>
