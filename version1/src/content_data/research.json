@@ -1,7 +1,7 @@
 {
   "en": {
     "heading": "What I work on",
-    "intro": "Three kinds of claim are made about a model after post-training: that a score measures a capability, that an internal direction is a concept, and that a training gain came from what was trained. Each cheaper mechanism that could produce the same number gets its own control arm. Where a null is the headline, it carries the smallest effect the test could have detected.",
+    "intro": "Three kinds of claim are made about a model after post-training: that a score measures a capability, that an internal direction is a concept, and that a training gain came from what was trained. Each cheaper mechanism that could produce the same number gets its own control arm.",
     "themes": [
       {
         "title": "Evaluation validity and leakage control",
@@ -30,7 +30,7 @@
   },
   "zh": {
     "heading": "我在做什么",
-    "intro": "后训练之后，人们对一个模型会做三种声称：一个分数度量了一项能力，一个内部方向就是一个概念，一次训练增益来自训练的内容。每一种能给出同一个数字的更廉价机制，各配一条对照臂。凡以零结果为头条的，都附上这个检验能测到的最小效应。",
+    "intro": "后训练之后，人们对一个模型会做三种声称：一个分数度量了一项能力，一个内部方向就是一个概念，一次训练增益来自训练的内容。每一种能给出同一个数字的更廉价机制，各配一条对照臂。",
     "themes": [
       {
         "title": "评测效度与泄漏控制",
