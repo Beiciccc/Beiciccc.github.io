@@ -1,4 +1,5 @@
 {
+  "_status": "Hidden since 2026-09-11 by decision. To show again: re-import Advisors in src/pages/index.astro and src/pages/zh/index.astro (between Research and About), and add {\"label\":\"For advisors\",\"href\":\"#advisors\"} / {\"label\":\"致导师\",\"href\":\"#advisors\"} back to site.json nav.",
   "_afterNotice": {
     "when": "Enable only after the AAAI-27 decision, and only if the alignment manuscript is accepted or is no longer under anonymous review anywhere.",
     "en": {
