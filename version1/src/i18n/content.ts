@@ -141,7 +141,7 @@ export function homeJsonLd(lang: Lang): Record<string, unknown>[] {
         'Large language model post-training and alignment',
         'Evaluation validity and leakage control',
         'Mechanistic interpretability',
-        'Distribution-free error-rate guarantees',
+        'Causal attribution for post-training gains',
       ],
       sameAs: ['https://github.com/Beiciccc', KAGGLE_URL],
     },
