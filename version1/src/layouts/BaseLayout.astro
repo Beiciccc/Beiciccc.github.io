@@ -35,8 +35,8 @@ const canonical = new URL(Astro.url.pathname, siteUrl).href;
 const ogImage = new URL(lang === 'zh' ? '/og-default.zh.png' : '/og-default.png', siteUrl).href;
 const ogAlt =
   lang === 'zh'
-    ? '张鲲 Kun Zhang，博士申请人，大语言模型后训练与对齐；4 篇录用，3 篇在投'
-    : 'Kun Zhang 张鲲, PhD applicant, LLM post-training and alignment; 4 accepted, 3 under review';
+    ? '张鲲 Kun Zhang，博士申请人，大语言模型后训练与对齐；4 篇录用，2 篇在投'
+    : 'Kun Zhang 张鲲, PhD applicant, LLM post-training and alignment; 4 accepted, 2 under review';
 
 // hreflang alternates. A page without a counterpart only declares itself.
 const altCanonical = altUrl ? new URL(altUrl, siteUrl).href : null;

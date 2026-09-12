@@ -1,10 +1,10 @@
 {
   "en": {
     "siteTitle": "Kun Zhang",
-    "siteDescription": "Kun Zhang. LLM post-training and alignment, on the attribution side. Four first-author papers accepted in 2026, three under review.",
+    "siteDescription": "Kun Zhang. LLM post-training and alignment, on the attribution side. Four first-author papers accepted in 2026, two under review.",
     "counts": {
       "accepted": 4,
-      "underReview": 3
+      "underReview": 2
     },
     "nav": [
       {
@@ -36,10 +36,10 @@
   },
   "zh": {
     "siteTitle": "张鲲",
-    "siteDescription": "张鲲。大语言模型后训练与对齐的归因侧。2026 年 4 篇第一作者论文录用，3 篇在投。",
+    "siteDescription": "张鲲。大语言模型后训练与对齐的归因侧。2026 年 4 篇第一作者论文录用，2 篇在投。",
     "counts": {
       "accepted": 4,
-      "underReview": 3
+      "underReview": 2
     },
     "nav": [
       {

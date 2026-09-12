@@ -3,7 +3,7 @@
     "Under review: no venue name, no venue type, no CCF tier, no track name.",
     "Under review: no forthcoming / to appear / expected; only 'under review' and '在投'.",
     "Under review: directions at CV Research Themes granularity only; no title words from manuscripts under review (identity-controlled, covariate shift, cross-lingual, point-in-time, disclosure, instruction hierarchy, conformal, SP500Vol).",
-    "On acceptance: move the item into its tier group with title / pdf / links; update hero.intro, underReview.body, site.counts, siteDescription (en/zh), OG images, cv_web L40 and L54; publications.intro's 'three of the four' changes only if the new paper's headline is a surviving null."
+    "On acceptance: move the item into its tier group with title / pdf / links; update hero.intro, underReview.body, site.counts.underReview, siteDescription (en/zh), OG images, cv_web L40 and L54; publications.intro's 'three of the four' changes only if the new paper's headline is a surviving null."
   ],
   "en": {
     "heading": "Publications",
@@ -112,11 +112,10 @@
     ],
     "underReview": {
       "heading": "Under review",
-      "body": "Three further first-author manuscripts are under review; titles and venues are withheld while review is anonymous. By direction:",
+      "body": "Two further first-author manuscripts are under review; titles and venues are withheld while review is anonymous. By direction:",
       "areas": [
         "Evaluation validity and leakage control",
-        "Alignment: attributing post-training gains",
-        "Distribution-free error-rate guarantees"
+        "Alignment: attributing post-training gains"
       ]
     }
   },
@@ -227,11 +226,10 @@
     ],
     "underReview": {
       "heading": "在投",
-      "body": "另有 3 篇第一作者稿件在评审中；匿名评审期内不公开题目与会场。按方向：",
+      "body": "另有 2 篇第一作者稿件在评审中；匿名评审期内不公开题目与会场。按方向：",
       "areas": [
         "评测效度与泄漏控制",
-        "对齐：后训练增益的归因",
-        "免分布的错误率保证"
+        "对齐：后训练增益的归因"
       ]
     }
   }

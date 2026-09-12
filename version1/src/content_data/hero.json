@@ -3,7 +3,7 @@
     "kicker": "PhD applicant, entry 2027/28 · LLM post-training, alignment, evaluation",
     "name": "Kun Zhang",
     "tagline": "Post-training and alignment, on the attribution side: did the gain come from what was trained, or from something cheaper?",
-    "intro": "MSc Advanced Computer Science, University of Leeds, 2025 to 2026. Four first-author papers accepted in 2026: NLPCC and PRICAI, both oral, and two EMNLP workshop papers. Three more under review. Before I report a positive result, I run the control that would produce it for the wrong reason.",
+    "intro": "MSc Advanced Computer Science, University of Leeds, 2025 to 2026. Four first-author papers accepted in 2026: NLPCC and PRICAI, both oral, and two EMNLP workshop papers. Two more under review. Before I report a positive result, I run the control that would produce it for the wrong reason.",
     "ctaPrimary": {
       "label": "Publications",
       "href": "#publications"
@@ -17,7 +17,7 @@
     "kicker": "博士申请人，2027/28 入学 · 大语言模型后训练、对齐、评测",
     "name": "张鲲",
     "tagline": "后训练与对齐的归因侧：一次增益来自训练的内容，还是来自更廉价的替代物？",
-    "intro": "利兹大学高级计算机科学硕士，2025 至 2026。2026 年 4 篇第一作者论文录用：NLPCC 与 PRICAI（均口头报告），以及 EMNLP 研讨会两篇。另有 3 篇在投。在报告任何正结果之前，我先跑那个会因错误原因复现它的对照。",
+    "intro": "利兹大学高级计算机科学硕士，2025 至 2026。2026 年 4 篇第一作者论文录用：NLPCC 与 PRICAI（均口头报告），以及 EMNLP 研讨会两篇。另有 2 篇在投。在报告任何正结果之前，我先跑那个会因错误原因复现它的对照。",
     "ctaPrimary": {
       "label": "论文",
       "href": "#publications"
