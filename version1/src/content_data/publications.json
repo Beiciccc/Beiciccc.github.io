@@ -112,10 +112,11 @@
     ],
     "underReview": {
       "heading": "Under review",
-      "body": "Two further first-author manuscripts are under review; titles and venues are withheld while review is anonymous. By direction:",
+      "body": "Three further first-author manuscripts are under review; titles and venues are withheld while review is anonymous. By direction:",
       "areas": [
         "Evaluation validity and leakage control",
-        "Alignment: attributing post-training gains"
+        "Alignment: attributing post-training gains",
+        "Mechanistic interpretability: what a probe actually measures"
       ]
     }
   },
@@ -226,10 +227,11 @@
     ],
     "underReview": {
       "heading": "在投",
-      "body": "另有 2 篇第一作者稿件在评审中；匿名评审期内不公开题目与会场。按方向：",
+      "body": "另有 3 篇第一作者稿件在评审中；匿名评审期内不公开题目与会场。按方向：",
       "areas": [
         "评测效度与泄漏控制",
-        "对齐：后训练增益的归因"
+        "对齐：后训练增益的归因",
+        "机制可解释性：探针究竟量到了什么"
       ]
     }
   }
