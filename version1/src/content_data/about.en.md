@@ -1,3 +1,3 @@
 MSc Advanced Computer Science, University of Leeds, September 2025 to September 2026; degree expected December 2026. BSc Computer Science and Technology, Hunan University of Finance and Economics, 2021 to 2025.
 
-Reviewer for NLPCC 2026, for the GroundLM workshop at EMNLP 2026, and for the VLM4RWD workshop at NeurIPS 2026. Beyond the papers: [Kaggle Competitions Expert](https://www.kaggle.com/beicicc), ranked 1,957 of 217,591, top 0.9%, one silver and one bronze medal.
+Reviewer for NLPCC 2026, for the GroundLM workshop at EMNLP 2026, and for the VLM4RWD workshop at NeurIPS 2026. Beyond the papers: [Kaggle Competitions Expert](https://www.kaggle.com/beicicc), ranked 1,957 of 217,591 (top 0.9%), and Notebooks Expert, 89 of 60,915 (top 0.1%). Both medals were won solo: silver at the NVIDIA Nemotron Model Reasoning Challenge (101 of 4,185) and bronze at Orbit Wars (409 of 4,729).
