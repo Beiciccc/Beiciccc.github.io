@@ -95,7 +95,7 @@
         "tier": "workshop",
         "venue": "GroundLM 2026, workshop at EMNLP 2026",
         "venueLong": "GroundLM workshop · sole author",
-        "format": "Findings",
+        "format": "Workshop Findings",
         "title": "Grounding or Lexical Overlap? A Matched-Pair Study of Internals-Based Context-Faithfulness Probes",
         "authors": [
           {
@@ -210,7 +210,7 @@
         "tier": "workshop",
         "venue": "GroundLM 2026，EMNLP 2026 研讨会",
         "venueLong": "GroundLM 研讨会 · 独立作者",
-        "format": "Findings",
+        "format": "研讨会 Findings",
         "title": "Grounding or Lexical Overlap? A Matched-Pair Study of Internals-Based Context-Faithfulness Probes",
         "authors": [
           {
