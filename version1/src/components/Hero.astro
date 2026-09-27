@@ -139,6 +139,15 @@ const CREST_TINT: 'foil' | 'ivory' | 'original' = 'foil';
               </svg>
             )
           }
+          {
+            crest && (
+              <p class="crest__caption">
+                <span class="crest__rule" aria-hidden="true"></span>
+                <span>{h.crestCaption}</span>
+                <span class="crest__years">{h.crestYears}</span>
+              </p>
+            )
+          }
           <span class="crest__gleam" aria-hidden="true"></span>
         </div>
       </div>
