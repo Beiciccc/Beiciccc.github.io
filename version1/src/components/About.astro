@@ -1,5 +1,6 @@
 ---
-import { type Lang } from '../i18n/content';
+import { type Lang, ui } from '../i18n/content';
+import SectionHead from './SectionHead.astro';
 import { Content as AboutEn } from '../content_data/about.en.md';
 import { Content as AboutZh } from '../content_data/about.zh.md';
 
@@ -7,14 +8,32 @@ interface Props {
   lang: Lang;
 }
 const { lang } = Astro.props;
+const t = ui[lang];
 const heading = lang === 'zh' ? '关于' : 'About';
 ---
 
-<section id="about" class="section section--rail" aria-labelledby="about-heading">
-  <div class="section__inner">
-    <h2 id="about-heading">{heading}</h2>
-    <div class="section__body about__body prose">
-      {lang === 'en' ? <AboutEn /> : <AboutZh />}
+<!-- Set like a diploma: a double gilt frame with corner flourishes and an
+     illuminated initial on the first paragraph. -->
+<section id="about" class="section section--about" aria-labelledby="about-heading">
+  <div class="container">
+    <SectionHead id="about-heading" numeral="III" eyebrow={t.eyebrow.about} heading={heading} />
+    <div class="folio reveal">
+      {
+        ['tl', 'tr', 'bl', 'br'].map((c) => (
+          <svg class={`folio__corner folio__corner--${c}`} aria-hidden="true" focusable="false" viewBox="0 0 64 64" width="64" height="64">
+            <g fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round">
+              <path d="M6 62V6h56" />
+              <path d="M12 62V12h50" opacity=".5" />
+              <path d="M12 30c8 0 18-10 18-18M6 42c18 0 36-18 36-36" opacity=".7" />
+              <path d="M20 21c2.5-3.5 7-3 7 .5s-3.5 4.5-5.2 2.4" />
+            </g>
+            <path d="M6 .5 11.5 6 6 11.5.5 6z" fill="currentColor" />
+          </svg>
+        ))
+      }
+      <div class="prose about__body">
+        {lang === 'en' ? <AboutEn /> : <AboutZh />}
+      </div>
     </div>
   </div>
 </section>

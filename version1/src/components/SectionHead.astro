@@ -1,0 +1,23 @@
+---
+import Ornament from './Ornament.astro';
+
+// Chapter head shared by the homepage sections: a Roman numeral and a small
+// inscriptional eyebrow, the display heading, and a fleuron rule under it.
+interface Props {
+  id: string;
+  numeral: string;
+  eyebrow: string;
+  heading: string;
+}
+const { id, numeral, eyebrow, heading } = Astro.props;
+---
+
+<header class="sec-head reveal">
+  <p class="sec-head__eyebrow">
+    <span class="sec-head__num" aria-hidden="true">{numeral}</span>
+    <span class="sec-head__bar" aria-hidden="true"></span>
+    <span>{eyebrow}</span>
+  </p>
+  <h2 id={id} class="sec-head__title">{heading}</h2>
+  <Ornament />
+</header>

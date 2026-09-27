@@ -25,9 +25,17 @@ const navItems = s.nav.map((item) => {
 <header class="site-header">
   <nav class="nav" aria-label={lang === 'zh' ? '主导航' : 'Primary'}>
     <a class="nav__brand" href={homeHref}>
-      {s.siteTitle}
-      {lang === 'en' && <span class="zh" lang="zh-Hans">张鲲</span>}
-      {lang === 'zh' && <span class="zh" lang="en">Kun Zhang</span>}
+      <!-- Monogram medallion: gilt ring, KZ in inscriptional capitals. -->
+      <svg class="nav__mark" aria-hidden="true" focusable="false" viewBox="0 0 40 40" width="34" height="34">
+        <circle cx="20" cy="20" r="18.6" fill="none" stroke="currentColor" stroke-width="1.1" />
+        <circle cx="20" cy="20" r="15.8" fill="none" stroke="currentColor" stroke-width=".6" stroke-dasharray=".8 1.6" />
+        <text x="20" y="24.4" text-anchor="middle" class="nav__mark-text">KZ</text>
+      </svg>
+      <span class="nav__name">
+        {s.siteTitle}
+        {lang === 'en' && <span class="zh" lang="zh-Hans">张鲲</span>}
+        {lang === 'zh' && <span class="zh" lang="en">Kun Zhang</span>}
+      </span>
     </a>
 
     <div class="nav__links">
@@ -86,4 +94,6 @@ const navItems = s.nav.map((item) => {
       </button>
     </div>
   </nav>
+  <!-- Reading progress: a gilt hairline scaled by the inline script. -->
+  <div class="scroll-progress" aria-hidden="true"><span></span></div>
 </header>

@@ -4,7 +4,8 @@
     "siteDescription": "Kun Zhang. LLM post-training and alignment, on the attribution side. Five first-author papers accepted in 2026, two under review.",
     "counts": {
       "accepted": 5,
-      "underReview": 2
+      "underReview": 2,
+      "reviewerRoles": 3
     },
     "nav": [
       {
@@ -39,7 +40,8 @@
     "siteDescription": "张鲲。大语言模型后训练与对齐的归因侧。2026 年 5 篇第一作者论文录用，2 篇在投。",
     "counts": {
       "accepted": 5,
-      "underReview": 2
+      "underReview": 2,
+      "reviewerRoles": 3
     },
     "nav": [
       {

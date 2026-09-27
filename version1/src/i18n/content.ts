@@ -74,6 +74,24 @@ export const ui = {
     themeLight: 'Theme: light',
     themeDark: 'Theme: dark',
     themeSystem: 'Theme: system',
+    // Ornamental apparatus of the redesigned homepage (numerals, eyebrows, stats).
+    eyebrow: {
+      publications: 'First-author papers · 2026',
+      research: 'Research programme',
+      about: 'Education and service',
+      contact: 'Correspondence',
+    },
+    stats: {
+      accepted: 'First-author papers accepted in 2026',
+      oral: 'Oral presentations',
+      underReview: 'Under review · Phase 2',
+      reviewer: 'Reviewer roles, 2026',
+    },
+    oral: 'Oral',
+    relatedPapers: 'Papers',
+    sealedTitle: 'Sealed while review is anonymous',
+    colophon: 'Set in Cormorant Garamond, Source Serif 4, Source Sans 3 and Cinzel.',
+    toTop: 'Back to top',
   },
   zh: {
     backToBlog: '← 返回全部文章',
@@ -94,6 +112,23 @@ export const ui = {
     themeLight: '主题：浅色',
     themeDark: '主题：深色',
     themeSystem: '主题：跟随系统',
+    eyebrow: {
+      publications: '第一作者论文 · 2026',
+      research: '研究纲领',
+      about: '教育与学术服务',
+      contact: '通信',
+    },
+    stats: {
+      accepted: '2026 年第一作者论文录用',
+      oral: '口头报告',
+      underReview: '在投 · 第二阶段评审',
+      reviewer: '2026 年审稿服务',
+    },
+    oral: '口头报告',
+    relatedPapers: '相关论文',
+    sealedTitle: '匿名评审期间封存',
+    colophon: '西文字体 Cormorant Garamond、Source Serif 4、Source Sans 3 与 Cinzel；中文使用系统宋体与黑体。',
+    toTop: '回到顶部',
   },
 } as const;
 

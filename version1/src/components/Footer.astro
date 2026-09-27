@@ -1,6 +1,7 @@
 ---
 import { getCollection } from 'astro:content';
-import { type Lang, site, pick, localePath } from '../i18n/content';
+import { type Lang, site, ui, pick, localePath } from '../i18n/content';
+import Ornament from './Ornament.astro';
 
 interface Props {
   lang: Lang;
@@ -8,6 +9,7 @@ interface Props {
 
 const { lang } = Astro.props;
 const s = pick(site, lang);
+const t = ui[lang];
 // The blog link only appears once there is at least one published post in
 // this language.
 const published = await getCollection('blog', ({ data }) => data.lang === lang && !data.draft);
@@ -23,16 +25,19 @@ const updated =
 
 <footer class="site-footer">
   <div class="inner">
-    <p class="foot-meta">
-      {s.footer}
-      <span aria-hidden="true"> · </span>
-      <span>{s.footerUpdated} <time datetime={built.toISOString().slice(0, 10)}>{updated}</time></span>
-    </p>
+    <Ornament variant="fleuron" class="site-footer__orn" />
     <nav aria-label={lang === 'zh' ? '页脚导航' : 'Footer'}>
       <a href={localePath(lang, '/')}>{s.backHome}</a>
       {hasBlog && <a href={localePath(lang, '/blog/')}>{s.blogTitle}</a>}
       <a href="/cv.pdf" type="application/pdf">CV</a>
       <a href="https://github.com/Beiciccc" rel="me noopener noreferrer">GitHub</a>
+      <a href="#main">{t.toTop}</a>
     </nav>
+    <p class="foot-meta">
+      {s.footer}
+      <span aria-hidden="true"> · </span>
+      <span>{s.footerUpdated} <time datetime={built.toISOString().slice(0, 10)}>{updated}</time></span>
+    </p>
+    <p class="foot-colophon">{t.colophon}</p>
   </div>
 </footer>

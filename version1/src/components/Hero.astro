@@ -1,34 +1,381 @@
 ---
-import { type Lang, hero, pick } from '../i18n/content';
+import { type Lang, hero, site, publications, ui, pick } from '../i18n/content';
 
 interface Props {
   lang: Lang;
 }
 const { lang } = Astro.props;
 const h = pick(hero, lang);
+const s = pick(site, lang);
+const t = ui[lang];
+
+// Headline figures. Accepted / under review come from site.counts (the
+// single place the public tally is kept); orals are counted from the paper
+// list itself so the two can never disagree.
+const orals = publications.en.items.filter((i) => i.format === 'Oral').length;
+const stats = [
+  { n: s.counts.accepted, label: t.stats.accepted },
+  { n: orals, label: t.stats.oral },
+  { n: s.counts.underReview, label: t.stats.underReview },
+  { n: s.counts.reviewerRoles, label: t.stats.reviewer },
+];
+
+// ---- The astrolabe (decorative SVG, drawn once at build time) -------------
+const C = 200;
+const r2 = (n: number) => Math.round(n * 100) / 100;
+const polar = (r: number, deg: number, cx = C, cy = C) => {
+  const a = ((deg - 90) * Math.PI) / 180;
+  return { x: r2(cx + r * Math.cos(a)), y: r2(cy + r * Math.sin(a)) };
+};
+
+// Limb: a degree scale, long ticks every 30°, medium every 15°.
+const ticks = Array.from({ length: 120 }, (_, i) => {
+  const deg = i * 3;
+  const len = deg % 30 === 0 ? 13 : deg % 15 === 0 ? 8 : 4;
+  const a = polar(190, deg);
+  const b = polar(190 - len, deg);
+  return { ...a, x2: b.x, y2: b.y, major: deg % 30 === 0 };
+});
+
+// Hour ring: twelve Roman numerals between two circles.
+const ROMAN = ['XII', 'I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII', 'IX', 'X', 'XI'];
+const hours = ROMAN.map((label, i) => {
+  const deg = i * 30;
+  const p = polar(129, deg);
+  const d1 = polar(122, deg + 15);
+  const d2 = polar(136, deg + 15);
+  return { label, deg, ...p, sx1: d1.x, sy1: d1.y, sx2: d2.x, sy2: d2.y };
+});
+
+// Rete: an eight-pointed {8/3} star and a few "fixed stars" on its tips.
+const star = Array.from({ length: 8 }, (_, i) => polar(104, i * 135 + 22.5));
+const starPath = 'M' + star.map((p) => `${p.x} ${p.y}`).join('L') + 'Z';
+const fixedStars = [0, 1, 2, 3, 4, 5, 6, 7].map((i) => polar(104, i * 45 + 22.5));
+
+// Circular inscription; textLength stretches it to close the ring exactly.
+const ringR = 160;
+const ringLen = r2(2 * Math.PI * ringR - 6);
+const ringText = lang === 'zh' ? h.emblem.repeat(2) : h.emblem.toUpperCase();
 ---
 
-<!-- Title block of the "article". ≥ 900px the kicker sits in the left rail
-     (right-aligned, like a byline column); the name, tagline, intro and the
-     two buttons form the reading column. The double rule under the section
-     is drawn by CSS (.hero .section__inner). -->
-<section class="section section--rail hero" aria-labelledby="hero-name">
-  <div class="section__inner">
-    <p class="hero__kicker">{h.kicker}</p>
-    <div class="section__body">
-      <h1 id="hero-name">{h.name}</h1>
-      <p class="hero__tagline"><em>{h.tagline}</em></p>
-      <p class="lede hero__intro">{h.intro}</p>
-      <div class="hero__actions">
-        <a class="btn" href={h.ctaPrimary.href}>
+<!-- Title page. Full-bleed midnight band in both themes: a live constellation
+     (canvas), a slowly turning astrolabe with the seal at its hub, and the
+     headline figures along the foot. Everything decorative is aria-hidden. -->
+<section class="hero" aria-labelledby="hero-name">
+  <div class="hero__sky" aria-hidden="true">
+    <canvas class="hero__canvas"></canvas>
+    <div class="hero__aurora"></div>
+    <div class="hero__chart"></div>
+  </div>
+
+  <div class="hero__inner">
+    <div class="hero__text">
+      <p class="hero__kicker rise" style="--d: 0">
+        <span class="hero__kicker-rule" aria-hidden="true"></span>
+        {h.kicker}
+      </p>
+      <h1 id="hero-name" class="hero__name rise" style="--d: 1">
+        <span class="foil">{h.name}</span>
+      </h1>
+      <p class="hero__tagline rise" style="--d: 2"><em>{h.tagline}</em></p>
+      <p class="hero__intro rise" style="--d: 3">{h.intro}</p>
+      <div class="hero__actions rise" style="--d: 4">
+        <a class="btn btn--gold" href={h.ctaPrimary.href}>
           {h.ctaPrimary.label}
           <!-- U+2192 is not in the self-hosted latin subset; draw the arrow. -->
           <svg class="btn__arrow" aria-hidden="true" focusable="false" viewBox="0 0 16 16" width="14" height="14">
             <path d="M2.5 8h11M9 3.5 13.5 8 9 12.5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" />
           </svg>
         </a>
-        <a class="btn btn--ghost" href={h.ctaSecondary.href} type="application/pdf">{h.ctaSecondary.label}</a>
+        <a class="btn btn--glass" href={h.ctaSecondary.href} type="application/pdf">
+          <svg class="btn__icon" aria-hidden="true" focusable="false" viewBox="0 0 16 16" width="14" height="14">
+            <path d="M4 1.75h5.2L12.5 5v9.25H4z M9 1.75V5.2h3.5 M6 8.25h4.5M6 10.75h4.5" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round" />
+          </svg>
+          {h.ctaSecondary.label}
+        </a>
       </div>
     </div>
+
+    <div class="hero__emblem rise" style="--d: 2" aria-hidden="true">
+      <svg class="astrolabe" viewBox="0 0 400 400" width="400" height="400" focusable="false">
+        <defs>
+          <radialGradient id="astro-glow" cx="50%" cy="50%" r="50%">
+            <stop offset="0" stop-color="#f3d58b" stop-opacity=".28" />
+            <stop offset=".55" stop-color="#c9a052" stop-opacity=".08" />
+            <stop offset="1" stop-color="#c9a052" stop-opacity="0" />
+          </radialGradient>
+          <linearGradient id="astro-gold" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0" stop-color="#f6e2a6" />
+            <stop offset=".45" stop-color="#c9a052" />
+            <stop offset="1" stop-color="#8f6a26" />
+          </linearGradient>
+          <path id="astro-ring" d={`M${C} ${C - ringR}a${ringR} ${ringR} 0 1 1 -0.01 0`} />
+          <filter id="seal-rough" x="-10%" y="-10%" width="120%" height="120%">
+            <feTurbulence type="fractalNoise" baseFrequency=".85" numOctaves="2" seed="11" result="n" />
+            <feDisplacementMap in="SourceGraphic" in2="n" scale="2.4" xChannelSelector="R" yChannelSelector="G" />
+          </filter>
+        </defs>
+
+        <circle cx={C} cy={C} r="200" fill="url(#astro-glow)" />
+
+        <!-- Mater: limb and degree scale (static) -->
+        <g class="astro__mater" stroke="url(#astro-gold)" fill="none">
+          <circle cx={C} cy={C} r="194" stroke-width="1.4" />
+          <circle cx={C} cy={C} r="190" stroke-width=".6" />
+          <circle cx={C} cy={C} r="172" stroke-width=".6" opacity=".7" />
+          {ticks.map((k) => <line x1={k.x} y1={k.y} x2={k.x2} y2={k.y2} stroke-width={k.major ? 1.1 : 0.6} />)}
+        </g>
+
+        <!-- Inscription ring (turns clockwise) -->
+        <g class="astro__spin astro__spin--slow">
+          <text class="astro__ring-text" fill="url(#astro-gold)">
+            <textPath href="#astro-ring" textLength={ringLen} lengthAdjust="spacing">{ringText}</textPath>
+          </text>
+        </g>
+
+        <!-- Hour ring (turns counter-clockwise) -->
+        <g class="astro__spin astro__spin--rev">
+          <g stroke="url(#astro-gold)" fill="none">
+            <circle cx={C} cy={C} r="143" stroke-width=".8" />
+            <circle cx={C} cy={C} r="116" stroke-width=".8" />
+            {hours.map((hh) => <line x1={hh.sx1} y1={hh.sy1} x2={hh.sx2} y2={hh.sy2} stroke-width=".6" />)}
+          </g>
+          {
+            hours.map((hh) => (
+              <text class="astro__hour" x={hh.x} y={hh.y} transform={`rotate(${hh.deg} ${hh.x} ${hh.y})`} fill="#e7cf8f">
+                {hh.label}
+              </text>
+            ))
+          }
+        </g>
+
+        <!-- Rete: star, ecliptic and the alidade (turns slowly) -->
+        <g class="astro__spin astro__spin--rete">
+          <g stroke="url(#astro-gold)" fill="none">
+            <path d={starPath} stroke-width=".7" opacity=".85" />
+            <circle cx={C} cy={C - 22} r="78" stroke-width="1" stroke-dasharray="1 4" />
+            <circle cx={C} cy={C} r="104" stroke-width=".5" opacity=".5" />
+            <path d={`M${C} ${C - 150}V${C + 150}`} stroke-width=".9" />
+            <path d={`M${C - 6} ${C - 142}l6-10 6 10M${C - 6} ${C + 142}l6 10 6-10`} stroke-width=".9" />
+          </g>
+          {fixedStars.map((p) => <circle class="astro__star" cx={p.x} cy={p.y} r="2.4" />)}
+        </g>
+
+        <!-- Hub: the seal (static, upright) -->
+        <g class="astro__seal" filter="url(#seal-rough)">
+          <rect x="173" y="152" width="54" height="96" rx="5" fill="#a5202f" />
+          <rect x="177.5" y="156.5" width="45" height="87" rx="3" fill="none" stroke="#f6ead3" stroke-width="1.6" />
+          <text x="200" y="195" class="astro__seal-char">张</text>
+          <text x="200" y="236" class="astro__seal-char">鲲</text>
+        </g>
+      </svg>
+    </div>
   </div>
+
+  <dl class="hero__stats rise" style="--d: 5">
+    {
+      stats.map((st) => (
+        <div class="stat">
+          <dt class="stat__label">{st.label}</dt>
+          <dd class="stat__num" data-count={st.n}>{st.n}</dd>
+        </div>
+      ))
+    }
+  </dl>
 </section>
+
+<script>
+  // Constellation field behind the title page: drifting stars joined by gold
+  // hairlines when they come close, a little like an attention graph. Runs
+  // only while the hero is on screen and the tab is visible; with reduced
+  // motion a single still frame is drawn instead.
+  const hero = document.querySelector<HTMLElement>('.hero');
+  const canvas = hero?.querySelector<HTMLCanvasElement>('.hero__canvas');
+  const ctx = canvas?.getContext('2d');
+
+  if (hero && canvas && ctx) {
+    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)');
+    type Node = { x: number; y: number; vx: number; vy: number; r: number; tw: number; bright: boolean };
+    let w = 0;
+    let h = 0;
+    let nodes: Node[] = [];
+    let raf = 0;
+    let visible = true;
+    let pointer: { x: number; y: number } | null = null;
+    let link = 120;
+
+    const seed = () => {
+      const count = Math.max(28, Math.min(130, Math.round((w * h) / 10500)));
+      nodes = Array.from({ length: count }, () => {
+        const speed = 0.06 + Math.random() * 0.2;
+        const dir = Math.random() * Math.PI * 2;
+        return {
+          x: Math.random() * w,
+          y: Math.random() * h,
+          vx: Math.cos(dir) * speed,
+          vy: Math.sin(dir) * speed,
+          r: 0.5 + Math.random() * 1.3,
+          tw: Math.random() * Math.PI * 2,
+          bright: Math.random() < 0.07,
+        };
+      });
+    };
+
+    const resize = () => {
+      const rect = canvas.getBoundingClientRect();
+      const dpr = Math.min(window.devicePixelRatio || 1, 2);
+      w = rect.width;
+      h = rect.height;
+      canvas.width = Math.round(w * dpr);
+      canvas.height = Math.round(h * dpr);
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      link = Math.max(90, Math.min(150, w / 10));
+      seed();
+    };
+
+    const draw = (t: number) => {
+      ctx.clearRect(0, 0, w, h);
+      const n = nodes.length;
+      for (let i = 0; i < n; i++) {
+        const a = nodes[i];
+        for (let j = i + 1; j < n; j++) {
+          const b = nodes[j];
+          const dx = a.x - b.x;
+          const dy = a.y - b.y;
+          const d2 = dx * dx + dy * dy;
+          if (d2 < link * link) {
+            const k = 1 - Math.sqrt(d2) / link;
+            ctx.strokeStyle = `rgba(222, 190, 120, ${(k * 0.32).toFixed(3)})`;
+            ctx.lineWidth = 0.6;
+            ctx.beginPath();
+            ctx.moveTo(a.x, a.y);
+            ctx.lineTo(b.x, b.y);
+            ctx.stroke();
+          }
+        }
+        if (pointer) {
+          const dx = a.x - pointer.x;
+          const dy = a.y - pointer.y;
+          const d = Math.sqrt(dx * dx + dy * dy);
+          if (d < link * 1.4) {
+            ctx.strokeStyle = `rgba(246, 226, 166, ${((1 - d / (link * 1.4)) * 0.5).toFixed(3)})`;
+            ctx.lineWidth = 0.7;
+            ctx.beginPath();
+            ctx.moveTo(a.x, a.y);
+            ctx.lineTo(pointer.x, pointer.y);
+            ctx.stroke();
+          }
+        }
+      }
+      for (const a of nodes) {
+        const glow = 0.55 + 0.45 * Math.sin(t / 900 + a.tw);
+        ctx.fillStyle = `rgba(246, 232, 196, ${(0.35 + 0.5 * glow).toFixed(3)})`;
+        ctx.beginPath();
+        ctx.arc(a.x, a.y, a.r, 0, Math.PI * 2);
+        ctx.fill();
+        if (a.bright) {
+          const s = 5 + 4 * glow;
+          ctx.strokeStyle = `rgba(246, 226, 166, ${(0.25 + 0.55 * glow).toFixed(3)})`;
+          ctx.lineWidth = 0.8;
+          ctx.beginPath();
+          ctx.moveTo(a.x - s, a.y);
+          ctx.lineTo(a.x + s, a.y);
+          ctx.moveTo(a.x, a.y - s);
+          ctx.lineTo(a.x, a.y + s);
+          ctx.stroke();
+          ctx.fillStyle = `rgba(246, 226, 166, ${(0.12 * glow).toFixed(3)})`;
+          ctx.beginPath();
+          ctx.arc(a.x, a.y, 6 + 3 * glow, 0, Math.PI * 2);
+          ctx.fill();
+        }
+      }
+    };
+
+    const step = (t: number) => {
+      for (const a of nodes) {
+        a.x += a.vx;
+        a.y += a.vy;
+        if (a.x < -20) a.x = w + 20;
+        else if (a.x > w + 20) a.x = -20;
+        if (a.y < -20) a.y = h + 20;
+        else if (a.y > h + 20) a.y = -20;
+      }
+      draw(t);
+      raf = requestAnimationFrame(step);
+    };
+
+    const start = () => {
+      cancelAnimationFrame(raf);
+      if (reduce.matches) {
+        draw(0);
+        return;
+      }
+      if (visible && !document.hidden) raf = requestAnimationFrame(step);
+    };
+
+    resize();
+    start();
+
+    let resizeTimer = 0;
+    window.addEventListener('resize', () => {
+      window.clearTimeout(resizeTimer);
+      resizeTimer = window.setTimeout(() => {
+        resize();
+        start();
+      }, 150);
+    });
+    document.addEventListener('visibilitychange', start);
+    reduce.addEventListener('change', start);
+
+    if ('IntersectionObserver' in window) {
+      new IntersectionObserver((entries) => {
+        visible = entries[0]?.isIntersecting ?? true;
+        start();
+      }).observe(hero);
+    }
+
+    hero.addEventListener('pointermove', (e) => {
+      if (e.pointerType !== 'mouse') return;
+      const rect = canvas.getBoundingClientRect();
+      pointer = { x: e.clientX - rect.left, y: e.clientY - rect.top };
+    });
+    hero.addEventListener('pointerleave', () => {
+      pointer = null;
+    });
+  }
+
+  // Headline figures count up once when they first come into view.
+  const nums = document.querySelectorAll<HTMLElement>('.stat__num[data-count]');
+  if (nums.length && 'IntersectionObserver' in window && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    let printing = false;
+    const io = new IntersectionObserver(
+      (entries) => {
+        for (const e of entries) {
+          if (!e.isIntersecting) continue;
+          io.unobserve(e.target);
+          const el = e.target as HTMLElement;
+          const end = Number(el.dataset.count) || 0;
+          const t0 = performance.now();
+          const dur = 1400;
+          const tick = (now: number) => {
+            if (printing) return;
+            const p = Math.min(1, (now - t0) / dur);
+            el.textContent = String(Math.round(end * (1 - Math.pow(1 - p, 3))));
+            if (p < 1) requestAnimationFrame(tick);
+          };
+          requestAnimationFrame(tick);
+        }
+      },
+      { threshold: 0.6 }
+    );
+    nums.forEach((el) => io.observe(el));
+    // A page printed mid-count must show the real figures.
+    window.addEventListener('beforeprint', () => {
+      printing = true;
+      nums.forEach((el) => {
+        io.unobserve(el);
+        el.textContent = el.dataset.count ?? el.textContent;
+      });
+    });
+  }
+</script>

@@ -1,12 +1,19 @@
 ---
-// Self-hosted type (latin subsets only; Vite hashes the woff2 into _astro/).
-// Source Serif 4: roman with the opsz axis (122 KB) + true italic (52 KB).
-// Source Sans 3:  roman, wght axis (29 KB). Imported before global.css so the
-// @font-face rules precede their first use.
+// Self-hosted type (Vite hashes the woff2 into _astro/; unicode-range means
+// only the latin files are fetched for these pages).
+// Source Serif 4: roman with the opsz axis + true italic — running text.
+// Source Sans 3:  roman, wght axis — apparatus (bylines, nav, buttons).
+// Cormorant Garamond: roman + italic, wght axis — display (name, headings, titles).
+// Cinzel: inscriptional capitals — numerals, eyebrows, the astrolabe ring.
+// Imported before global.css so the @font-face rules precede their first use.
 import '@fontsource-variable/source-serif-4/opsz.css';
 import '@fontsource-variable/source-serif-4/wght-italic.css';
 import '@fontsource-variable/source-sans-3/wght.css';
+import '@fontsource-variable/cormorant-garamond/wght.css';
+import '@fontsource-variable/cormorant-garamond/wght-italic.css';
+import '@fontsource-variable/cinzel/wght.css';
 import serifWoff2 from '@fontsource-variable/source-serif-4/files/source-serif-4-latin-opsz-normal.woff2?url';
+import displayWoff2 from '@fontsource-variable/cormorant-garamond/files/cormorant-garamond-latin-wght-normal.woff2?url';
 import '../styles/global.css';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
@@ -51,15 +58,16 @@ const xDefault = enHref ?? canonical;
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="color-scheme" content="light dark" />
-    <meta name="theme-color" media="(prefers-color-scheme: light)" content="#fbfaf6" />
-    <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#161513" />
+    <!-- The masthead is midnight in both themes. -->
+    <meta name="theme-color" content="#0b1226" />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
     <link rel="sitemap" href="/sitemap-index.xml" />
 
-    <!-- Only the file the first paint needs (h1 + running text). The italic
-         and the sans arrive via font-display: swap behind metric-matched
+    <!-- Only the files the first paint needs (display h1 + running text). The
+         italics, the sans and Cinzel arrive via font-display: swap behind
          fallbacks declared in global.css. -->
+    <link rel="preload" as="font" type="font/woff2" crossorigin href={displayWoff2} />
     <link rel="preload" as="font" type="font/woff2" crossorigin href={serifWoff2} />
 
     <title>{title}</title>
@@ -156,18 +164,89 @@ const xDefault = enHref ?? canonical;
           });
         }
 
-        // NAV: settle the sticky bar once scrolled. One rAF-throttled listener.
+        // NAV: settle the sticky bar once scrolled and advance the gilt
+        // reading-progress hairline. One rAF-throttled listener.
+        var bar = document.querySelector('.scroll-progress span');
         var ticking = false;
         function onScroll() {
           if (ticking) return;
           ticking = true;
           requestAnimationFrame(function () {
-            document.body.classList.toggle('scrolled', window.scrollY > 8);
+            var y = window.scrollY;
+            document.body.classList.toggle('scrolled', y > 8);
+            if (bar) {
+              var max = document.documentElement.scrollHeight - window.innerHeight;
+              bar.style.transform = 'scaleX(' + (max > 0 ? Math.min(1, y / max) : 0).toFixed(4) + ')';
+            }
             ticking = false;
           });
         }
         onScroll();
         window.addEventListener('scroll', onScroll, { passive: true });
+        window.addEventListener('resize', onScroll, { passive: true });
+
+        // REVEAL: blocks marked .reveal rise into place the first time they
+        // enter the viewport. The hidden state only exists in CSS under
+        // html.js + no-preference motion, so no-JS and reduced-motion
+        // visitors always see everything; any failure here shows it all too.
+        var reveals = document.querySelectorAll('.reveal');
+        function showAll() {
+          reveals.forEach(function (el) { el.classList.add('is-in'); });
+        }
+        try {
+          if (!('IntersectionObserver' in window) || window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+            showAll();
+          } else {
+            var io = new IntersectionObserver(function (entries) {
+              entries.forEach(function (e) {
+                if (e.isIntersecting) {
+                  e.target.classList.add('is-in');
+                  io.unobserve(e.target);
+                }
+              });
+            }, { rootMargin: '0px 0px -8% 0px', threshold: 0.08 });
+            reveals.forEach(function (el) { io.observe(el); });
+            // Printing or jumping to a #fragment must never meet hidden blocks.
+            window.addEventListener('beforeprint', showAll);
+            window.addEventListener('hashchange', function () {
+              var tgt = location.hash && document.getElementById(location.hash.slice(1));
+              if (tgt) {
+                tgt.classList.add('is-in');
+                var inner = tgt.closest('.reveal');
+                if (inner) inner.classList.add('is-in');
+              }
+            });
+          }
+        } catch (e) {
+          showAll();
+        }
+
+        // SCROLLSPY: mark the nav link of the section being read.
+        try {
+          var links = {};
+          document.querySelectorAll('.nav__links a[href*="#"]').forEach(function (a) {
+            links[a.getAttribute('href').split('#')[1]] = a;
+          });
+          var ids = Object.keys(links);
+          if (ids.length && 'IntersectionObserver' in window) {
+            var spy = new IntersectionObserver(function (entries) {
+              entries.forEach(function (e) {
+                var a = links[e.target.id];
+                if (!a) return;
+                if (e.isIntersecting) {
+                  ids.forEach(function (id) { links[id].removeAttribute('aria-current'); });
+                  a.setAttribute('aria-current', 'location');
+                } else if (a.getAttribute('aria-current')) {
+                  a.removeAttribute('aria-current');
+                }
+              });
+            }, { rootMargin: '-45% 0px -50% 0px' });
+            ids.forEach(function (id) {
+              var sec = document.getElementById(id);
+              if (sec) spy.observe(sec);
+            });
+          }
+        } catch (e) {}
 
         // PRINT: open every abstract for the printed page, then restore.
         var details = document.querySelectorAll('details.pub__more');
