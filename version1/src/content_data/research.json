@@ -15,9 +15,10 @@
       {
         "title": "Mechanistic interpretability",
         "refs": [
+          "acml2026",
           "groundlm2026"
         ],
-        "body": "Whether a probe or a steering direction measures the concept it is named for, or a cheaper correlate such as lexical overlap."
+        "body": "Whether a probe or a steering direction measures the concept it is named for, or a cheaper correlate such as lexical overlap or sampling noise."
       },
       {
         "title": "Alignment and safety",
@@ -26,7 +27,7 @@
         "body": "Which properties a post-training run installs, which it only appears to, and what evidence tells the two apart."
       }
     ],
-    "outro": "The evaluation layer is the four accepted papers above. The training layer runs at pilot scale: under 200 preference pairs per adapter, one algorithm, one A100. Raising that half to research scale is what the PhD is for."
+    "outro": "The evaluation layer is the five accepted papers above. The training layer runs at pilot scale: under 200 preference pairs per adapter, one algorithm, one A100. Raising that half to research scale is what the PhD is for."
   },
   "zh": {
     "heading": "我在做什么",
@@ -44,9 +45,10 @@
       {
         "title": "机制可解释性",
         "refs": [
+          "acml2026",
           "groundlm2026"
         ],
-        "body": "一个探针或一个引导方向，量的是它所命名的概念，还是词面重叠这类更廉价的相关物。"
+        "body": "一个探针或一个引导方向，量的是它所命名的概念，还是词面重叠、采样噪声这类更廉价的相关物。"
       },
       {
         "title": "对齐与安全",
@@ -55,6 +57,6 @@
         "body": "一次后训练装进了哪些属性，哪些只是看起来装进了，什么证据能把两者分开。"
       }
     ],
-    "outro": "评估层是上面四篇已录用论文。训练层停在 pilot 规模：每个适配器不到 200 个偏好对、一种算法、一张 A100。把这一半提到研究级，就是读博的目的。"
+    "outro": "评估层是上面五篇已录用论文。训练层停在 pilot 规模：每个适配器不到 200 个偏好对、一种算法、一张 A100。把这一半提到研究级，就是读博的目的。"
   }
 }
