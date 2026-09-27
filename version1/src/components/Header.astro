@@ -1,5 +1,5 @@
 ---
-import { type Lang, site, ui, pick, localePath } from '../i18n/content';
+import { type Lang, site, contact, ui, pick, localePath } from '../i18n/content';
 
 interface Props {
   lang: Lang;
@@ -15,7 +15,10 @@ const homeHref = localePath(lang, '/');
 const toggleHref = altUrl ?? localePath(lang === 'en' ? 'zh' : 'en', '/');
 const toggleHreflang = lang === 'en' ? 'zh-Hans' : 'en';
 
-const navItems = s.nav.map((item) => {
+// Sections in page order, Contact last among them, then the CV file.
+const sections = [...s.nav.filter((i) => !i.href.endsWith('.pdf')), { label: pick(contact, lang).heading, href: '#contact' }];
+const files = s.nav.filter((i) => i.href.endsWith('.pdf'));
+const navItems = [...sections, ...files].map((item) => {
   const isHash = item.href.startsWith('#');
   const isPdf = item.href.endsWith('.pdf');
   return { label: item.label, href: isHash ? `${homeHref}${item.href}` : item.href, isPdf };
@@ -66,6 +69,31 @@ const navItems = s.nav.map((item) => {
         <span class="sep" aria-hidden="true">/</span>
         <span class={lang === 'zh' ? 'on' : ''}>ZH</span>
       </a>
+
+      <!-- Pause / resume every perpetual motion (sky, orrery). Hidden
+           without JS; the choice is remembered. -->
+      <button
+        id="motion-toggle"
+        class="toggle toggle__motion"
+        type="button"
+        aria-pressed="false"
+        aria-label={t.motionPause}
+        title={t.motionPause}
+        data-label-pause={t.motionPause}
+        data-label-resume={t.motionResume}
+      >
+        <svg aria-hidden="true" focusable="false" viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round">
+          <g class="toggle__motion-on">
+            <circle cx="12" cy="12" r="8.5" />
+            <circle cx="12" cy="12" r="1.8" fill="currentColor" stroke="none" />
+            <circle cx="20.5" cy="12" r="1.9" fill="currentColor" stroke="none" />
+          </g>
+          <g class="toggle__motion-off">
+            <circle cx="12" cy="12" r="8.5" />
+            <path d="M9.8 8.8v6.4M14.2 8.8v6.4" />
+          </g>
+        </svg>
+      </button>
 
       <!-- Three-state theme control: system → light → dark → system. Icon and
            aria-label reflect the *setting*, not the resolved colour. Hidden

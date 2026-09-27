@@ -2,6 +2,7 @@
 import { type Lang, ui } from '../i18n/content';
 import SectionHead from './SectionHead.astro';
 import Corner from './Corner.astro';
+import Ornament from './Ornament.astro';
 import { Content as AboutEn } from '../content_data/about.en.md';
 import { Content as AboutZh } from '../content_data/about.zh.md';
 
@@ -13,13 +14,14 @@ const t = ui[lang];
 const heading = lang === 'zh' ? '关于' : 'About';
 ---
 
-<!-- Set like a diploma: a double gilt frame with corner flourishes and an
-     illuminated initial on the first paragraph. -->
+<!-- Set like a folio leaf: a double gilt frame with corner flourishes, a
+     fleuron at the head, and the opening line in small capitals. -->
 <section id="about" class="section section--about" aria-labelledby="about-heading">
   <div class="container">
     <SectionHead id="about-heading" numeral="III" eyebrow={t.eyebrow.about} heading={heading} />
     <div class="folio reveal">
       {['tl', 'tr', 'bl', 'br'].map((c) => <Corner class={`folio__corner folio__corner--${c}`} />)}
+      <Ornament variant="fleuron" class="folio__orn" />
       <div class="prose about__body">
         {lang === 'en' ? <AboutEn /> : <AboutZh />}
       </div>

@@ -7,14 +7,15 @@
     "dev": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
-    "astro": "astro"
+    "astro": "astro",
+    "fonts:zh": "node scripts/subset-cjk.mjs"
   },
   "dependencies": {
     "@astrojs/sitemap": "^3",
-    "@fontsource-variable/cinzel": "^5.3.0",
     "@fontsource-variable/cormorant-garamond": "^5.3.0",
     "@fontsource-variable/source-sans-3": "^5.3.0",
     "@fontsource-variable/source-serif-4": "^5.3.0",
+    "@fontsource/cormorant-sc": "^5.3.0",
     "astro": "^5"
   }
 }

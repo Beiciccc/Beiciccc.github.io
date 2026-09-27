@@ -43,6 +43,11 @@ export function baseSlug(filePath: string | undefined): string {
   return base.replace(/\.md$/i, '').replace(/\.(en|zh)$/i, '');
 }
 
+/** Short venue name for references: "LUHME 2026, workshop at EMNLP 2026" → "LUHME". */
+export function venueShort(venue: string): string {
+  return venue.split(/[,，]\s*/)[0].replace(/\s*\d{4}$/, '');
+}
+
 /**
  * 1-based position of a publication in publications.json item order. This is
  * the [n] number shown in the list and used by Research theme references, so
@@ -70,7 +75,7 @@ export const ui = {
     onThisSite: 'On this site',
     pubCorresponding: 'corresponding',
     pubAbstract: 'Abstract and scale',
-    pubLinks: { pdf: 'PDF', code: 'Code', doi: 'DOI' },
+    pubLinks: { pdf: 'PDF', code: 'Code', doi: 'DOI', request: 'PDF on request', requestSubject: 'PDF request: ' },
     themeLight: 'Theme: light',
     themeDark: 'Theme: dark',
     themeSystem: 'Theme: system',
@@ -88,11 +93,14 @@ export const ui = {
       reviewer: 'Reviewer roles, 2026',
     },
     oral: 'Oral',
+    oralSplit: (m: number, w: number) => `${m} conference · ${w} workshop`,
     relatedPapers: 'Papers',
     sealedTitle: 'Sealed while review is anonymous',
-    colophon: 'Set in Cormorant Garamond, Source Serif 4, Source Sans 3 and Cinzel.',
+    colophon: 'Set in Cormorant, Source Serif 4 and Source Sans 3.',
     toTop: 'Back to top',
     crestAlt: 'University of Leeds',
+    motionPause: 'Pause motion',
+    motionResume: 'Resume motion',
   },
   zh: {
     backToBlog: '← 返回全部文章',
@@ -109,7 +117,7 @@ export const ui = {
     onThisSite: '本站导航',
     pubCorresponding: '通讯作者',
     pubAbstract: '摘要与规模',
-    pubLinks: { pdf: 'PDF', code: '代码', doi: 'DOI' },
+    pubLinks: { pdf: 'PDF', code: '代码', doi: 'DOI', request: '索取 PDF', requestSubject: '索取论文 PDF：' },
     themeLight: '主题：浅色',
     themeDark: '主题：深色',
     themeSystem: '主题：跟随系统',
@@ -126,11 +134,14 @@ export const ui = {
       reviewer: '2026 年审稿服务',
     },
     oral: '口头报告',
+    oralSplit: (m: number, w: number) => `会议 ${m} · 研讨会 ${w}`,
     relatedPapers: '相关论文',
     sealedTitle: '匿名评审期间封存',
-    colophon: '西文字体 Cormorant Garamond、Source Serif 4、Source Sans 3 与 Cinzel；中文使用系统宋体与黑体。',
+    colophon: '西文字体 Cormorant、Source Serif 4 与 Source Sans 3；中文标题 Noto Serif SC，正文使用系统黑体。',
     toTop: '回到顶部',
     crestAlt: '利兹大学',
+    motionPause: '暂停动效',
+    motionResume: '恢复动效',
   },
 } as const;
 

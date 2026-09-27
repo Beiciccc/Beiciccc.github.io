@@ -1,5 +1,5 @@
 ---
-import { type Lang, publications, ui, pick, pubIndex } from '../i18n/content';
+import { type Lang, publications, contact, ui, pick, pubIndex } from '../i18n/content';
 import SectionHead from './SectionHead.astro';
 
 interface Props {
@@ -13,12 +13,12 @@ const anyMissingPdf = p.items.some((i) => !i.pdf);
 const sep = lang === 'zh' ? '，' : ', ';
 const paren = (s: string) => (lang === 'zh' ? `（${s}）` : ` (${s})`);
 
-// "LUHME 2026, workshop at EMNLP 2026" → medallion "LUHME" over "2026".
-const medal = (venue: string) => {
-  const head = venue.split(/[,，]\s*/)[0];
-  const m = head.match(/^(.*?)\s*(\d{4})$/);
-  return m ? { name: m[1], year: m[2] } : { name: head, year: '' };
-};
+// Papers without a posted PDF offer one by email.
+const email = pick(contact, lang).links.find((l) => l.href.startsWith('mailto:'))?.value;
+const requestHref = (title: string) =>
+  `mailto:${email}?subject=${encodeURIComponent(t.pubLinks.requestSubject + title)}`;
+// Hyphenated compounds in titles ("Graph-Snapshot") never break at the hyphen.
+const titleWords = (title: string) => title.split(' ');
 
 // Wax seal outline for the under-review note: a circle with a soft, uneven
 // scalloped edge, computed once at build time.
@@ -32,9 +32,8 @@ const waxPath =
   'Z';
 ---
 
-<!-- Numbered reference list set as engraved plates. The [n] lives in the
-     medallion and stays readable text: the Research section refers back to
-     these numbers. -->
+<!-- Numbered bibliography. The [n] sits in an engraved dial ring and stays
+     readable text: the Research section refers back to these numbers. -->
 <section id="publications" class="section section--pubs" aria-labelledby="publications-heading">
   <div class="container">
     <SectionHead id="publications-heading" numeral="I" eyebrow={t.eyebrow.publications} heading={p.heading} />
@@ -50,8 +49,8 @@ const waxPath =
             </h3>
             <ol class="pubs__list" role="list">
               {group.map((item) => {
-                const m = medal(item.venue);
                 const oral = item.format === 'Oral';
+                const words = titleWords(item.title);
                 return (
                   <li class="pub reveal" id={item.id}>
                     <div class="pub__aside">
@@ -62,10 +61,6 @@ const waxPath =
                           <span class="pub__bracket">]</span>
                         </span>
                       </span>
-                      <span class="pub__medal-venue" aria-hidden="true">
-                        <span>{m.name}</span>
-                        {m.year && <span class="pub__medal-year">{m.year}</span>}
-                      </span>
                     </div>
 
                     <div class="pub__main">
@@ -73,27 +68,20 @@ const waxPath =
                         <span class="pub__venue">{item.venue}</span>
                         {item.format &&
                           (oral ? (
-                            <span class="badge badge--oral" style={`--bd: ${(pubIndex(item.id) * 1.3).toFixed(1)}s`}>
-                              <svg class="badge__laurel" aria-hidden="true" focusable="false" viewBox="0 0 24 16" width="18" height="12">
-                                <g fill="currentColor">
-                                  <path d="M7.6 14.6C3.6 13 1.4 9.6 1.6 4.8l.9.1c-.1 4.4 1.9 7.4 5.5 8.9z" />
-                                  <ellipse cx="2.3" cy="3.4" rx="1" ry="2" transform="rotate(-8 2.3 3.4)" />
-                                  <ellipse cx="3.4" cy="7.6" rx="1" ry="2" transform="rotate(-40 3.4 7.6)" />
-                                  <ellipse cx="5.6" cy="11" rx="1" ry="2" transform="rotate(-62 5.6 11)" />
-                                  <path d="M16.4 14.6c4-1.6 6.2-5 6-9.8l-.9.1c.1 4.4-1.9 7.4-5.5 8.9z" />
-                                  <ellipse cx="21.7" cy="3.4" rx="1" ry="2" transform="rotate(8 21.7 3.4)" />
-                                  <ellipse cx="20.6" cy="7.6" rx="1" ry="2" transform="rotate(40 20.6 7.6)" />
-                                  <ellipse cx="18.4" cy="11" rx="1" ry="2" transform="rotate(62 18.4 11)" />
-                                  <path d="m12 3.2 1.1 2.3 2.5.3-1.8 1.7.5 2.5L12 8.8 9.7 10l.5-2.5-1.8-1.7 2.5-.3z" />
-                                </g>
-                              </svg>
-                              {item.format === 'Oral' ? t.oral : item.format}
-                            </span>
+                            <span class="badge badge--oral">{t.oral}</span>
                           ) : (
                             <span class="badge">{item.format}</span>
                           ))}
                       </p>
-                      <h4 class="pub__title" lang="en">{item.title}</h4>
+                      <p class="pub__venue-long">{item.venueLong}</p>
+                      <h4 class="pub__title" lang="en">
+                        {words.map((w, k) => (
+                          <Fragment>
+                            {w.includes('-') ? <span class="nobr">{w}</span> : w}
+                            {k < words.length - 1 ? ' ' : ''}
+                          </Fragment>
+                        ))}
+                      </h4>
                       <p class="pub__byline">
                         {item.authors.map((a, k) => (
                           <Fragment>
@@ -114,25 +102,26 @@ const waxPath =
                           </summary>
                           <div class="pub__abstract">
                             <p class="pub__summary">{item.summary}</p>
-                            <p class="pub__scale">
-                              {item.venueLong} · {item.scale}
-                            </p>
+                            <p class="pub__scale">{item.scale}</p>
                           </div>
                         </details>
-                        {(item.pdf || item.links.length > 0) && (
-                          <p class="pub__links">
-                            {item.pdf && (
-                              <a class="chip" href={item.pdf} type="application/pdf">
-                                {t.pubLinks.pdf}
-                              </a>
-                            )}
-                            {item.links.map((l) => (
-                              <a class="chip" href={l.href} rel="noopener noreferrer">
-                                {l.label}
-                              </a>
-                            ))}
-                          </p>
-                        )}
+                        <p class="pub__links">
+                          {item.pdf && (
+                            <a class="chip" href={item.pdf} type="application/pdf">
+                              {t.pubLinks.pdf}
+                            </a>
+                          )}
+                          {item.links.map((l) => (
+                            <a class="chip" href={l.href} rel="noopener noreferrer">
+                              {l.label}
+                            </a>
+                          ))}
+                          {!item.pdf && email && (
+                            <a class="chip chip--request" href={requestHref(item.title)}>
+                              {t.pubLinks.request}
+                            </a>
+                          )}
+                        </p>
                       </div>
                     </div>
                   </li>
@@ -146,12 +135,13 @@ const waxPath =
 
     {anyMissingPdf && <p class="pubs__note reveal">{p.pdfNote}</p>}
 
-    <aside class="pub--review reveal" aria-labelledby="ur-heading">
+    <aside id="under-review" class="pub--review reveal" aria-labelledby="ur-heading">
       <div class="review__seal" aria-hidden="true">
         <svg viewBox="0 0 80 80" width="80" height="80" focusable="false">
           <path d={waxPath} class="review__wax" />
           <circle cx="40" cy="40" r="24" class="review__wax-ring" />
-          <path d="m40 25 3.5 9.6 10.2.4-8 6.3 2.8 9.8L40 45.4l-8.5 5.7 2.8-9.8-8-6.3 10.2-.4z" class="review__wax-star" />
+          <text x="40" y="47.5" text-anchor="middle" class="review__wax-mono">KZ</text>
+          <ellipse cx="32" cy="29" rx="14" ry="9" fill="rgba(255,255,255,.12)" />
         </svg>
       </div>
       <div class="review__body">
