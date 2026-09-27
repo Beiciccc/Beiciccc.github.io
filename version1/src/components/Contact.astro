@@ -71,6 +71,6 @@ const cards = [
     const avoid = [band.querySelector('.sec-head'), band.querySelector('.section-lede'), band.querySelector('.imprint')].filter(
       (el): el is Element => !!el
     );
-    mountSky(band, canvas, { asterisms: 'contact', nodeArea: 17000, starArea: 3000, motes: 6, meteors: [22, 45], avoid, interactive: true });
+    mountSky(band, canvas, { asterisms: 'contact', nodeArea: 17000, starArea: 3000, motes: 12, flecks: 6, meteors: [22, 45], avoid, interactive: true });
   }
 </script>

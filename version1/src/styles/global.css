@@ -132,7 +132,6 @@
     radial-gradient(38% 42% at 12% 18%, rgba(176, 141, 62, 0.13), transparent 70%),
     radial-gradient(50% 50% at 55% 112%, rgba(29, 74, 128, 0.08), transparent 70%);
   --hero-fade:     linear-gradient(to bottom, transparent, rgba(20, 40, 74, 0.035));
-  --grid-line:     rgba(20, 40, 74, 0.055);
   --band-wash:
     radial-gradient(45% 60% at 10% 0%, rgba(176, 141, 62, 0.1), transparent 70%),
     radial-gradient(45% 60% at 90% 20%, rgba(29, 74, 128, 0.06), transparent 70%);
@@ -288,7 +287,6 @@
       radial-gradient(55% 55% at 55% 115%, rgba(38, 70, 170, 0.28), transparent 70%),
       radial-gradient(30% 30% at 95% 90%, rgba(140, 29, 44, 0.1), transparent 70%);
     --hero-fade:     linear-gradient(to bottom, transparent, rgba(5, 8, 20, 0.55));
-    --grid-line:     rgb(var(--glow-rgb) / 0.07);
     --band-wash:
       radial-gradient(45% 60% at 10% 0%, rgba(140, 29, 44, 0.42), transparent 70%),
       radial-gradient(45% 60% at 100% 65%, rgba(38, 70, 170, 0.45), transparent 70%),
@@ -383,7 +381,6 @@
     radial-gradient(55% 55% at 55% 115%, rgba(38, 70, 170, 0.28), transparent 70%),
     radial-gradient(30% 30% at 95% 90%, rgba(140, 29, 44, 0.1), transparent 70%);
   --hero-fade:     linear-gradient(to bottom, transparent, rgba(5, 8, 20, 0.55));
-  --grid-line:     rgb(var(--glow-rgb) / 0.07);
   --band-wash:
     radial-gradient(45% 60% at 10% 0%, rgba(140, 29, 44, 0.42), transparent 70%),
     radial-gradient(45% 60% at 100% 65%, rgba(38, 70, 170, 0.45), transparent 70%),
@@ -1949,16 +1946,6 @@ html:not(.js) .scroll-progress { display: none; }
     radial-gradient(1px 1px at 6% 86%, rgb(var(--star-rgb) / 0.6), transparent 60%),
     radial-gradient(1.2px 1.2px at 54% 48%, rgb(var(--star-rgb) / 0.5), transparent 60%),
     var(--band-wash);
-}
-.band::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  z-index: -1;
-  pointer-events: none;
-  background: repeating-radial-gradient(circle at 50% 118%, transparent 0 58px, rgb(var(--glow-rgb) / 0.09) 58px 59px, transparent 59px 116px);
-  -webkit-mask-image: radial-gradient(ellipse 70% 80% at 50% 100%, #000 20%, transparent 75%);
-  mask-image: radial-gradient(ellipse 70% 80% at 50% 100%, #000 20%, transparent 75%);
 }
 .band .section-lede { color: var(--night-muted); }
 
