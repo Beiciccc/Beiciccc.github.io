@@ -308,6 +308,7 @@ const CREST_TINT: 'foil' | 'ivory' | 'original' = 'foil';
 
   // Headline figures count up once when they first come into view.
   const nums = document.querySelectorAll<HTMLElement>('.stat__link[data-count]');
+  const statsRow = document.querySelector<HTMLElement>('.hero__stats');
   if (nums.length && 'IntersectionObserver' in window && !still()) {
     let printing = false;
     const io = new IntersectionObserver(
@@ -317,16 +318,22 @@ const CREST_TINT: 'foil' | 'ivory' | 'original' = 'foil';
           io.unobserve(e.target);
           const el = e.target as HTMLElement;
           const end = Number(el.dataset.count) || 0;
-          const t0 = performance.now();
           const dur = 700;
+          let t0 = 0;
           const tick = (now: number) => {
             if (printing) return;
-            const p = Math.min(1, (now - t0) / dur);
+            if (!t0) t0 = now;
+            const p = Math.max(0, Math.min(1, (now - t0) / dur));
             el.textContent = String(Math.round(end * (1 - Math.pow(1 - p, 3))));
             if (p < 1) requestAnimationFrame(tick);
             else el.classList.add('is-counted');
           };
-          requestAnimationFrame(tick);
+          // Count once the row has faded in, so the figures are seen moving
+          // (it starts from nothing while the row is still transparent).
+          el.textContent = '0';
+          Promise.all((statsRow?.getAnimations() ?? []).map((a) => a.finished))
+            .catch(() => undefined)
+            .then(() => requestAnimationFrame(tick));
         }
       },
       { threshold: 0.6 }

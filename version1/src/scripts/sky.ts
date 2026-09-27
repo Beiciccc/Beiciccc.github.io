@@ -124,7 +124,7 @@ const rand = (a: number, b: number) => a + Math.random() * (b - a);
 const wrap = (v: number, m: number) => ((v % m) + m) % m;
 const SERIF = '"Cormorant Garamond Variable", "Cormorant Garamond", Georgia, serif';
 const GRID_FONT = `italic 10px ${SERIF}`;
-const NAME_FONT = `italic 11px ${SERIF}`;
+const NAME_FONT = `italic 500 14px ${SERIF}`;
 /** Clearance kept around `avoid` boxes (the plate gets a little more). */
 const PAD = 16;
 /** Figures stay this far inside the canvas. */
@@ -985,7 +985,7 @@ export function mountSky(host: HTMLElement, canvas: HTMLCanvasElement, options: 
           ctx.textAlign = 'left';
           ctx.textBaseline = 'alphabetic';
           ctx.fillStyle = pal.label;
-          ctx.globalAlpha = 0.55 * e;
+          ctx.globalAlpha = 0.82 * e;
           ctx.fillText(g.name, g.label.x, g.label.y);
         }
       }

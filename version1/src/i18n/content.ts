@@ -128,10 +128,11 @@ export const ui = {
       contact: '通信',
     },
     stats: {
-      accepted: '2026 年第一作者论文录用',
+      // No-break after the year, a break opportunity after 年 (keep-all labels).
+      accepted: '2026\u00a0年\u200b第一作者论文录用',
       oral: '口头报告',
       underReview: '在投 · 第二阶段评审',
-      reviewer: '2026 年审稿服务',
+      reviewer: '2026\u00a0年审稿服务',
     },
     oral: '口头报告',
     oralSplit: (m: number, w: number) => `会议 ${m} · 研讨会 ${w}`,

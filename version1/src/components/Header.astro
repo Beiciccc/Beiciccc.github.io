@@ -58,16 +58,11 @@ const navItems = [...sections, ...files].map((item) => {
     <div class="nav__tools">
       <!-- Language switch, labelled with ISO codes so English pages stay
            free of Chinese script. -->
-      <a
-        class="toggle toggle__lang"
-        href={toggleHref}
-        hreflang={toggleHreflang}
-        aria-label={s.langToggleLabel}
-        title={s.langToggleLabel}
-      >
+      <a class="toggle toggle__lang" href={toggleHref} hreflang={toggleHreflang} title={s.langToggleLabel}>
         <span class={lang === 'en' ? 'on' : ''}>EN</span>
         <span class="sep" aria-hidden="true">/</span>
         <span class={lang === 'zh' ? 'on' : ''}>ZH</span>
+        <span class="sr-only">, {s.langToggleLabel}</span>
       </a>
 
       <!-- Pause / resume every perpetual motion (sky, orrery). Hidden
@@ -83,14 +78,14 @@ const navItems = [...sections, ...files].map((item) => {
         data-label-resume={t.motionResume}
       >
         <svg aria-hidden="true" focusable="false" viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round">
+          <!-- The action on offer: pause while moving, play while paused. -->
           <g class="toggle__motion-on">
             <circle cx="12" cy="12" r="8.5" />
-            <circle cx="12" cy="12" r="1.8" fill="currentColor" stroke="none" />
-            <circle cx="20.5" cy="12" r="1.9" fill="currentColor" stroke="none" />
+            <path d="M9.8 8.8v6.4M14.2 8.8v6.4" />
           </g>
           <g class="toggle__motion-off">
             <circle cx="12" cy="12" r="8.5" />
-            <path d="M9.8 8.8v6.4M14.2 8.8v6.4" />
+            <path d="M10.2 8.6v6.8l5.6-3.4z" fill="currentColor" stroke="none" />
           </g>
         </svg>
       </button>

@@ -1,6 +1,6 @@
 // Pointer and scroll ornament shared by every page:
 //   · a soft spotlight that follows the pointer across entries, arches, the
-//     folio, the imprint and the crest;
+//     folio and the imprint (never over the university's mark);
 //   · a slight 3-D lean on the research arches;
 //   · gently magnetic call-to-action buttons on the title page;
 //   · the scroll-lit thesis (words ink in as it is read, then stay inked);
@@ -18,7 +18,7 @@ const clamp = (v: number, lo: number, hi: number) => Math.max(lo, Math.min(hi, v
 
 /* ---- Spotlight and tilt --------------------------------------------------- */
 if (mouse) {
-  const LIT = '.pub, .theme, .pub--review, .folio, .imprint, .crest__plate';
+  const LIT = '.pub, .theme, .pub--review, .folio, .imprint';
   const TILT = '.theme';
   document.querySelectorAll<HTMLElement>(LIT).forEach((el) => {
     const spot = document.createElement('span');
@@ -55,6 +55,14 @@ if (mouse) {
     });
   });
 }
+
+/* ---- Reference previews: Esc dismisses them (WCAG 1.4.13) ------------------ */
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape') root.classList.add('tips-off');
+});
+document.querySelectorAll<HTMLElement>('.theme__refs a').forEach((a) => {
+  ['pointerenter', 'focus'].forEach((ev) => a.addEventListener(ev, () => root.classList.remove('tips-off')));
+});
 
 /* ---- Magnetic buttons ----------------------------------------------------- */
 if (mouse) {
@@ -235,7 +243,7 @@ if (mouse && bands.length) {
   };
 
   // Text, links and the plates stay clean: no dust over them.
-  const CLEAN = '.hero__text, .sec-head, .section-lede, .imprint, a, button';
+  const CLEAN = '.hero__text, .hero__crest, .sec-head, .section-lede, .imprint, a, button';
   const onMove = (e: PointerEvent) => {
     if (e.pointerType !== 'mouse' || still()) return;
     if ((e.target as Element | null)?.closest(CLEAN)) {
