@@ -4,14 +4,17 @@
 // Source Serif 4: roman with the opsz axis + true italic — running text.
 // Source Sans 3:  roman, wght axis — apparatus (bylines, nav, buttons).
 // Cormorant Garamond: roman + italic, wght axis — display (name, headings, titles).
-// Cinzel: inscriptional capitals — numerals, eyebrows, the astrolabe ring.
+// Cormorant SC: the same design with true small-cap glyphs at the lowercase
+//   code points — every inscription (eyebrows, kicker, nav, captions).
 // Imported before global.css so the @font-face rules precede their first use.
 import '@fontsource-variable/source-serif-4/opsz.css';
 import '@fontsource-variable/source-serif-4/wght-italic.css';
 import '@fontsource-variable/source-sans-3/wght.css';
 import '@fontsource-variable/cormorant-garamond/wght.css';
 import '@fontsource-variable/cormorant-garamond/wght-italic.css';
-import '@fontsource-variable/cinzel/wght.css';
+import '@fontsource/cormorant-sc/latin-500.css';
+import '@fontsource/cormorant-sc/latin-600.css';
+import '@fontsource/cormorant-sc/latin-700.css';
 import serifWoff2 from '@fontsource-variable/source-serif-4/files/source-serif-4-latin-opsz-normal.woff2?url';
 import displayWoff2 from '@fontsource-variable/cormorant-garamond/files/cormorant-garamond-latin-wght-normal.woff2?url';
 import '../styles/global.css';
@@ -65,10 +68,12 @@ const xDefault = enHref ?? canonical;
     <link rel="sitemap" href="/sitemap-index.xml" />
 
     <!-- Only the files the first paint needs (display h1 + running text). The
-         italics, the sans and Cinzel arrive via font-display: swap behind
+         italics, the sans and Cormorant SC arrive via font-display: swap behind
          fallbacks declared in global.css. -->
     <link rel="preload" as="font" type="font/woff2" crossorigin href={displayWoff2} />
     <link rel="preload" as="font" type="font/woff2" crossorigin href={serifWoff2} />
+    <!-- Chinese pages: the subset Song face for the name and the headings. -->
+    {lang === 'zh' && <link rel="preload" as="font" type="font/woff2" crossorigin href="/fonts/kz-serif-sc.woff2" />}
 
     <title>{title}</title>
     <meta name="description" content={description} />
@@ -103,7 +108,8 @@ const xDefault = enHref ?? canonical;
     )}
 
     <!-- No-flash bootstrap: mark JS-enabled and apply a stored theme choice
-         before first paint. No stored choice = follow the OS (no attribute). -->
+         (and a stored "pause motion") before first paint. No stored choice =
+         follow the OS (no attribute). -->
     <script is:inline>
       (function () {
         var root = document.documentElement;
@@ -111,6 +117,7 @@ const xDefault = enHref ?? canonical;
         try {
           var v = localStorage.getItem('theme');
           if (v === 'light' || v === 'dark') root.setAttribute('data-theme', v);
+          if (localStorage.getItem('motion') === 'still') root.setAttribute('data-motion', 'still');
         } catch (e) {
           /* storage unavailable: follow the OS */
         }
@@ -177,10 +184,41 @@ const xDefault = enHref ?? canonical;
           });
         }
 
+        // MOTION: pause / resume every perpetual motion. The attribute
+        // freezes CSS loops; the sky and the pointer effects listen for
+        // 'motionchange'.
+        var mbtn = document.getElementById('motion-toggle');
+        function applyMotion(still) {
+          if (still) root.setAttribute('data-motion', 'still');
+          else root.removeAttribute('data-motion');
+          if (!mbtn) return;
+          mbtn.setAttribute('aria-pressed', still ? 'true' : 'false');
+          var label = mbtn.getAttribute(still ? 'data-label-resume' : 'data-label-pause');
+          if (label) {
+            mbtn.setAttribute('aria-label', label);
+            mbtn.setAttribute('title', label);
+          }
+        }
+        applyMotion(root.getAttribute('data-motion') === 'still');
+        if (mbtn) {
+          mbtn.addEventListener('click', function () {
+            var still = root.getAttribute('data-motion') !== 'still';
+            try {
+              if (still) localStorage.setItem('motion', 'still');
+              else localStorage.removeItem('motion');
+            } catch (e) {}
+            applyMotion(still);
+            window.dispatchEvent(new Event('motionchange'));
+          });
+        }
+
         // NAV: settle the sticky bar once scrolled and advance the gilt
-        // reading-progress hairline. One rAF-throttled listener.
+        // reading-progress hairline. One rAF-throttled listener. On phones
+        // the dial only offers itself while the reader scrolls back up.
         var bar = document.querySelector('.scroll-progress span');
         var toTop = document.querySelector('.to-top');
+        var narrow = window.matchMedia('(max-width: 740px)');
+        var lastY = window.scrollY;
         var ticking = false;
         function onScroll() {
           if (ticking) return;
@@ -193,8 +231,12 @@ const xDefault = enHref ?? canonical;
             if (bar) bar.style.transform = 'scaleX(' + p.toFixed(4) + ')';
             if (toTop) {
               toTop.style.setProperty('--progress', p.toFixed(4));
-              toTop.classList.toggle('is-shown', y > window.innerHeight * 0.8);
+              var shown = narrow.matches
+                ? y > window.innerHeight * 1.5 && (y < lastY || (y === lastY && toTop.classList.contains('is-shown')))
+                : y > window.innerHeight * 0.8;
+              toTop.classList.toggle('is-shown', shown);
             }
+            lastY = y;
             ticking = false;
           });
         }
@@ -253,6 +295,11 @@ const xDefault = enHref ?? canonical;
                 if (e.isIntersecting) {
                   ids.forEach(function (id) { links[id].removeAttribute('aria-current'); });
                   a.setAttribute('aria-current', 'location');
+                  // Phones: keep the current link in view in the scrolling row.
+                  var row = a.parentElement;
+                  if (narrow.matches && row && row.scrollWidth > row.clientWidth) {
+                    row.scrollTo({ left: a.offsetLeft - (row.clientWidth - a.offsetWidth) / 2, behavior: 'smooth' });
+                  }
                 } else if (a.getAttribute('aria-current')) {
                   a.removeAttribute('aria-current');
                 }

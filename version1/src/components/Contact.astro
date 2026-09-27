@@ -1,6 +1,8 @@
 ---
 import { type Lang, contact, ui, pick } from '../i18n/content';
 import SectionHead from './SectionHead.astro';
+import Corner from './Corner.astro';
+import Ornament from './Ornament.astro';
 
 interface Props {
   lang: Lang;
@@ -18,8 +20,8 @@ const cards = [
 ];
 ---
 
-<!-- Closing band, midnight like the title page. One card per channel; the
-     whole card is the link target (stretched ::after on the <a>). -->
+<!-- Closing band: the imprint. One gilt-framed plate, the counterpart of
+     the title page's, with a line per channel set on dotted leaders. -->
 <section id="contact" class="section section--contact band" aria-labelledby="contact-heading">
   <div class="band__sky" aria-hidden="true">
     <canvas class="band__canvas"></canvas>
@@ -28,58 +30,47 @@ const cards = [
     <SectionHead id="contact-heading" numeral="IV" eyebrow={t.eyebrow.contact} heading={c.heading} />
     <p class="section-lede reveal">{c.intro}</p>
 
-    <ul class="letters" role="list">
-      {
-        cards.map((card, i) => (
-          <li class:list={['letter', 'reveal', { 'letter--primary': card.kind === 'mail' }]} style={`--i: ${i}`}>
-            <span class="letter__icon" aria-hidden="true">
-              <svg viewBox="0 0 24 24" width="22" height="22" focusable="false">
-                <g fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round">
-                  {card.kind === 'mail' && (
-                    <Fragment>
-                      <rect x="3" y="5.5" width="18" height="13" rx="1.5" />
-                      <path d="m3.5 6.5 8.5 6.5 8.5-6.5" />
-                    </Fragment>
-                  )}
-                  {card.kind === 'doc' && (
-                    <Fragment>
-                      <path d="M6 2.75h8.5L19 7.25v14H6z" />
-                      <path d="M14 2.75v4.75h5M9 12h7M9 15.5h7M9 9h3" />
-                    </Fragment>
-                  )}
-                  {card.kind === 'code' && <path d="m8.5 7.5-5 4.5 5 4.5M15.5 7.5l5 4.5-5 4.5M13.5 5l-3 14" />}
-                </g>
-              </svg>
-            </span>
-            <span class="letter__label">{card.label}</span>
-            {card.href.endsWith('.pdf') ? (
-              <a class="letter__link" href={card.href} type="application/pdf">
-                {card.value}
-              </a>
-            ) : card.href.startsWith('http') ? (
-              <a class="letter__link" href={card.href} rel="me noopener noreferrer">
-                {card.value}
-              </a>
-            ) : (
-              <a class="letter__link" href={card.href}>
-                {card.value}
-              </a>
-            )}
-          </li>
-        ))
-      }
-    </ul>
+    <div class="imprint reveal">
+      {['tl', 'tr', 'bl', 'br'].map((k) => <Corner class={`imprint__corner imprint__corner--${k}`} />)}
+      <Ornament variant="fleuron" class="imprint__orn" />
+      <dl class="imprint__rows">
+        {
+          cards.map((card) => (
+            <div class:list={['imprint__row', { 'imprint__row--primary': card.kind === 'mail' }]}>
+              <dt>{card.label}</dt>
+              <dd>
+                {card.href.endsWith('.pdf') ? (
+                  <a href={card.href} type="application/pdf">
+                    {card.value}
+                  </a>
+                ) : card.href.startsWith('http') ? (
+                  <a href={card.href} rel="me noopener noreferrer">
+                    {card.value}
+                  </a>
+                ) : (
+                  <a href={card.href}>{card.value}</a>
+                )}
+              </dd>
+            </div>
+          ))
+        }
+      </dl>
+    </div>
   </div>
 </section>
 
 <script>
   import { mountSky } from '../scripts/sky';
 
-  // The closing band gets its own, quieter sky: fewer stars, the odd
-  // shooting star, sparks where the visitor clicks.
+  // The closing band gets its own, quieter chart: the Plough and Lyra in
+  // the margins, the odd shooting star, a star charted where the visitor
+  // clicks.
   const band = document.querySelector<HTMLElement>('.section--contact');
   const canvas = band?.querySelector<HTMLCanvasElement>('.band__canvas');
   if (band && canvas) {
-    mountSky(band, canvas, { nodeArea: 17000, starArea: 3000, motes: 14, meteors: [3.5, 8], interactive: true });
+    const avoid = [band.querySelector('.sec-head'), band.querySelector('.section-lede'), band.querySelector('.imprint')].filter(
+      (el): el is Element => !!el
+    );
+    mountSky(band, canvas, { asterisms: 'contact', nodeArea: 17000, starArea: 3000, motes: 6, meteors: [22, 45], avoid, interactive: true });
   }
 </script>

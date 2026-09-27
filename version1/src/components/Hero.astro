@@ -1,5 +1,5 @@
 ---
-import { type Lang, hero, site, publications, ui, pick } from '../i18n/content';
+import { type Lang, hero, site, publications, contact, ui, pick } from '../i18n/content';
 import { splitWords } from '../i18n/split';
 import Corner from './Corner.astro';
 import Ornament from './Ornament.astro';
@@ -15,12 +15,31 @@ const t = ui[lang];
 // Headline figures. Accepted / under review come from site.counts (the
 // single place the public tally is kept); orals are counted from the paper
 // list itself so the two can never disagree.
-const orals = publications.en.items.filter((i) => i.format === 'Oral').length;
+const items = publications.en.items;
+const orals = items.filter((i) => i.format === 'Oral').length;
+const oralMain = items.filter((i) => i.format === 'Oral' && i.tier === 'main').length;
+const oralWs = items.filter((i) => i.format === 'Oral' && i.tier === 'workshop').length;
+// Each figure links to the evidence for it.
 const stats = [
-  { n: s.counts.accepted, label: t.stats.accepted },
-  { n: orals, label: t.stats.oral },
-  { n: s.counts.underReview, label: t.stats.underReview },
-  { n: s.counts.reviewerRoles, label: t.stats.reviewer },
+  { n: s.counts.accepted, label: t.stats.accepted, href: '#publications', sub: '' },
+  { n: orals, label: t.stats.oral, href: '#publications', sub: t.oralSplit(oralMain, oralWs) },
+  { n: s.counts.underReview, label: t.stats.underReview, href: '#under-review', sub: '' },
+  { n: s.counts.reviewerRoles, label: t.stats.reviewer, href: '#about', sub: '' },
+];
+
+// Kicker in two lines: the role, then the fields (each field kept whole).
+const [kRole, kFields = ''] = h.kicker.split(' · ');
+const fieldParts = kFields.split(/(,\s*|、)/);
+// "Phase 2" never splits across lines.
+const intro = h.intro.replace(/Phase (\d)/g, 'Phase\u00a0$1');
+
+// Email and profiles next to the name. Profiles still without a URL
+// (Scholar, ORCID) appear here by themselves once one is filled in.
+const c = pick(contact, lang);
+const mail = c.links.find((l) => l.href.startsWith('mailto:'));
+const profiles = [
+  ...c.links.filter((l) => l.href.startsWith('http')).map((l) => ({ label: l.label, href: l.href })),
+  ...c.pending.filter((p) => p.href).map((p) => ({ label: p.label, href: p.href as string })),
 ];
 
 // The name is set letter by letter for its gilded entrance; the plain text
@@ -42,22 +61,30 @@ const crest = Object.values(crestFiles)[0]?.default;
 const CREST_TINT: 'foil' | 'ivory' | 'original' = 'foil';
 ---
 
-<!-- Title page. Full-bleed midnight band in both themes: a live night sky
-     (canvas: stars, constellation, shooting stars, gold dust), the name in
-     gold leaf, and the crest on a gilt plate circled by a ring of dust. The
+<!-- Title page, printed like the frontispiece of a star atlas: an engraved
+     chart with named constellations (canvas), the name in ink, and the
+     university's mark on a gilt plate circled by an armillary ring. The
      headline figures run along the foot. Decoration is aria-hidden. -->
 <section class="hero" aria-labelledby="hero-name">
   <div class="hero__sky" aria-hidden="true">
     <canvas class="hero__canvas"></canvas>
     <div class="hero__aurora"></div>
-    <div class="hero__chart"></div>
   </div>
 
   <div class="hero__inner">
     <div class="hero__text">
       <p class="hero__kicker rise" style="--d: 0">
         <span class="hero__kicker-rule" aria-hidden="true"></span>
-        {h.kicker}
+        <span class="hero__kicker-text">
+          <span class="hero__role">{kRole}</span>
+          {
+            kFields && (
+              <span class="hero__fields">
+                {fieldParts.map((part) => (/^(,\s*|、)$/.test(part) ? part : <span class="nobr">{part}</span>))}
+              </span>
+            )
+          }
+        </span>
       </p>
       <h1 id="hero-name" class="hero__name">
         <span class="sr-only">{h.name}</span>
@@ -83,7 +110,7 @@ const CREST_TINT: 'foil' | 'ivory' | 'original' = 'foil';
           {tagline.map((wd, i) => (wd === ' ' ? ' ' : <span class="hero__tw" style={`--w: ${i}`}>{wd}</span>))}
         </em>
       </p>
-      <p class="hero__intro rise" style="--d: 3">{h.intro}</p>
+      <p class="hero__intro rise" style="--d: 3">{intro}</p>
       <div class="hero__actions rise" style="--d: 4">
         <a class="btn btn--gold" href={h.ctaPrimary.href}>
           {h.ctaPrimary.label}
@@ -99,6 +126,22 @@ const CREST_TINT: 'foil' | 'ivory' | 'original' = 'foil';
           {h.ctaSecondary.label}
         </a>
       </div>
+      <p class="hero__contact rise" style="--d: 4.5">
+        <svg aria-hidden="true" focusable="false" viewBox="0 0 16 16" width="15" height="15">
+          <path d="M2 3.75h12v8.5H2zM2.5 4.25 8 8.75l5.5-4.5" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round" />
+        </svg>
+        {mail && <a href={mail.href}>{mail.value}</a>}
+        {
+          profiles.map((p) => (
+            <Fragment>
+              <span class="hero__dot" aria-hidden="true">·</span>
+              <a href={p.href} rel="me noopener noreferrer">
+                {p.label}
+              </a>
+            </Fragment>
+          ))
+        }
+      </p>
     </div>
 
     <div class="hero__crest rise" style="--d: 2">
@@ -158,9 +201,14 @@ const CREST_TINT: 'foil' | 'ivory' | 'original' = 'foil';
     {
       stats.map((st) => (
         <div class="stat">
-          <dt class="stat__label">{st.label}</dt>
-          <dd class="stat__num" data-count={st.n}>
-            {st.n}
+          <dt class="stat__label">
+            {st.label}
+            {st.sub && <span class="stat__sub">{st.sub}</span>}
+          </dt>
+          <dd class="stat__num">
+            <a class="stat__link" href={st.href} data-count={st.n}>
+              {st.n}
+            </a>
           </dd>
         </div>
       ))
@@ -176,14 +224,41 @@ const CREST_TINT: 'foil' | 'ivory' | 'original' = 'foil';
   const canvas = hero?.querySelector<HTMLCanvasElement>('.hero__canvas');
 
   if (hero && canvas) {
+    const text = hero.querySelector('.hero__text');
+    const stats = hero.querySelector('.hero__stats');
     mountSky(hero, canvas, {
+      asterisms: 'hero',
       nodeArea: 10500,
       starArea: 2400,
-      motes: 22,
-      meteors: [2.5, 6.5],
+      motes: 8,
+      meteors: [16, 34],
       dustFrom: hero.querySelector('.hero__letters'),
       orbit: hero.querySelector('.crest__plate'),
+      floor: stats,
+      avoid: [text, stats].filter((el): el is Element => !!el),
       interactive: true,
+    });
+  }
+
+  // The band of light that crossed the name on arrival crosses it again
+  // when the pointer reaches it (Web Animations, so the entrance is not
+  // restarted).
+  const still = () => reduce || document.documentElement.dataset.motion === 'still';
+  const name = hero?.querySelector<HTMLElement>('.hero__name');
+  if (name && window.matchMedia('(hover: hover) and (pointer: fine)').matches) {
+    let busy = false;
+    name.addEventListener('pointerenter', () => {
+      if (busy || still()) return;
+      busy = true;
+      const letters = Array.from(name.querySelectorAll<HTMLElement>('.hero__ch'));
+      letters.forEach((ch, i) => {
+        const a = ch.animate([{ backgroundPosition: '100% 0' }, { backgroundPosition: '0 0' }], {
+          duration: 1400,
+          delay: i * 30,
+          easing: 'cubic-bezier(.22,.61,.36,1)',
+        });
+        if (i === letters.length - 1) a.onfinish = () => (busy = false);
+      });
     });
   }
 
@@ -206,10 +281,10 @@ const CREST_TINT: 'foil' | 'ivory' | 'original' = 'foil';
       raf = Math.abs(tx - cx) + Math.abs(ty - cy) > 0.02 ? requestAnimationFrame(lean) : 0;
     };
     hero.addEventListener('pointermove', (e) => {
-      if (e.pointerType !== 'mouse' || !wide.matches) return;
+      if (e.pointerType !== 'mouse' || !wide.matches || still()) return;
       const r = crest.getBoundingClientRect();
-      tx = clamp((e.clientX - (r.left + r.width / 2)) / (window.innerWidth / 2)) * 11;
-      ty = -clamp((e.clientY - (r.top + r.height / 2)) / (window.innerHeight / 2)) * 9;
+      tx = clamp((e.clientX - (r.left + r.width / 2)) / (window.innerWidth / 2)) * 4;
+      ty = -clamp((e.clientY - (r.top + r.height / 2)) / (window.innerHeight / 2)) * 3;
       if (!raf) raf = requestAnimationFrame(lean);
     });
     hero.addEventListener('pointerleave', () => {
@@ -221,7 +296,7 @@ const CREST_TINT: 'foil' | 'ivory' | 'original' = 'foil';
     let sraf = 0;
     const drift = () => {
       sraf = 0;
-      const y = wide.matches ? Math.min(window.scrollY, hero.offsetHeight) : 0;
+      const y = wide.matches && !still() ? Math.min(window.scrollY, hero.offsetHeight) : 0;
       crestWrap.style.translate = y ? `0 ${(y * 0.14).toFixed(1)}px` : '';
     };
     window.addEventListener('scroll', () => {
@@ -231,8 +306,8 @@ const CREST_TINT: 'foil' | 'ivory' | 'original' = 'foil';
   }
 
   // Headline figures count up once when they first come into view.
-  const nums = document.querySelectorAll<HTMLElement>('.stat__num[data-count]');
-  if (nums.length && 'IntersectionObserver' in window && !reduce) {
+  const nums = document.querySelectorAll<HTMLElement>('.stat__link[data-count]');
+  if (nums.length && 'IntersectionObserver' in window && !still()) {
     let printing = false;
     const io = new IntersectionObserver(
       (entries) => {
@@ -242,7 +317,7 @@ const CREST_TINT: 'foil' | 'ivory' | 'original' = 'foil';
           const el = e.target as HTMLElement;
           const end = Number(el.dataset.count) || 0;
           const t0 = performance.now();
-          const dur = 1400;
+          const dur = 700;
           const tick = (now: number) => {
             if (printing) return;
             const p = Math.min(1, (now - t0) / dur);

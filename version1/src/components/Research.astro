@@ -1,5 +1,5 @@
 ---
-import { type Lang, research, ui, pick, pubIndex } from '../i18n/content';
+import { type Lang, research, publications, ui, pick, pubIndex, venueShort } from '../i18n/content';
 import { splitWords } from '../i18n/split';
 import SectionHead from './SectionHead.astro';
 
@@ -8,26 +8,29 @@ interface Props {
 }
 const { lang } = Astro.props;
 const r = pick(research, lang);
+const p = pick(publications, lang);
 const t = ui[lang];
+const paper = (id: string) => p.items.find((item) => item.id === id);
 const paren = (s: string) => (lang === 'zh' ? `（${s}）` : ` (${s})`);
 const NUMERALS = ['I', 'II', 'III', 'IV', 'V', 'VI'];
 
-// The pull quote is lit word by word as it is read (scroll-driven, see
-// scripts/effects.ts); --k is each word's place in the sentence, 0…1.
+// The thesis inks in word by word as it is read (scroll-driven, see
+// scripts/effects.ts); --k is each word's place in the sentence, 0…0.8, so
+// the last word is fully inked before the reader has scrolled past it.
 const introWords = splitWords(r.intro, lang);
 const lastWord = Math.max(1, introWords.length - 1);
 
-// Orbits drifting behind the section: radius, planet size, tone, period (s).
+// An orrery in the right margin: radius, planet size, tone, period (s).
 const ORBITS = [
-  { r: 250, size: 3.5, tone: 'gold', dash: '', period: 70, moon: false },
-  { r: 370, size: 5, tone: 'crimson', dash: '2 7', period: 110, moon: false },
-  { r: 500, size: 4.2, tone: 'pearl', dash: '', period: 150, moon: true },
-  { r: 650, size: 6, tone: 'gold', dash: '1 9', period: 210, moon: false },
+  { r: 250, size: 3, tone: 'gold', dash: '', period: 210, moon: false, ticks: false },
+  { r: 370, size: 3.5, tone: 'pearl', dash: '2 7', period: 330, moon: true, ticks: false },
+  { r: 500, size: 4, tone: 'gold', dash: '1 9', period: 450, moon: false, ticks: true },
 ];
 ---
 
-<!-- Three themes as arched panels (a triptych). Each carries a line emblem,
-     its Roman numeral and [n] back-references into the paper list. -->
+<!-- Three themes as arched panels (a triptych). Each carries an engraved
+     figure of its argument (a claim against its control, dashed), its Roman
+     numeral and [n] back-references into the paper list. -->
 <section id="research" class="section section--research" aria-labelledby="research-heading">
   <div class="orbits" aria-hidden="true">
     <svg viewBox="-700 -700 1400 1400" width="1400" height="1400" focusable="false">
@@ -35,6 +38,7 @@ const ORBITS = [
         ORBITS.map((o, i) => (
           <g class={`orbit orbit--${i}`} style={`--period: ${o.period}s`}>
             <circle class="orbit__path" r={o.r} stroke-dasharray={o.dash || undefined} />
+            {o.ticks && <circle class="orbit__ticks" r={o.r} pathLength="360" stroke-dasharray="0.4 4.6" />}
             <circle class={`orbit__body orbit__body--${o.tone}`} cx={o.r} cy="0" r={o.size} />
             {o.moon && (
               <g transform={`translate(${o.r} 0)`}>
@@ -52,11 +56,11 @@ const ORBITS = [
   <div class="container">
     <SectionHead id="research-heading" numeral="II" eyebrow={t.eyebrow.research} heading={r.heading} />
 
-    <blockquote class="pullquote reveal" data-scroll-lit>
+    <div class="pullquote reveal" data-scroll-lit>
       <p>
-        {introWords.map((wd, i) => (wd === ' ' ? ' ' : <span class="lw" style={`--k: ${(i / lastWord).toFixed(3)}`}>{wd}</span>))}
+        {introWords.map((wd, i) => (wd === ' ' ? ' ' : <span class="lw" style={`--k: ${((0.8 * i) / lastWord).toFixed(3)}`}>{wd}</span>))}
       </p>
-    </blockquote>
+    </div>
 
     <ol class="themes" role="list">
       {
@@ -64,34 +68,40 @@ const ORBITS = [
           <li class="theme reveal" style={`--i: ${i}`}>
             <div class="theme__crown" aria-hidden="true">
               <span class="theme__numeral">{NUMERALS[i]}</span>
-              <svg class="theme__icon" viewBox="0 0 48 48" width="48" height="48" focusable="false">
-                <g fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round">
+              <svg class="theme__fig" viewBox="0 0 72 48" width="72" height="48" focusable="false">
+                <g fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round">
                   {i === 0 && (
                     <Fragment>
-                      {/* Balance: does the score weigh what it claims to? */}
-                      <path class="draw" pathLength="1" d="M24 7v33M15 41h18M24 11l-14 4M24 11l14 4" />
-                      <circle class="draw" pathLength="1" cx="24" cy="7" r="1.8" />
-                      <path class="draw" pathLength="1" d="M10 15 4.5 27h11zM38 15l-5.5 12h11z" />
-                      <path class="draw" pathLength="1" d="M4.5 27a5.5 3 0 0 0 11 0M32.5 27a5.5 3 0 0 0 11 0" />
+                      {/* Same exam, different scores: two bars against a dashed reference. */}
+                      <path class="draw" pathLength="1" d="M6 40h60" />
+                      <path class="draw" pathLength="1" d="M16 40V14h12v26" />
+                      <path class="draw" pathLength="1" d="M40 40V26h12v14" />
+                      <path class="fig-dash" d="M12 26h48" />
                     </Fragment>
                   )}
                   {i === 1 && (
                     <Fragment>
-                      {/* Lens over a small network: probing internal directions */}
-                      <circle class="draw" pathLength="1" cx="20" cy="20" r="13" />
-                      <path class="draw" pathLength="1" d="m29.5 29.5 11 11" stroke-width="2.6" />
-                      <circle class="draw" pathLength="1" cx="14" cy="16" r="2" />
-                      <circle class="draw" pathLength="1" cx="26" cy="15" r="2" />
-                      <circle class="draw" pathLength="1" cx="20" cy="26" r="2" />
-                      <path class="draw" pathLength="1" d="M16 16.3 24 15.2M15.2 17.7l3.6 6.6M25 16.8l-3.8 7.4" />
+                      {/* A probe direction against its control direction. */}
+                      <g fill="currentColor" stroke="none">
+                        <circle cx="14" cy="30" r="1.6" />
+                        <circle cx="20" cy="22" r="1.6" />
+                        <circle cx="24" cy="34" r="1.6" />
+                        <circle cx="30" cy="26" r="1.6" />
+                        <circle cx="18" cy="38" r="1.6" />
+                      </g>
+                      <path class="draw" pathLength="1" d="M22 30 52 12" />
+                      <path class="draw" pathLength="1" d="M46 11l6 1-3 5" />
+                      <path class="fig-dash" d="M22 30 54 34M48 30.5l6 3.5-6 2.5" />
                     </Fragment>
                   )}
                   {i >= 2 && (
                     <Fragment>
-                      {/* Shield with a compass star: alignment and safety */}
-                      <path class="draw" pathLength="1" d="M24 4.5 39 10v12c0 10-6.6 17-15 21.5C15.6 39 9 32 9 22V10z" />
-                      <path class="draw" pathLength="1" d="m24 13 2.4 7.6L34 23l-7.6 2.4L24 33l-2.4-7.6L14 23l7.6-2.4z" />
-                      <circle class="draw" pathLength="1" cx="24" cy="23" r="1.4" />
+                      {/* A training gain against its control arm. */}
+                      <circle cx="12" cy="30" r="2" fill="currentColor" stroke="none" />
+                      <path class="draw" pathLength="1" d="M14 29C28 20 40 16 55 14.5" />
+                      <circle cx="58" cy="14" r="2.4" fill="currentColor" stroke="none" />
+                      <path class="fig-dash" d="M14 33C28 30 40 30 55 30" />
+                      <circle class="fig-dash" cx="58" cy="30" r="2.4" />
                     </Fragment>
                   )}
                 </g>
@@ -102,13 +112,33 @@ const ORBITS = [
               {th.note && <span class="theme__note">{paren(th.note)}</span>}
             </h3>
             <p class="theme__body">{th.body}</p>
-            {th.refs.length > 0 && (
+            {th.refs.length > 0 ? (
               <p class="theme__refs">
                 <span class="theme__refs-label">{t.relatedPapers}</span>
-                {th.refs.map((id) => (
-                  <a href={`#${id}`}>[{pubIndex(id)}]</a>
-                ))}
+                {th.refs.map((id) => {
+                  const item = paper(id);
+                  const tip = `ref-${id}-${i}`;
+                  return (
+                    <a href={`#${id}`} aria-describedby={item ? tip : undefined}>
+                      [{pubIndex(id)}]
+                      {item && <span class="theme__ref-venue">{venueShort(item.venue)}</span>}
+                      {item && (
+                        <span class="ref-card" role="tooltip" id={tip}>
+                          <span class="ref-card__venue">{item.venue}</span>
+                          <span class="ref-card__title" lang="en">{item.title}</span>
+                        </span>
+                      )}
+                    </a>
+                  );
+                })}
               </p>
+            ) : (
+              th.note && (
+                <p class="theme__refs">
+                  <span class="theme__refs-label">{t.relatedPapers}</span>
+                  <a href="#under-review" class="theme__sealed">{p.underReview.heading}</a>
+                </p>
+              )
             )}
           </li>
         ))

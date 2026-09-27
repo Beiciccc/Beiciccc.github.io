@@ -1,6 +1,6 @@
 ---
 import { getCollection } from 'astro:content';
-import { type Lang, site, ui, pick, localePath } from '../i18n/content';
+import { type Lang, site, contact, ui, pick, localePath } from '../i18n/content';
 import Ornament from './Ornament.astro';
 
 interface Props {
@@ -14,6 +14,10 @@ const t = ui[lang];
 // this language.
 const published = await getCollection('blog', ({ data }) => data.lang === lang && !data.draft);
 const hasBlog = published.length > 0;
+// On the homepage the footer offers the email (the dial covers "back to
+// top"); elsewhere it leads home.
+const isHome = Astro.url.pathname === localePath(lang, '/');
+const mail = pick(contact, lang).links.find((l) => l.href.startsWith('mailto:'));
 // Build date, formatted per locale; the page is rebuilt on every deploy.
 const built = new Date();
 const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
@@ -27,11 +31,11 @@ const updated =
   <div class="inner">
     <Ornament variant="fleuron" class="site-footer__orn" />
     <nav aria-label={lang === 'zh' ? '页脚导航' : 'Footer'}>
-      <a href={localePath(lang, '/')}>{s.backHome}</a>
+      {isHome && mail ? <a href={mail.href}>{mail.label}</a> : <a href={localePath(lang, '/')}>{s.backHome}</a>}
       {hasBlog && <a href={localePath(lang, '/blog/')}>{s.blogTitle}</a>}
       <a href="/cv.pdf" type="application/pdf">CV</a>
       <a href="https://github.com/Beiciccc" rel="me noopener noreferrer">GitHub</a>
-      <a href="#main">{t.toTop}</a>
+      {!isHome && <a href="#main">{t.toTop}</a>}
     </nav>
     <p class="foot-meta">
       {s.footer}
