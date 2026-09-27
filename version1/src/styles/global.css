@@ -121,7 +121,7 @@
   --night-line:    rgba(20, 40, 74, 0.16);
   --glow-rgb:      176 141 62;
   --star-rgb:      28 48 84;
-  --band-glass:    rgba(251, 250, 246, 0.9);
+  --band-glass:    rgba(251, 250, 246, 0.97);
   --band-glass-hover: rgba(255, 255, 255, 0.98);
   --band-gilt:     #b08d3e;
   --band-lift:     0 24px 50px -24px rgba(20, 40, 74, 0.32);
@@ -275,7 +275,7 @@
     --night-line:    rgb(var(--glow-rgb) / 0.24);
     --glow-rgb:      226 194 125;
     --star-rgb:      255 244 214;
-    --band-glass:    rgba(11, 18, 38, 0.94);
+    --band-glass:    rgba(11, 18, 38, 0.97);
     --band-glass-hover: rgba(24, 38, 77, 0.95);
     --band-gilt:     #d4b066;
     --band-lift:     0 24px 50px -24px rgba(0, 0, 0, 0.8);
@@ -369,7 +369,7 @@
   --night-line:    rgb(var(--glow-rgb) / 0.24);
   --glow-rgb:      226 194 125;
   --star-rgb:      255 244 214;
-  --band-glass:    rgba(11, 18, 38, 0.94);
+  --band-glass:    rgba(11, 18, 38, 0.97);
   --band-glass-hover: rgba(24, 38, 77, 0.95);
   --band-gilt:     #d4b066;
   --band-lift:     0 24px 50px -24px rgba(0, 0, 0, 0.8);
@@ -730,8 +730,8 @@ hr { border: 0; height: 1px; background: var(--hairline); margin: var(--space-7)
   top: 0;
   z-index: 1000;
   background: var(--band-glass);
-  -webkit-backdrop-filter: saturate(160%) blur(16px);
-  backdrop-filter: saturate(160%) blur(16px);
+  -webkit-backdrop-filter: blur(6px);
+  backdrop-filter: blur(6px);
   border-bottom: 1px solid rgb(var(--glow-rgb) / 0.16);
   color: var(--night-text);
   padding: 0 var(--pad-x);
@@ -1063,7 +1063,6 @@ html:not(.js) .scroll-progress { display: none; }
   outline-offset: -11px;
   background: var(--plate-bg);
   box-shadow: var(--plate-shadow);
-  --spot: rgb(var(--glow-rgb) / 0.18);
   --orn-eye: var(--plate-eye);
 }
 .crest__corner {
@@ -1113,8 +1112,7 @@ html:not(.js) .scroll-progress { display: none; }
   font-family: var(--font-inscr);
   font-size: 0.92rem;
   font-weight: 600;
-  letter-spacing: var(--track-sc);
-  text-transform: lowercase;
+  letter-spacing: 0.06em;
   font-synthesis: none;
   line-height: 1.45;
   text-align: center;
@@ -1364,7 +1362,7 @@ html:not(.js) .scroll-progress { display: none; }
   line-height: 1;
   font-variant-numeric: lining-nums tabular-nums;
 }
-.pub__bracket { font-weight: 400; opacity: 0.45; margin: 0 0.04em; }
+.pub__bracket { font-weight: 400; opacity: 0.45; margin: 0 0.02em; }
 .pub:target .pub__medal { box-shadow: inset 0 0 0 3px var(--surface), inset 0 0 0 4px var(--gold-faint), 0 0 0 4px var(--accent-soft); }
 
 .pub__main { min-width: 0; }
@@ -1590,13 +1588,12 @@ html:not(.js) .scroll-progress { display: none; }
 .review__wax-mono {
   font-family: var(--font-inscr);
   font-weight: 700;
-  font-size: 20px;
+  font-size: 22px;
   letter-spacing: 0.02em;
   text-transform: none;
-  fill: #6c1320;
-  stroke: rgba(255, 210, 200, 0.35);
-  stroke-width: 0.4;
+  fill: #5a0e1a;
 }
+.review__wax-mono--hi { fill: rgba(255, 214, 200, 0.5); }   /* the lit lower edge of a debossed letter */
 /* Said once by the heading and body; kept for screen readers only. */
 .review__kicker {
   position: absolute;
@@ -1678,7 +1675,8 @@ html:not(.js) .scroll-progress { display: none; }
   line-height: 1.45;
   color: var(--text-strong);
 }
-.pullquote p { margin: 0; position: relative; text-wrap: pretty; }
+.pullquote p { margin: 0; position: relative; text-wrap: balance; }
+.pullquote .lw { white-space: nowrap; }
 
 .themes {
   list-style: none;
@@ -1755,7 +1753,8 @@ html:not(.js) .scroll-progress { display: none; }
   letter-spacing: 0.06em;
   color: var(--faint);
 }
-.theme__body { max-width: 30ch; margin: 0 auto; font-size: 0.95rem; line-height: 1.62; color: var(--muted); text-wrap: pretty; }
+.theme__head { display: flex; flex-direction: column; align-items: center; width: 100%; }
+.theme__body { max-width: 34ch; margin: 0 auto; font-size: 0.95rem; line-height: 1.62; color: var(--muted); text-wrap: balance; }
 .theme__refs {
   display: flex;
   flex-wrap: wrap;
@@ -1767,7 +1766,15 @@ html:not(.js) .scroll-progress { display: none; }
   padding-top: 20px;
 }
 .theme__body { margin-bottom: 22px; }
-.theme__body + .theme__refs { border-top: 1px solid var(--gold-faint); }
+.theme__refs { border-top: 1px solid var(--gold-faint); }
+/* Side by side, the three arches share their rows (subgrid), so the rule
+   over "Papers" runs at one height across the triptych. */
+@media (min-width: 741px) {
+  .themes { row-gap: 0; }
+  .theme { display: grid; grid-row: span 2; grid-template-rows: subgrid; justify-items: center; }
+  .theme__head { align-self: start; }
+  .theme__refs { margin: 0; align-self: start; }
+}
 .theme__refs-label {
   width: 100%;
   font-family: var(--font-sans);
@@ -1815,8 +1822,10 @@ html:not(.js) .scroll-progress { display: none; }
   box-shadow: var(--shadow-lift);
   opacity: 0;
   visibility: hidden;
-  pointer-events: none;
 }
+/* A bridge over the gap, so the pointer can move from the chip onto the card. */
+.ref-card::after { content: ""; position: absolute; left: 0; right: 0; top: 100%; height: 12px; }
+.tips-off .ref-card { visibility: hidden !important; opacity: 0 !important; }
 .ref-card__venue {
   display: block;
   margin-bottom: 2px;
@@ -1896,16 +1905,16 @@ html:not(.js) .scroll-progress { display: none; }
 .folio__orn { position: relative; color: var(--gold); margin: 0 auto clamp(18px, 2.4vw, 28px); }
 .folio__orn svg { width: 96px; }
 .about__body { position: relative; max-width: 38rem; margin-inline: auto; font-size: 1.04rem; }
-/* The opening line in true small capitals, as a book opens a chapter. */
-:lang(en) .about__body > p:first-child::first-line {
+/* The lead-in set in capitals and small capitals, as a book opens a chapter. */
+.about__body .lead-in {
   font-family: var(--font-inscr);
   font-size: 1.1em;
   font-weight: 600;
-  letter-spacing: 0.05em;
-  text-transform: lowercase;
+  letter-spacing: 0.04em;
   font-synthesis: none;
   color: var(--navy);
 }
+.about__body p { text-wrap: pretty; }
 
 /* =============================================================================
    IV · CONTACT — the closing band and its imprint plate
@@ -2007,18 +2016,15 @@ html:not(.js) .scroll-progress { display: none; }
   font-weight: 600;
   line-height: 1.25;
   color: var(--night-strong);
-  text-decoration: none;
+  text-decoration: underline;
+  text-decoration-color: var(--gold-soft);
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.22em;
   overflow-wrap: anywhere;
   font-variant-numeric: lining-nums;
 }
 .imprint__row--primary a { font-size: clamp(1.4rem, 1.1rem + 1vw, 1.9rem); color: var(--navy); }
-.imprint__row a:hover {
-  color: var(--accent);
-  text-decoration: underline;
-  text-decoration-color: var(--gold-soft);
-  text-decoration-thickness: 1px;
-  text-underline-offset: 0.2em;
-}
+.imprint__row a:hover { color: var(--accent); text-decoration-color: var(--accent); }
 .imprint__row:has(:focus-visible) { outline: 2px solid var(--night-gold); outline-offset: 3px; }
 .imprint__row a:focus-visible { outline: none; }
 @media (max-width: 540px) {
@@ -2303,9 +2309,11 @@ html:not(.js) .to-top { display: none; }
 :lang(zh) .stat__label,
 :lang(zh) .nav__links a,
 :lang(zh) .site-footer nav a { letter-spacing: 0.14em; font-size: 0.85rem; }
-:lang(zh) .badge { letter-spacing: 0.08em; font-size: 0.72rem; }
-:lang(zh) .stat__label { font-size: 0.78rem; }
+:lang(zh) .badge { letter-spacing: 0.08em; }
+:lang(zh) .stat__label { font-size: 0.78rem; letter-spacing: 0.04em; }
 :lang(zh) .stat__sub { letter-spacing: 0.04em; }
+:lang(zh) .stat__sub,
+:lang(zh) .badge { font-size: max(0.75rem, 12px); }
 :lang(zh) .pub__venue { font-family: inherit; font-style: normal; font-size: 1rem; }
 :lang(zh) .theme__title,
 :lang(zh) .review__title { font-family: var(--font-serif-cjk); letter-spacing: 0.04em; }
@@ -2347,6 +2355,22 @@ html:not(.js) .to-top { display: none; }
   .theme__body { font-size: 0.88rem; }
 }
 
+/* Tablets: the one-row header keeps the monogram and drops the name to fit
+   five links and three tools (the name stays the link's accessible name). */
+@media (min-width: 741px) and (max-width: 900px) {
+  .nav__name {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+  .nav { gap: 12px; }
+  .nav__links { gap: 14px; }
+  .nav__tools { margin-left: 8px; padding-left: 8px; }
+}
+
 @media (max-width: 740px) {
   :root { --nav-h: 96px; --pin-h: 50px; }
   html { font-size: 100%; }
@@ -2371,6 +2395,7 @@ html:not(.js) .to-top { display: none; }
     padding-top: 1px;
   }
   .nav__links::-webkit-scrollbar { display: none; }
+  body.scrolled .nav__links { border-top-color: transparent; }
   .nav__links a { padding: 11px 0; font-size: 0.9rem; letter-spacing: 0.03em; }
   .nav__links a[type="application/pdf"] { padding: 2px 10px 3px; }
   .nav__mark { width: 30px; height: 30px; }
@@ -2412,7 +2437,13 @@ html:not(.js) .to-top { display: none; }
   .pub__more + .pub__links:not(:empty)::before { content: none; }
   .pub__medal { width: 2.9rem; }
   .pub__num { font-size: 1.12rem; }
-  .pub--review { grid-template-columns: auto minmax(0, 1fr); align-items: start; gap: 16px; }
+  /* Phones: the seal sits beside the heading; the text takes the full width. */
+  .pub--review { grid-template-columns: auto minmax(0, 1fr); row-gap: 12px; column-gap: 14px; align-items: center; }
+  .review__body { display: contents; }
+  .review__title { grid-column: 2; margin: 0; }
+  .review__body > p:not(.review__kicker),
+  .pub--review .pub__areas { grid-column: 1 / -1; }
+  .review__body > p:not(.review__kicker) { margin: 0; }
   .review__seal svg { width: 48px; height: 48px; }
 
   .themes { grid-template-columns: minmax(0, 1fr); max-width: 34rem; }
@@ -2561,7 +2592,6 @@ html:not(.js) .to-top { display: none; }
      band of light crosses it once, and again when the pointer rests on it. */
   .crest__gleam { animation: plate-gleam 2.6s var(--ease) 2.2s 1 both; }
   .crest:hover .crest__gleam { animation: plate-gleam-h 2.2s var(--ease) 1 both; }
-  .crest { transition: transform .2s linear; }
   .hero__crest .draw { animation: draw 2.2s var(--ease-out) .7s backwards; }
   .hero__crest .gem { transform-box: fill-box; transform-origin: center; animation: pop .9s var(--ease-out) 1.6s backwards; }
   .hero__crest .ornament--fleuron { animation: rise 1s var(--ease-out) 1.2s backwards; }

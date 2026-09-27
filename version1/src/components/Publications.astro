@@ -55,11 +55,7 @@ const waxPath =
                   <li class="pub reveal" id={item.id}>
                     <div class="pub__aside">
                       <span class="pub__medal">
-                        <span class="pub__num">
-                          <span class="pub__bracket">[</span>
-                          {pubIndex(item.id)}
-                          <span class="pub__bracket">]</span>
-                        </span>
+                        <span class="pub__num"><span class="pub__bracket">[</span>{pubIndex(item.id)}<span class="pub__bracket">]</span></span>
                       </span>
                     </div>
 
@@ -73,7 +69,14 @@ const waxPath =
                             <span class="badge">{item.format}</span>
                           ))}
                       </p>
-                      <p class="pub__venue-long">{item.venueLong}</p>
+                      <p class="pub__venue-long">
+                        {item.venueLong.split(' · ').map((seg, k) => (
+                          <Fragment>
+                            {k > 0 && ' · '}
+                            {seg.length <= 16 ? <span class="nobr">{seg}</span> : seg}
+                          </Fragment>
+                        ))}
+                      </p>
                       <h4 class="pub__title" lang="en">
                         {words.map((w, k) => (
                           <Fragment>
@@ -140,8 +143,8 @@ const waxPath =
         <svg viewBox="0 0 80 80" width="80" height="80" focusable="false">
           <path d={waxPath} class="review__wax" />
           <circle cx="40" cy="40" r="24" class="review__wax-ring" />
+          <text x="40" y="48.3" text-anchor="middle" class="review__wax-mono review__wax-mono--hi">KZ</text>
           <text x="40" y="47.5" text-anchor="middle" class="review__wax-mono">KZ</text>
-          <ellipse cx="32" cy="29" rx="14" ry="9" fill="rgba(255,255,255,.12)" />
         </svg>
       </div>
       <div class="review__body">

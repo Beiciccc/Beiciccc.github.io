@@ -192,12 +192,11 @@ const xDefault = enHref ?? canonical;
           if (still) root.setAttribute('data-motion', 'still');
           else root.removeAttribute('data-motion');
           if (!mbtn) return;
+          // A toggle button: its name stays "Pause motion"; aria-pressed
+          // carries the state. The tooltip names the action on offer.
           mbtn.setAttribute('aria-pressed', still ? 'true' : 'false');
-          var label = mbtn.getAttribute(still ? 'data-label-resume' : 'data-label-pause');
-          if (label) {
-            mbtn.setAttribute('aria-label', label);
-            mbtn.setAttribute('title', label);
-          }
+          var tip = mbtn.getAttribute(still ? 'data-label-resume' : 'data-label-pause');
+          if (tip) mbtn.setAttribute('title', tip);
         }
         applyMotion(root.getAttribute('data-motion') === 'still');
         if (mbtn) {
