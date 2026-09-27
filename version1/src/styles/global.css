@@ -866,7 +866,8 @@ html:not(.js) .scroll-progress { display: none; }
 .crest__logo--foil {
   height: auto;
   max-height: none;
-  width: min(100%, 300px);
+  width: min(100%, 330px);
+  margin: 6px 0 2px;
   background-image: var(--foil);
   background-size: 220% 100%;
   -webkit-mask: var(--logo) center / contain no-repeat;
@@ -875,6 +876,27 @@ html:not(.js) .scroll-progress { display: none; }
   forced-color-adjust: none;
 }
 .crest__logo--ivory { filter: brightness(0) invert(1) sepia(0.12) drop-shadow(0 0 14px rgba(226, 194, 125, 0.3)); }
+.crest__caption {
+  display: grid;
+  justify-items: center;
+  gap: 4px;
+  margin: 0;
+  font-family: var(--font-inscr);
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  line-height: 1.5;
+  text-align: center;
+  color: var(--night-muted);
+}
+.crest__years { font-weight: 500; letter-spacing: 0.3em; color: var(--night-faint); }
+.crest__rule {
+  margin-bottom: 10px;
+  width: 64px;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--night-gold), transparent);
+}
+:lang(zh) .crest__caption { font-size: 0.78rem; letter-spacing: 0.12em; }
 .crest__mono { width: min(68%, 210px); height: auto; overflow: visible; filter: drop-shadow(0 0 18px rgba(226, 194, 125, 0.3)); }
 .crest__mono-text {
   font-family: var(--font-inscr);

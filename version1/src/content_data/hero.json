@@ -11,7 +11,9 @@
     "ctaSecondary": {
       "label": "CV (PDF, 2 pp)",
       "href": "/cv.pdf"
-    }
+    },
+    "crestCaption": "MSc Advanced Computer Science",
+    "crestYears": "2025 – 2026"
   },
   "zh": {
     "kicker": "博士申请人，2027/28 入学 · 大语言模型后训练、对齐、评测",
@@ -25,6 +27,8 @@
     "ctaSecondary": {
       "label": "简历（PDF，2 页）",
       "href": "/cv.pdf"
-    }
+    },
+    "crestCaption": "高级计算机科学硕士",
+    "crestYears": "2025 – 2026"
   }
 }
