@@ -1191,7 +1191,7 @@ export function mountSky(host: HTMLElement, canvas: HTMLCanvasElement, options: 
       } else {
         const c = Math.cos(f.rot);
         const glint = Math.max(0, c) ** 6;
-        leaf(f.x, f.y, 0.8 * f.r * (0.3 + 0.7 * Math.abs(c)), 1.25 * f.r, f.rot * 0.3, 0.85 * env * (0.35 + 0.65 * glint));
+        leaf(f.x, f.y, 0.8 * f.r * (0.3 + 0.7 * Math.abs(c)), 1.25 * f.r, f.rot * 0.3, 0.85 * env * (0.45 + 0.55 * glint));
       }
     }
   };
@@ -1403,7 +1403,8 @@ export function mountSky(host: HTMLElement, canvas: HTMLCanvasElement, options: 
     });
     // Touch and pen chart on a tap (a click), so a swipe to scroll charts nothing.
     host.addEventListener('click', (e) => {
-      if (performance.now() - mouseDownAt < 1000) return;
+      // detail 0: a keyboard or scripted click, with no point to chart.
+      if (e.detail === 0 || performance.now() - mouseDownAt < 1000) return;
       if ((e as PointerEvent).pointerType === 'mouse' || ignored(e)) return;
       chart(e.clientX, e.clientY);
     });
