@@ -7,6 +7,11 @@
 // dust circling the crest. Layers shift with the pointer and with scroll at
 // different depths (parallax).
 //
+// Two inks, chosen by the band's CSS custom property --sky: 'ink' draws an
+// engraved star atlas on paper (navy stars and hairlines, gold accents) for
+// the light theme; 'night' draws pale stars and gilt lines on midnight for
+// the dark theme. The palette follows theme changes live.
+//
 // Runs only while its band is on screen and the tab is visible. With
 // reduced motion a single still frame is drawn and nothing moves.
 
@@ -34,6 +39,21 @@ type Spark = { x: number; y: number; vx: number; vy: number; age: number; life: 
 type Meteor = { x: number; y: number; vx: number; vy: number; len: number; age: number; life: number };
 type Grain = { th: number; w: number; rf: number; r: number; tw: number };
 
+type Palette = {
+  star: string;
+  starScale: number;
+  node: string;
+  link: string;
+  linkScale: number;
+  pointer: string;
+  bright: string;
+  moteScale: number;
+  meteor: [string, string, string];
+  streak: [string, string];
+  gold: HTMLCanvasElement;
+  ember: HTMLCanvasElement;
+};
+
 const TAU = Math.PI * 2;
 const rand = (a: number, b: number) => a + Math.random() * (b - a);
 const LINK_LEVELS = 8;
@@ -53,6 +73,59 @@ function sprite(stops: [number, string][]): HTMLCanvasElement {
   return c;
 }
 
+function makePalette(scheme: 'ink' | 'night'): Palette {
+  if (scheme === 'ink') {
+    return {
+      star: 'rgb(34,56,96)',
+      starScale: 0.75,
+      node: 'rgb(26,48,86)',
+      link: 'rgb(26,48,86)',
+      linkScale: 0.5,
+      pointer: 'rgb(176,141,62)',
+      bright: 'rgb(166,128,48)',
+      moteScale: 1.5,
+      meteor: ['rgba(20,40,74,1)', 'rgba(176,141,62,.55)', 'rgba(176,141,62,0)'],
+      streak: ['rgb(176,141,62)', 'rgb(140,29,44)'],
+      gold: sprite([
+        [0, 'rgba(206,166,78,1)'],
+        [0.2, 'rgba(190,152,68,.75)'],
+        [0.48, 'rgba(176,141,62,.18)'],
+        [1, 'rgba(176,141,62,0)'],
+      ]),
+      ember: sprite([
+        [0, 'rgba(160,40,52,1)'],
+        [0.22, 'rgba(140,29,44,.7)'],
+        [0.5, 'rgba(140,29,44,.18)'],
+        [1, 'rgba(140,29,44,0)'],
+      ]),
+    };
+  }
+  return {
+    star: 'rgb(246,236,210)',
+    starScale: 1,
+    node: 'rgb(246,232,196)',
+    link: 'rgb(222,190,120)',
+    linkScale: 1,
+    pointer: 'rgb(246,226,166)',
+    bright: 'rgb(246,226,166)',
+    moteScale: 1,
+    meteor: ['rgba(255,248,228,1)', 'rgba(240,210,140,.55)', 'rgba(226,194,125,0)'],
+    streak: ['rgb(250,232,180)', 'rgb(236,150,140)'],
+    gold: sprite([
+      [0, 'rgba(255,248,226,1)'],
+      [0.16, 'rgba(246,226,166,.9)'],
+      [0.42, 'rgba(226,194,125,.24)'],
+      [1, 'rgba(226,194,125,0)'],
+    ]),
+    ember: sprite([
+      [0, 'rgba(255,222,200,1)'],
+      [0.2, 'rgba(222,110,110,.75)'],
+      [0.5, 'rgba(160,40,50,.22)'],
+      [1, 'rgba(160,40,50,0)'],
+    ]),
+  };
+}
+
 export function mountSky(host: HTMLElement, canvas: HTMLCanvasElement, options: SkyOptions = {}): void {
   const ctx = canvas.getContext('2d');
   if (!ctx) return;
@@ -67,18 +140,10 @@ export function mountSky(host: HTMLElement, canvas: HTMLCanvasElement, options: 
   const reduce = window.matchMedia('(prefers-reduced-motion: reduce)');
   const wide = window.matchMedia('(min-width: 901px)');
 
-  const gold = sprite([
-    [0, 'rgba(255,248,226,1)'],
-    [0.16, 'rgba(246,226,166,.9)'],
-    [0.42, 'rgba(226,194,125,.24)'],
-    [1, 'rgba(226,194,125,0)'],
-  ]);
-  const ember = sprite([
-    [0, 'rgba(255,222,200,1)'],
-    [0.2, 'rgba(222,110,110,.75)'],
-    [0.5, 'rgba(160,40,50,.22)'],
-    [1, 'rgba(160,40,50,0)'],
-  ]);
+  const schemeOf = (): 'ink' | 'night' =>
+    getComputedStyle(host).getPropertyValue('--sky').trim() === 'night' ? 'night' : 'ink';
+  let scheme = schemeOf();
+  let pal = makePalette(scheme);
 
   let w = 0;
   let h = 0;
@@ -257,10 +322,10 @@ export function mountSky(host: HTMLElement, canvas: HTMLCanvasElement, options: 
     // Far stars.
     const fx = -par.x * 6;
     const fy = -par.y * 4 + shift * 0.06;
-    ctx.fillStyle = 'rgb(246,236,210)';
+    ctx.fillStyle = pal.star;
     for (const s of stars) {
       const tw = moving ? 0.55 + 0.45 * Math.sin(clock * 0.001 * s.sp + s.tw) : 0.8;
-      ctx.globalAlpha = s.a * tw;
+      ctx.globalAlpha = s.a * tw * pal.starScale;
       ctx.fillRect(wrap(s.x + fx, w), wrap(s.y + fy, h), s.s, s.s);
     }
 
@@ -311,11 +376,11 @@ export function mountSky(host: HTMLElement, canvas: HTMLCanvasElement, options: 
       }
     }
     ctx.lineWidth = 0.6;
-    ctx.strokeStyle = 'rgb(222,190,120)';
+    ctx.strokeStyle = pal.link;
     for (let lvl = 0; lvl < LINK_LEVELS; lvl++) {
       const b = buckets[lvl];
       if (!b.length) continue;
-      ctx.globalAlpha = ((lvl + 0.5) / LINK_LEVELS) * 0.34;
+      ctx.globalAlpha = ((lvl + 0.5) / LINK_LEVELS) * 0.34 * pal.linkScale;
       ctx.beginPath();
       for (let q = 0; q < b.length; q += 4) {
         ctx.moveTo(b[q], b[q + 1]);
@@ -326,7 +391,7 @@ export function mountSky(host: HTMLElement, canvas: HTMLCanvasElement, options: 
     if (pointer.on) {
       const reach = link * 1.45;
       ctx.lineWidth = 0.7;
-      ctx.strokeStyle = 'rgb(246,226,166)';
+      ctx.strokeStyle = pal.pointer;
       for (let i = 0; i < nodes.length; i++) {
         const dx = pts[i * 2] - pointer.x;
         const dy = pts[i * 2 + 1] - pointer.y;
@@ -345,15 +410,15 @@ export function mountSky(host: HTMLElement, canvas: HTMLCanvasElement, options: 
       const x = pts[i * 2];
       const y = pts[i * 2 + 1];
       const glow = moving ? 0.55 + 0.45 * Math.sin(clock / 900 + n.tw) : 0.8;
-      ctx.globalAlpha = 0.35 + 0.5 * glow;
-      ctx.fillStyle = 'rgb(246,232,196)';
+      ctx.globalAlpha = (0.35 + 0.5 * glow) * (scheme === 'ink' ? 0.7 : 1);
+      ctx.fillStyle = pal.node;
       ctx.beginPath();
       ctx.arc(x, y, n.r, 0, TAU);
       ctx.fill();
       if (n.bright) {
         const s = 5 + 4 * glow;
         ctx.globalAlpha = 0.25 + 0.55 * glow;
-        ctx.strokeStyle = 'rgb(246,226,166)';
+        ctx.strokeStyle = pal.bright;
         ctx.lineWidth = 0.8;
         ctx.beginPath();
         ctx.moveTo(x - s, y);
@@ -362,7 +427,7 @@ export function mountSky(host: HTMLElement, canvas: HTMLCanvasElement, options: 
         ctx.lineTo(x, y + s);
         ctx.stroke();
         ctx.globalAlpha = 0.35 * glow;
-        ctx.drawImage(gold, x - 9, y - 9, 18, 18);
+        ctx.drawImage(pal.gold, x - 9, y - 9, 18, 18);
       }
     }
 
@@ -384,7 +449,7 @@ export function mountSky(host: HTMLElement, canvas: HTMLCanvasElement, options: 
         const tw = moving ? 0.6 + 0.4 * Math.sin(clock / 700 + g.tw) : 0.8;
         ctx.globalAlpha = (0.28 + 0.6 * near) * tw;
         const r = g.r * (0.8 + 0.5 * near);
-        ctx.drawImage(gold, x - r * 3, y - r * 3, r * 6, r * 6);
+        ctx.drawImage(pal.gold, x - r * 3, y - r * 3, r * 6, r * 6);
       }
     }
 
@@ -402,8 +467,8 @@ export function mountSky(host: HTMLElement, canvas: HTMLCanvasElement, options: 
       }
       const x = wrap(m.x + Math.sin(m.ph) * 18 * m.sway + mx, w);
       const y = wrap(m.y + my, h);
-      ctx.globalAlpha = m.a * (0.7 + 0.3 * Math.sin(m.ph * 2));
-      ctx.drawImage(gold, x - m.r * 5, y - m.r * 5, m.r * 10, m.r * 10);
+      ctx.globalAlpha = Math.min(1, m.a * (0.7 + 0.3 * Math.sin(m.ph * 2)) * pal.moteScale);
+      ctx.drawImage(pal.gold, x - m.r * 5, y - m.r * 5, m.r * 10, m.r * 10);
     }
 
     if (moving) {
@@ -422,9 +487,9 @@ export function mountSky(host: HTMLElement, canvas: HTMLCanvasElement, options: 
         const tx = m.x - (m.vx / sp) * m.len;
         const ty = m.y - (m.vy / sp) * m.len;
         const grd = ctx.createLinearGradient(m.x, m.y, tx, ty);
-        grd.addColorStop(0, 'rgba(255,248,228,1)');
-        grd.addColorStop(0.25, 'rgba(240,210,140,.55)');
-        grd.addColorStop(1, 'rgba(226,194,125,0)');
+        grd.addColorStop(0, pal.meteor[0]);
+        grd.addColorStop(0.25, pal.meteor[1]);
+        grd.addColorStop(1, pal.meteor[2]);
         ctx.globalAlpha = env;
         ctx.strokeStyle = grd;
         ctx.lineWidth = 1.5;
@@ -432,7 +497,7 @@ export function mountSky(host: HTMLElement, canvas: HTMLCanvasElement, options: 
         ctx.moveTo(m.x, m.y);
         ctx.lineTo(tx, ty);
         ctx.stroke();
-        ctx.drawImage(gold, m.x - 8, m.y - 8, 16, 16);
+        ctx.drawImage(pal.gold, m.x - 8, m.y - 8, 16, 16);
       }
 
       // Sparks and gold dust.
@@ -449,11 +514,11 @@ export function mountSky(host: HTMLElement, canvas: HTMLCanvasElement, options: 
         p.y += p.vy * k;
         const t = p.age / p.life;
         const a = p.g > 0 ? 1 - t : Math.sin(Math.PI * t);
-        const img = p.kind === 2 ? ember : gold;
+        const img = p.kind === 2 ? pal.ember : pal.gold;
         const r = p.r * (p.g > 0 ? 1 - t * 0.5 : 1);
         if (p.g > 0) {
           ctx.globalAlpha = a * 0.7;
-          ctx.strokeStyle = p.kind === 2 ? 'rgb(236,150,140)' : 'rgb(250,232,180)';
+          ctx.strokeStyle = p.kind === 2 ? pal.streak[1] : pal.streak[0];
           ctx.lineWidth = r * 0.7;
           ctx.beginPath();
           ctx.moveTo(p.x - p.vx * 2.5, p.y - p.vy * 2.5);
@@ -518,6 +583,17 @@ export function mountSky(host: HTMLElement, canvas: HTMLCanvasElement, options: 
   }
   document.addEventListener('visibilitychange', start);
   reduce.addEventListener('change', start);
+
+  // Follow theme changes (the toggle sets data-theme; the OS can flip too).
+  const repaint = () => {
+    const next = schemeOf();
+    if (next === scheme) return;
+    scheme = next;
+    pal = makePalette(scheme);
+    if (!raf) start();
+  };
+  new MutationObserver(repaint).observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
+  window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => requestAnimationFrame(repaint));
   if ('IntersectionObserver' in window) {
     new IntersectionObserver((entries) => {
       onScreen = entries[entries.length - 1]?.isIntersecting ?? true;
