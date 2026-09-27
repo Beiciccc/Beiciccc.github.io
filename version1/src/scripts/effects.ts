@@ -99,7 +99,6 @@ if (mouse && !reduce) {
   if (ctx) {
     type Mote = { x: number; y: number; vx: number; vy: number; age: number; life: number; r: number; star: boolean; rot: number; vr: number; dark: boolean };
     const motes: Mote[] = [];
-    const DARK = '.hero, .band, .site-header, .site-footer, .pub--review, .to-top, .skip-link';
     const darkScheme = window.matchMedia('(prefers-color-scheme: dark)');
     const pageIsDark = () => {
       const t = document.documentElement.getAttribute('data-theme');
@@ -205,8 +204,8 @@ if (mouse && !reduce) {
       }
       const d = Math.hypot(x - lx, y - ly);
       if (d < 8) return;
-      const target = e.target as Element | null;
-      const dark = pageIsDark() || !!target?.closest?.(DARK);
+      // Light theme: bronze dust on paper; dark theme: glowing gilt dust.
+      const dark = pageIsDark();
       const n = Math.min(4, Math.floor(d / 8));
       for (let i = 1; i <= n; i++) {
         const t = i / n;
