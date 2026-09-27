@@ -1,5 +1,6 @@
 ---
 import { type Lang, publications, ui, pick, pubIndex } from '../i18n/content';
+import SectionHead from './SectionHead.astro';
 
 interface Props {
   lang: Lang;
@@ -11,74 +12,154 @@ const tiers = ['main', 'workshop'] as const;
 const anyMissingPdf = p.items.some((i) => !i.pdf);
 const sep = lang === 'zh' ? '，' : ', ';
 const paren = (s: string) => (lang === 'zh' ? `（${s}）` : ` (${s})`);
+
+// "LUHME 2026, workshop at EMNLP 2026" → medallion "LUHME" over "2026".
+const medal = (venue: string) => {
+  const head = venue.split(/[,，]\s*/)[0];
+  const m = head.match(/^(.*?)\s*(\d{4})$/);
+  return m ? { name: m[1], year: m[2] } : { name: head, year: '' };
+};
+
+// Wax seal outline for the under-review note: a circle with a soft, uneven
+// scalloped edge, computed once at build time.
+const waxPath =
+  'M' +
+  Array.from({ length: 96 }, (_, k) => {
+    const a = (k / 96) * Math.PI * 2;
+    const r = 34 + 2.2 * Math.sin(a * 11) + 1.1 * Math.sin(a * 5 + 1.3);
+    return `${(40 + r * Math.cos(a)).toFixed(2)} ${(40 + r * Math.sin(a)).toFixed(2)}`;
+  }).join('L') +
+  'Z';
 ---
 
-<!-- Numbered reference list. The [n] is the first child of each item so the
-     CSS subgrid can hang it in the left rail (≥ 900px); below that it shares
-     the first row with the byline. It stays readable text (not aria-hidden):
-     the Research section refers back to these numbers. -->
-<section id="publications" class="section section--rail" aria-labelledby="publications-heading">
-  <div class="section__inner">
-    <h2 id="publications-heading">{p.heading}</h2>
-    <div class="section__body">
-      <p class="lede">{p.intro}</p>
+<!-- Numbered reference list set as engraved plates. The [n] lives in the
+     medallion and stays readable text: the Research section refers back to
+     these numbers. -->
+<section id="publications" class="section section--pubs" aria-labelledby="publications-heading">
+  <div class="container">
+    <SectionHead id="publications-heading" numeral="I" eyebrow={t.eyebrow.publications} heading={p.heading} />
+    <p class="section-lede reveal">{p.intro}</p>
 
-      {
-        tiers.map((tier) => {
-          const group = p.items.filter((i) => i.tier === tier);
-          return (
-            <div class="pubs__group">
-              <h3 class="pubs__group-title">{p.groups[tier]}</h3>
-              <ol class="pubs__list" role="list">
-                {group.map((item) => (
-                  <li class="pub" id={item.id}>
-                    <span class="pub__num">[{pubIndex(item.id)}]</span>
-                    <p class="pub__byline">
-                      {item.authors.map((a, k) => (
-                        <Fragment>
-                          {k > 0 && sep}
-                          {a.self ? <strong class="pub__self">{a.name}</strong> : a.name}
-                          {a.corresponding && paren(t.pubCorresponding)}
-                        </Fragment>
-                      ))}
-                      <span aria-hidden="true"> · </span>
-                      <span class="pub__venue">{item.venue}</span>
-                      {item.format && (
-                        <span class:list={['pub__format', `pub__format--${item.format.toLowerCase()}`]}>
-                          {paren(item.format)}
+    {
+      tiers.map((tier) => {
+        const group = p.items.filter((i) => i.tier === tier);
+        return (
+          <div class="pubs__group">
+            <h3 class="pubs__group-title reveal">
+              <span>{p.groups[tier]}</span>
+            </h3>
+            <ol class="pubs__list" role="list">
+              {group.map((item) => {
+                const m = medal(item.venue);
+                const oral = item.format === 'Oral';
+                return (
+                  <li class="pub reveal" id={item.id}>
+                    <div class="pub__aside">
+                      <span class="pub__medal">
+                        <span class="pub__num">
+                          <span class="pub__bracket">[</span>
+                          {pubIndex(item.id)}
+                          <span class="pub__bracket">]</span>
                         </span>
-                      )}
-                    </p>
-                    <h4 class="pub__title" lang="en">{item.title}</h4>
-                    <p class="pub__takeaway">{item.takeaway}</p>
-                    <details class="pub__more">
-                      <summary>{t.pubAbstract}</summary>
-                      <p class="pub__summary">{item.summary}</p>
-                      <p class="pub__scale">{item.venueLong} · {item.scale}</p>
-                    </details>
-                    {(item.pdf || item.links.length > 0) && (
-                      <p class="pub__links">
-                        {item.pdf && <a href={item.pdf} type="application/pdf">{t.pubLinks.pdf}</a>}
-                        {item.links.map((l) => (
-                          <a href={l.href} rel="noopener noreferrer">{l.label}</a>
+                      </span>
+                      <span class="pub__medal-venue" aria-hidden="true">
+                        <span>{m.name}</span>
+                        {m.year && <span class="pub__medal-year">{m.year}</span>}
+                      </span>
+                    </div>
+
+                    <div class="pub__main">
+                      <p class="pub__meta">
+                        <span class="pub__venue">{item.venue}</span>
+                        {item.format &&
+                          (oral ? (
+                            <span class="badge badge--oral">
+                              <svg class="badge__laurel" aria-hidden="true" focusable="false" viewBox="0 0 24 16" width="18" height="12">
+                                <g fill="currentColor">
+                                  <path d="M7.6 14.6C3.6 13 1.4 9.6 1.6 4.8l.9.1c-.1 4.4 1.9 7.4 5.5 8.9z" />
+                                  <ellipse cx="2.3" cy="3.4" rx="1" ry="2" transform="rotate(-8 2.3 3.4)" />
+                                  <ellipse cx="3.4" cy="7.6" rx="1" ry="2" transform="rotate(-40 3.4 7.6)" />
+                                  <ellipse cx="5.6" cy="11" rx="1" ry="2" transform="rotate(-62 5.6 11)" />
+                                  <path d="M16.4 14.6c4-1.6 6.2-5 6-9.8l-.9.1c.1 4.4-1.9 7.4-5.5 8.9z" />
+                                  <ellipse cx="21.7" cy="3.4" rx="1" ry="2" transform="rotate(8 21.7 3.4)" />
+                                  <ellipse cx="20.6" cy="7.6" rx="1" ry="2" transform="rotate(40 20.6 7.6)" />
+                                  <ellipse cx="18.4" cy="11" rx="1" ry="2" transform="rotate(62 18.4 11)" />
+                                  <path d="m12 3.2 1.1 2.3 2.5.3-1.8 1.7.5 2.5L12 8.8 9.7 10l.5-2.5-1.8-1.7 2.5-.3z" />
+                                </g>
+                              </svg>
+                              {item.format === 'Oral' ? t.oral : item.format}
+                            </span>
+                          ) : (
+                            <span class="badge">{item.format}</span>
+                          ))}
+                      </p>
+                      <h4 class="pub__title" lang="en">{item.title}</h4>
+                      <p class="pub__byline">
+                        {item.authors.map((a, k) => (
+                          <Fragment>
+                            {k > 0 && sep}
+                            {a.self ? <strong class="pub__self">{a.name}</strong> : a.name}
+                            {a.corresponding && <span class="pub__corr">{paren(t.pubCorresponding)}</span>}
+                          </Fragment>
                         ))}
                       </p>
-                    )}
+                      <p class="pub__takeaway">{item.takeaway}</p>
+                      <div class="pub__foot">
+                        <details class="pub__more">
+                          <summary>
+                            <span>{t.pubAbstract}</span>
+                            <svg class="pub__chev" aria-hidden="true" focusable="false" viewBox="0 0 12 12" width="10" height="10">
+                              <path d="M2.5 4.5 6 8l3.5-3.5" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                            </svg>
+                          </summary>
+                          <div class="pub__abstract">
+                            <p class="pub__summary">{item.summary}</p>
+                            <p class="pub__scale">
+                              {item.venueLong} · {item.scale}
+                            </p>
+                          </div>
+                        </details>
+                        {(item.pdf || item.links.length > 0) && (
+                          <p class="pub__links">
+                            {item.pdf && (
+                              <a class="chip" href={item.pdf} type="application/pdf">
+                                {t.pubLinks.pdf}
+                              </a>
+                            )}
+                            {item.links.map((l) => (
+                              <a class="chip" href={l.href} rel="noopener noreferrer">
+                                {l.label}
+                              </a>
+                            ))}
+                          </p>
+                        )}
+                      </div>
+                    </div>
                   </li>
-                ))}
-              </ol>
-            </div>
-          );
-        })
-      }
+                );
+              })}
+            </ol>
+          </div>
+        );
+      })
+    }
 
-      {anyMissingPdf && <p class="pubs__note meta">{p.pdfNote}</p>}
+    {anyMissingPdf && <p class="pubs__note reveal">{p.pdfNote}</p>}
 
-      <aside class="pub--review" aria-labelledby="ur-heading">
-        <h3 id="ur-heading" class="pubs__group-title">{p.underReview.heading}</h3>
+    <aside class="pub--review reveal" aria-labelledby="ur-heading">
+      <div class="review__seal" aria-hidden="true">
+        <svg viewBox="0 0 80 80" width="80" height="80" focusable="false">
+          <path d={waxPath} class="review__wax" />
+          <circle cx="40" cy="40" r="24" class="review__wax-ring" />
+          <path d="m40 25 3.5 9.6 10.2.4-8 6.3 2.8 9.8L40 45.4l-8.5 5.7 2.8-9.8-8-6.3 10.2-.4z" class="review__wax-star" />
+        </svg>
+      </div>
+      <div class="review__body">
+        <p class="review__kicker">{t.sealedTitle}</p>
+        <h3 id="ur-heading" class="review__title">{p.underReview.heading}</h3>
         <p>{p.underReview.body}</p>
         <ul class="pub__areas">{p.underReview.areas.map((a) => <li>{a}</li>)}</ul>
-      </aside>
-    </div>
+      </div>
+    </aside>
   </div>
 </section>

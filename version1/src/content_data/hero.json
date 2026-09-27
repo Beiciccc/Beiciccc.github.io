@@ -11,7 +11,8 @@
     "ctaSecondary": {
       "label": "CV (PDF, 2 pp)",
       "href": "/cv.pdf"
-    }
+    },
+    "emblem": "Kun Zhang · Post-training · Alignment · Evaluation validity · Interpretability · "
   },
   "zh": {
     "kicker": "博士申请人，2027/28 入学 · 大语言模型后训练、对齐、评测",
@@ -25,6 +26,7 @@
     "ctaSecondary": {
       "label": "简历（PDF，2 页）",
       "href": "/cv.pdf"
-    }
+    },
+    "emblem": "张鲲 · 大语言模型后训练 · 对齐 · 评测效度 · 机制可解释性 · "
   }
 }
