@@ -2,7 +2,7 @@
   "_rules": [
     "Under review: no venue name, no venue type, no CCF tier, no track name.",
     "Under review: no forthcoming / to appear / expected; only 'under review' and '在投'.",
-    "Under review: directions at CV Research Themes granularity only; no title words from manuscripts under review (identity-controlled, covariate shift, cross-lingual, point-in-time, disclosure, instruction hierarchy, conformal, SP500Vol).",
+    "Under review: directions at CV Research Themes granularity only; no title words, venues or distinctive terms from manuscripts under review (the banned-word list lives in the private build script, not in this public repo).",
     "On acceptance: move the item into its tier group with title / pdf / links; update hero.intro, underReview.body and areas, site.counts, siteDescription (en/zh), research theme refs and outro, BaseLayout ogAlt, OG images (SVG + PNG), public/cv.pdf, cv_web L39 and L57; publications.intro's 'four of the five' changes only if the new paper's headline is a surviving null.",
     "Venue ranks sit at the end of venueLong. EN: CORE only where ranked (ICORE2026: PRICAI = CORE B, ACML = CORE C). ZH: CCF 7th ed. (2026): NLPCC, PRICAI, ACML = CCF-C. NLPCC (EN), LUHME and GroundLM carry no rank label and no 'unranked' wording."
   ],

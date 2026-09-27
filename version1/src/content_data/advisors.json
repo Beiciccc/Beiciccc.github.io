@@ -1,7 +1,7 @@
 {
   "_status": "Hidden since 2026-09-11 by decision. To show again: re-import Advisors in src/pages/index.astro and src/pages/zh/index.astro (between Research and About), and add {\"label\":\"For advisors\",\"href\":\"#advisors\"} / {\"label\":\"致导师\",\"href\":\"#advisors\"} back to site.json nav.",
   "_afterNotice": {
-    "when": "Enable only after the AAAI-27 decision, and only if the alignment manuscript is accepted or is no longer under anonymous review anywhere.",
+    "when": "Enable only after the review decision, and only if the alignment manuscript is accepted or is no longer under anonymous review anywhere.",
     "en": {
       "bring": "A working preference-optimisation pipeline over LoRA adapters, with a matched fine-tuning control and one cross-family replication, at pilot scale. Preference pairs cut from the model's own outputs by a deterministic scorer, with no human annotation and no LLM judge, so an extra control arm costs generation time rather than labelling budget.",
       "stops": "No reward model trained, no PPO or GRPO, no online reinforcement learning, no verifiable-reward training. One algorithm (DPO), one model family replicated, adapters at rank 16.",
