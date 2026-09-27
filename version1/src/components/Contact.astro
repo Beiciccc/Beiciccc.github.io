@@ -21,7 +21,9 @@ const cards = [
 <!-- Closing band, midnight like the title page. One card per channel; the
      whole card is the link target (stretched ::after on the <a>). -->
 <section id="contact" class="section section--contact band" aria-labelledby="contact-heading">
-  <div class="band__sky" aria-hidden="true"></div>
+  <div class="band__sky" aria-hidden="true">
+    <canvas class="band__canvas"></canvas>
+  </div>
   <div class="container">
     <SectionHead id="contact-heading" numeral="IV" eyebrow={t.eyebrow.contact} heading={c.heading} />
     <p class="section-lede reveal">{c.intro}</p>
@@ -69,3 +71,15 @@ const cards = [
     </ul>
   </div>
 </section>
+
+<script>
+  import { mountSky } from '../scripts/sky';
+
+  // The closing band gets its own, quieter sky: fewer stars, the odd
+  // shooting star, sparks where the visitor clicks.
+  const band = document.querySelector<HTMLElement>('.section--contact');
+  const canvas = band?.querySelector<HTMLCanvasElement>('.band__canvas');
+  if (band && canvas) {
+    mountSky(band, canvas, { nodeArea: 17000, starArea: 3000, motes: 14, meteors: [3.5, 8], interactive: true });
+  }
+</script>

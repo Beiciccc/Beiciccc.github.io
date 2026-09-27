@@ -1,6 +1,7 @@
 ---
 // Typographic ornament: a fleuron between two hairlines (the lines are drawn
-// by CSS so they can fade out and take the width of their container).
+// by CSS so they can fade out and take the width of their container). The
+// scrolls carry pathLength="1" so they can be engraved in on reveal.
 // Purely decorative, so the whole thing is hidden from assistive tech.
 interface Props {
   variant?: 'divider' | 'fleuron';
@@ -12,13 +13,13 @@ const { variant = 'divider', class: cls } = Astro.props;
 <div class:list={['ornament', `ornament--${variant}`, cls]} aria-hidden="true">
   <svg viewBox="0 0 120 24" width="120" height="24" focusable="false">
     <g fill="none" stroke="currentColor" stroke-width="1.1" stroke-linecap="round">
-      <path d="M52 12C45 12 41 5.2 34.5 7c-5.6 1.6-4.8 8.8.2 8.4 3-.3 3.1-3.9.6-4" />
-      <path d="M68 12c7 0 11-6.8 17.5-5 5.6 1.6 4.8 8.8-.2 8.4-3-.3-3.1-3.9-.6-4" />
-      <path d="M52 12c-6 0-9.5 5-14.5 5.6" opacity=".55" />
-      <path d="M68 12c6 0 9.5 5 14.5 5.6" opacity=".55" />
-      <path d="M21 12h7M92 12h7" />
+      <path class="draw" pathLength="1" d="M52 12C45 12 41 5.2 34.5 7c-5.6 1.6-4.8 8.8.2 8.4 3-.3 3.1-3.9.6-4" />
+      <path class="draw" pathLength="1" d="M68 12c7 0 11-6.8 17.5-5 5.6 1.6 4.8 8.8-.2 8.4-3-.3-3.1-3.9-.6-4" />
+      <path class="draw" pathLength="1" d="M52 12c-6 0-9.5 5-14.5 5.6" opacity=".55" />
+      <path class="draw" pathLength="1" d="M68 12c6 0 9.5 5 14.5 5.6" opacity=".55" />
+      <path class="draw" pathLength="1" d="M21 12h7M92 12h7" />
     </g>
-    <path d="M60 4.5 66.5 12 60 19.5 53.5 12Z" fill="currentColor" />
+    <path class="gem" d="M60 4.5 66.5 12 60 19.5 53.5 12Z" fill="currentColor" />
     <circle cx="60" cy="12" r="1.7" class="ornament__eye" />
     <circle cx="16.5" cy="12" r="1.5" fill="currentColor" />
     <circle cx="103.5" cy="12" r="1.5" fill="currentColor" />

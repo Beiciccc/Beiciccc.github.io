@@ -62,8 +62,8 @@ export const ui = {
     publishedOn: 'Published',
     notFoundTitle: 'Page not found',
     notFoundBody: 'The page you are looking for does not exist or may have moved.',
-    notFoundBodyZh: '页面未找到：你访问的页面不存在或已被移动。',
     notFoundCta: 'Back to home',
+    notFoundAlt: 'Chinese site',
     skipToContent: 'Skip to content',
     home: 'Home',
     minRead: 'min read',
@@ -92,6 +92,7 @@ export const ui = {
     sealedTitle: 'Sealed while review is anonymous',
     colophon: 'Set in Cormorant Garamond, Source Serif 4, Source Sans 3 and Cinzel.',
     toTop: 'Back to top',
+    crestAlt: 'University of Leeds',
   },
   zh: {
     backToBlog: '← 返回全部文章',
@@ -100,8 +101,8 @@ export const ui = {
     publishedOn: '发布于',
     notFoundTitle: '页面未找到',
     notFoundBody: '你访问的页面不存在，或者可能已被移动。',
-    notFoundBodyZh: '页面未找到：你访问的页面不存在或已被移动。',
     notFoundCta: '返回首页',
+    notFoundAlt: '英文站',
     skipToContent: '跳到正文',
     home: '首页',
     minRead: '分钟阅读',
@@ -129,6 +130,7 @@ export const ui = {
     sealedTitle: '匿名评审期间封存',
     colophon: '西文字体 Cormorant Garamond、Source Serif 4、Source Sans 3 与 Cinzel；中文使用系统宋体与黑体。',
     toTop: '回到顶部',
+    crestAlt: '利兹大学',
   },
 } as const;
 
@@ -167,7 +169,9 @@ export function homeJsonLd(lang: Lang): Record<string, unknown>[] {
       '@type': 'Person',
       '@id': `${SITE_URL}/#person`,
       name: 'Kun Zhang',
-      alternateName: '张鲲',
+      // The Chinese name is declared from the Chinese page only: English
+      // pages carry no Chinese script. Same @id, so crawlers merge the two.
+      ...(lang === 'zh' ? { alternateName: '张鲲' } : {}),
       url: `${SITE_URL}/`,
       email: 'mailto:kunzhang0098@gmail.com',
       jobTitle: lang === 'zh' ? '博士申请人' : 'PhD applicant',
