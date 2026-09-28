@@ -6,8 +6,8 @@
       {
         "title": "Evaluation validity and leakage control",
         "refs": [
-          "nlpcc2026",
           "pricai2026",
+          "nlpcc2026",
           "luhme2026"
         ],
         "body": "When a reported score measures the protocol, a look-ahead, or a controlled split rather than the capability."
@@ -36,8 +36,8 @@
       {
         "title": "评测效度与泄漏控制",
         "refs": [
-          "nlpcc2026",
           "pricai2026",
+          "nlpcc2026",
           "luhme2026"
         ],
         "body": "当一个被报告的分数量的是协议、前视泄漏或受控子集，而不是能力。"

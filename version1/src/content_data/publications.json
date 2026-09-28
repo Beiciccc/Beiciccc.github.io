@@ -16,40 +16,6 @@
     "pdfNote": "Paper PDFs not yet posted here are available by email.",
     "items": [
       {
-        "id": "nlpcc2026",
-        "tier": "main",
-        "venue": "NLPCC 2026",
-        "venueLong": "Resources and Evaluation track · Springer LNCS",
-        "format": "Oral",
-        "title": "Same Exam, Different Scores: A Tokenizer-Grounded Audit of Evaluation-Protocol Sensitivity on Chinese Benchmarks",
-        "authors": [
-          {
-            "name": "Kun Zhang",
-            "self": true
-          },
-          {
-            "name": "Chunwei Xia",
-            "corresponding": true
-          }
-        ],
-        "takeaway": "Predicted from tokenizers before any GPU run: 12 of 64 model-by-label-set cells make first-token argmax undefined. All 64 predictions held. The ranking belongs to the scorer.",
-        "summary": "The standard first-token scorer for multiple-choice benchmarks is mathematically undefined for many Chinese models: when a tokenizer maps all four answer labels onto a shared first token, argmax reports a tie-break, not a score. Which model and label-set pairs degenerate follows from the tokenizer alone, so it is predictable on a laptop CPU before any GPU run. We pre-registered those predictions and confirmed 64 of 64 on the real runs. The paper's one inferential contrast goes to the negative control, where the two scorers do not differ (p = 0.453), not to the 12 degenerate cells, whose p-values are tautological.",
-        "scale": "18 checkpoints · 7 tokenizer families · 12,925 items · ~2.5M released scoring records · smoke test ≈ 5 s",
-        "links": [
-          {
-            "kind": "code",
-            "label": "Code",
-            "href": "https://github.com/Beiciccc/zh-protocolcube"
-          },
-          {
-            "kind": "doi",
-            "label": "Artifact (DOI)",
-            "href": "https://doi.org/10.17605/OSF.IO/53C87"
-          }
-        ],
-        "pdf": null
-      },
-      {
         "id": "pricai2026",
         "tier": "main",
         "venue": "PRICAI 2026",
@@ -108,26 +74,35 @@
         "pdf": null
       },
       {
-        "id": "luhme2026",
-        "tier": "workshop",
-        "venue": "LUHME 2026, workshop at EMNLP 2026",
-        "venueLong": "3rd LUHME workshop · sole author",
+        "id": "nlpcc2026",
+        "tier": "main",
+        "venue": "NLPCC 2026",
+        "venueLong": "Resources and Evaluation track · Springer LNCS",
         "format": "Oral",
-        "title": "PCP: A Controlled Benchmark for Pragmatic Intention Recognition in Clinical Communication",
+        "title": "Same Exam, Different Scores: A Tokenizer-Grounded Audit of Evaluation-Protocol Sensitivity on Chinese Benchmarks",
         "authors": [
           {
             "name": "Kun Zhang",
             "self": true
+          },
+          {
+            "name": "Chunwei Xia",
+            "corresponding": true
           }
         ],
-        "takeaway": "Eleven systems sit at 98.7–99.8% on the controlled split and 79.7–90.6% on grounded cases, so the controlled number was measuring the benchmark's own construction.",
-        "summary": "Eleven systems sit within a point or two of ceiling on the controlled split (98.7–99.8%) and fall to 79.7–90.6% once the items are externally grounded. The gap is the finding: a broad controlled probe can hide exactly the difficulty that close distractors expose, so a benchmark that only reports the controlled number is measuring its own construction.",
-        "scale": "3,533 items across three splits · 11 systems · 388,630 scored calls · 2,499 blind-validated items",
+        "takeaway": "Predicted from tokenizers before any GPU run: 12 of 64 model-by-label-set cells make first-token argmax undefined. All 64 predictions held. The ranking belongs to the scorer.",
+        "summary": "The standard first-token scorer for multiple-choice benchmarks is mathematically undefined for many Chinese models: when a tokenizer maps all four answer labels onto a shared first token, argmax reports a tie-break, not a score. Which model and label-set pairs degenerate follows from the tokenizer alone, so it is predictable on a laptop CPU before any GPU run. We pre-registered those predictions and confirmed 64 of 64 on the real runs. The paper's one inferential contrast goes to the negative control, where the two scorers do not differ (p = 0.453), not to the 12 degenerate cells, whose p-values are tautological.",
+        "scale": "18 checkpoints · 7 tokenizer families · 12,925 items · ~2.5M released scoring records · smoke test ≈ 5 s",
         "links": [
           {
             "kind": "code",
             "label": "Code",
-            "href": "https://github.com/Beiciccc/pcp-benchmark"
+            "href": "https://github.com/Beiciccc/zh-protocolcube"
+          },
+          {
+            "kind": "doi",
+            "label": "Artifact (DOI)",
+            "href": "https://doi.org/10.17605/OSF.IO/53C87"
           }
         ],
         "pdf": null
@@ -156,6 +131,31 @@
           }
         ],
         "pdf": null
+      },
+      {
+        "id": "luhme2026",
+        "tier": "workshop",
+        "venue": "LUHME 2026, workshop at EMNLP 2026",
+        "venueLong": "3rd LUHME workshop · sole author",
+        "format": "Oral",
+        "title": "PCP: A Controlled Benchmark for Pragmatic Intention Recognition in Clinical Communication",
+        "authors": [
+          {
+            "name": "Kun Zhang",
+            "self": true
+          }
+        ],
+        "takeaway": "Eleven systems sit at 98.7–99.8% on the controlled split and 79.7–90.6% on grounded cases, so the controlled number was measuring the benchmark's own construction.",
+        "summary": "Eleven systems sit within a point or two of ceiling on the controlled split (98.7–99.8%) and fall to 79.7–90.6% once the items are externally grounded. The gap is the finding: a broad controlled probe can hide exactly the difficulty that close distractors expose, so a benchmark that only reports the controlled number is measuring its own construction.",
+        "scale": "3,533 items across three splits · 11 systems · 388,630 scored calls · 2,499 blind-validated items",
+        "links": [
+          {
+            "kind": "code",
+            "label": "Code",
+            "href": "https://github.com/Beiciccc/pcp-benchmark"
+          }
+        ],
+        "pdf": null
       }
     ],
     "underReview": {
@@ -176,40 +176,6 @@
     },
     "pdfNote": "尚未挂出的论文 PDF 可邮件索取。",
     "items": [
-      {
-        "id": "nlpcc2026",
-        "tier": "main",
-        "venue": "NLPCC 2026",
-        "venueLong": "Resources and Evaluation 方向 · Springer LNCS · CCF-C",
-        "format": "Oral",
-        "title": "Same Exam, Different Scores: A Tokenizer-Grounded Audit of Evaluation-Protocol Sensitivity on Chinese Benchmarks",
-        "authors": [
-          {
-            "name": "张鲲",
-            "self": true
-          },
-          {
-            "name": "Chunwei Xia",
-            "corresponding": true
-          }
-        ],
-        "takeaway": "开 GPU 之前、只凭 tokenizer 预测：64 个模型×标签集格子里，12 个会让首 token argmax 失去定义。64 项预测全中。排名属于打分器。",
-        "summary": "主流多选题评测采用的「首 token argmax」打分法，在许多中文模型上数学上是未定义的：当 tokenizer 把四个选项标签映射到同一个首 token 时，argmax 比较的是平局打破策略，而不是模型能力。哪些「模型 × 标签集」组合会退化，只由 tokenizer 决定，因此可以在跑任何 GPU 之前用笔记本 CPU 预测出来。我们预注册了这些预测，并在真实运行中 64/64 全部命中。论文唯一一处推断性对比给了阴性对照（两种打分器不相异，p = 0.453），而不是那 12 个退化格子，它们的 p 值是同义反复。",
-        "scale": "18 个检查点 · 7 个 tokenizer 家族 · 12,925 道题 · 公开约 250 万条打分记录 · smoke test ≈ 5 秒",
-        "links": [
-          {
-            "kind": "code",
-            "label": "代码",
-            "href": "https://github.com/Beiciccc/zh-protocolcube"
-          },
-          {
-            "kind": "doi",
-            "label": "数据工件 (DOI)",
-            "href": "https://doi.org/10.17605/OSF.IO/53C87"
-          }
-        ],
-        "pdf": null
-      },
       {
         "id": "pricai2026",
         "tier": "main",
@@ -269,26 +235,35 @@
         "pdf": null
       },
       {
-        "id": "luhme2026",
-        "tier": "workshop",
-        "venue": "LUHME 2026，EMNLP 2026 研讨会",
-        "venueLong": "第 3 届 LUHME 研讨会 · 独立作者",
+        "id": "nlpcc2026",
+        "tier": "main",
+        "venue": "NLPCC 2026",
+        "venueLong": "Resources and Evaluation 方向 · Springer LNCS · CCF-C",
         "format": "Oral",
-        "title": "PCP: A Controlled Benchmark for Pragmatic Intention Recognition in Clinical Communication",
+        "title": "Same Exam, Different Scores: A Tokenizer-Grounded Audit of Evaluation-Protocol Sensitivity on Chinese Benchmarks",
         "authors": [
           {
             "name": "张鲲",
             "self": true
+          },
+          {
+            "name": "Chunwei Xia",
+            "corresponding": true
           }
         ],
-        "takeaway": "11 个系统在受控子集 98.7–99.8%，在外部真实语料 79.7–90.6%，所以受控分数量的是基准自己的构造。",
-        "summary": "十一个系统在受控子集上贴着天花板（98.7–99.8%），一旦题目换成外部真实语料就跌到 79.7–90.6%。这个落差本身就是结论：宽口径的受控探针会恰好掩盖近似干扰项所暴露的真实难度，只报受控分数的基准，衡量的其实是它自己的构造方式。",
-        "scale": "3,533 条题目 · 三个子集 · 11 个系统 · 388,630 次打分调用 · 2,499 条盲验证",
+        "takeaway": "开 GPU 之前、只凭 tokenizer 预测：64 个模型×标签集格子里，12 个会让首 token argmax 失去定义。64 项预测全中。排名属于打分器。",
+        "summary": "主流多选题评测采用的「首 token argmax」打分法，在许多中文模型上数学上是未定义的：当 tokenizer 把四个选项标签映射到同一个首 token 时，argmax 比较的是平局打破策略，而不是模型能力。哪些「模型 × 标签集」组合会退化，只由 tokenizer 决定，因此可以在跑任何 GPU 之前用笔记本 CPU 预测出来。我们预注册了这些预测，并在真实运行中 64/64 全部命中。论文唯一一处推断性对比给了阴性对照（两种打分器不相异，p = 0.453），而不是那 12 个退化格子，它们的 p 值是同义反复。",
+        "scale": "18 个检查点 · 7 个 tokenizer 家族 · 12,925 道题 · 公开约 250 万条打分记录 · smoke test ≈ 5 秒",
         "links": [
           {
             "kind": "code",
             "label": "代码",
-            "href": "https://github.com/Beiciccc/pcp-benchmark"
+            "href": "https://github.com/Beiciccc/zh-protocolcube"
+          },
+          {
+            "kind": "doi",
+            "label": "数据工件 (DOI)",
+            "href": "https://doi.org/10.17605/OSF.IO/53C87"
           }
         ],
         "pdf": null
@@ -314,6 +289,31 @@
             "kind": "code",
             "label": "代码",
             "href": "https://github.com/Beiciccc/GroundLM"
+          }
+        ],
+        "pdf": null
+      },
+      {
+        "id": "luhme2026",
+        "tier": "workshop",
+        "venue": "LUHME 2026，EMNLP 2026 研讨会",
+        "venueLong": "第 3 届 LUHME 研讨会 · 独立作者",
+        "format": "Oral",
+        "title": "PCP: A Controlled Benchmark for Pragmatic Intention Recognition in Clinical Communication",
+        "authors": [
+          {
+            "name": "张鲲",
+            "self": true
+          }
+        ],
+        "takeaway": "11 个系统在受控子集 98.7–99.8%，在外部真实语料 79.7–90.6%，所以受控分数量的是基准自己的构造。",
+        "summary": "十一个系统在受控子集上贴着天花板（98.7–99.8%），一旦题目换成外部真实语料就跌到 79.7–90.6%。这个落差本身就是结论：宽口径的受控探针会恰好掩盖近似干扰项所暴露的真实难度，只报受控分数的基准，衡量的其实是它自己的构造方式。",
+        "scale": "3,533 条题目 · 三个子集 · 11 个系统 · 388,630 次打分调用 · 2,499 条盲验证",
+        "links": [
+          {
+            "kind": "code",
+            "label": "代码",
+            "href": "https://github.com/Beiciccc/pcp-benchmark"
           }
         ],
         "pdf": null
