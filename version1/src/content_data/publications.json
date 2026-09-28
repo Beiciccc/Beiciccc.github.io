@@ -3,12 +3,12 @@
     "Under review: no venue name, no venue type, no CCF tier, no track name.",
     "Under review: no forthcoming / to appear / expected; only 'under review' and '在投'.",
     "Under review: directions at CV Research Themes granularity only; no title words, venues or distinctive terms from manuscripts under review (the banned-word list lives in the private build script, not in this public repo).",
-    "On acceptance: move the item into its tier group with title / pdf / links; update hero.intro, underReview.body and areas, site.counts, siteDescription (en/zh), research theme refs and outro, BaseLayout ogAlt, OG images (SVG + PNG), public/cv.pdf, cv_web L39 and L57; publications.intro's 'four of the five' changes only if the new paper's headline is a surviving null.",
+    "On acceptance: move the item into its tier group with title / pdf / links; update hero.intro, underReview.body and areas, site.counts, siteDescription (en/zh), research theme refs and outro, BaseLayout ogAlt, OG images (SVG + PNG), public/cv.pdf, cv_web L39 and L57.",
     "Venue ranks sit at the end of venueLong. EN: CORE only where ranked (ICORE2026: PRICAI = CORE B, ACML = CORE C). ZH: CCF 7th ed. (2026): NLPCC, PRICAI, ACML = CCF-C. NLPCC (EN), LUHME and GroundLM carry no rank label and no 'unranked' wording."
   ],
   "en": {
     "heading": "Publications",
-    "intro": "First-author work. Four of the five papers below end in a claimed effect that does not survive its control; the other is a pre-registered prediction that held.",
+    "intro": "First-author work.",
     "groups": {
       "main": "Conference papers",
       "workshop": "Workshop papers"
@@ -169,7 +169,7 @@
   },
   "zh": {
     "heading": "论文",
-    "intro": "第一作者工作。下面 5 篇里，4 篇以一个未能通过对照的「效应」收尾；另一篇是一项预注册预测，全部命中。",
+    "intro": "第一作者工作。",
     "groups": {
       "main": "会议论文",
       "workshop": "研讨会论文"
