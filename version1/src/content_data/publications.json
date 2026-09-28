@@ -69,7 +69,13 @@
         "takeaway": "GNN stock selection: the snapshot-graph gain over point-in-time graphs collapses under multi-seed and degree-preserved nulls. A leakage channel exists; the models do not use it.",
         "summary": "A performance gap between a snapshot graph and a point-in-time graph is routinely read as leakage. It often is not. Controlling for seed luck and graph stability, no model shows leakage that survives the controls across two graph modalities and three model classes: one apparent positive exactly equals its degree-preserved null and collapses under sparsification, the other is a single-seed fluke that becomes sign-unstable over five seeds. A leakage source does exist: end-snapshot-only edges are more predictive of future returns. But the models do not exploit it. Leakable is not leaked.",
         "scale": "13F filings 2013–2026 · 2 graph modalities × 3 model classes · multi-seed + degree-preserved nulls + sparsity sweep + BH-FDR",
-        "links": [],
+        "links": [
+          {
+            "kind": "code",
+            "label": "Code",
+            "href": "https://github.com/Beiciccc/GTF-Bench"
+          }
+        ],
         "pdf": null
       },
       {
@@ -92,7 +98,13 @@
         "takeaway": "Stability seems to predict how far a probe direction rotates under semantic shift (ρ = 0.945), yet it predicts a zero-shift placebo at least as well (ρ = 0.966). Of seven candidate signals, one survives the null.",
         "summary": "Linear probes are attractive as label-free out-of-distribution evaluators, but a probe's direction rotates under label-preserving semantic shift. When an in-distribution signal and the shift quantity it predicts share the estimator's finite-sample noise, the naive correlation is unreliable. We propose a validity standard, the symmetric null: an independent zero-shift placebo used as a fake target. Under it the headline is circular: ID-only stability predicts rotation at ρ = 0.945 and the placebo at ρ = 0.966. Of seven candidate signals only one keeps a shift-specific excess over the null; in a second signal family on the same probes, none does.",
         "scale": "12 concepts from 14 datasets · 7 models × 5 seeds · 472 configurations · 7 candidate signals · every headline number recomputes on CPU in seconds",
-        "links": [],
+        "links": [
+          {
+            "kind": "data",
+            "label": "Dataset (HF)",
+            "href": "https://huggingface.co/datasets/Beicicc/probeshift-activation-cache"
+          }
+        ],
         "pdf": null
       },
       {
@@ -111,7 +123,13 @@
         "takeaway": "Eleven systems sit at 98.7–99.8% on the controlled split and 79.7–90.6% on grounded cases, so the controlled number was measuring the benchmark's own construction.",
         "summary": "Eleven systems sit within a point or two of ceiling on the controlled split (98.7–99.8%) and fall to 79.7–90.6% once the items are externally grounded. The gap is the finding: a broad controlled probe can hide exactly the difficulty that close distractors expose, so a benchmark that only reports the controlled number is measuring its own construction.",
         "scale": "3,533 items across three splits · 11 systems · 388,630 scored calls · 2,499 blind-validated items",
-        "links": [],
+        "links": [
+          {
+            "kind": "code",
+            "label": "Code",
+            "href": "https://github.com/Beiciccc/pcp-benchmark"
+          }
+        ],
         "pdf": null
       },
       {
@@ -130,7 +148,13 @@
         "takeaway": "In the standard extractive setup lexical overlap can stand in for faithfulness (r = 0.99). A matched construction halves that confound, and on RAGTruth the probe direction scores below NLI and lexical overlap.",
         "summary": "In the standard extractive setup the faithfulness label correlates with lexical overlap at r = 0.99, so a grounding probe can be a string matcher. A matched construction halves the confound (r = 0.50); on RAGTruth the probe direction scores below NLI and lexical overlap.",
         "scale": "4 model families · matched-pair design · RAGTruth + NQ-Swap · single A100",
-        "links": [],
+        "links": [
+          {
+            "kind": "code",
+            "label": "Code",
+            "href": "https://github.com/Beiciccc/GroundLM"
+          }
+        ],
         "pdf": null
       }
     ],
@@ -206,7 +230,13 @@
         "takeaway": "GNN 选股：快照图相对逐时点图的优势，在多种子与保度数零模型下归零。泄漏通道存在，模型没有用它。",
         "summary": "快照图与时点图之间的性能差，通常被直接当作泄漏的证据。多数情况下它不是。在控制了种子运气与图稳定性之后，两种图模态 × 三类模型中没有任何一个显示出能通过对照的泄漏：一个看似为正的结果恰好等于它自己的保度数零模型，并在稀疏化后归零；另一个只是单种子的偶然，跨五个种子后符号都不稳定。泄漏源确实存在：仅出现在末期快照中的边对未来收益更具预测性。但模型并没有利用它。可泄漏，不等于已泄漏。",
         "scale": "13F 持仓 2013–2026 · 2 种图模态 × 3 类模型 · 多种子 + 保度数零模型 + 稀疏化扫描 + BH-FDR",
-        "links": [],
+        "links": [
+          {
+            "kind": "code",
+            "label": "代码",
+            "href": "https://github.com/Beiciccc/GTF-Bench"
+          }
+        ],
         "pdf": null
       },
       {
@@ -229,7 +259,13 @@
         "takeaway": "稳定性看似能预测探针方向在语义漂移下旋转多少（ρ = 0.945），但它预测零漂移安慰剂至少同样准（ρ = 0.966）。7 个候选信号中只有 1 个通过零假设。",
         "summary": "线性探针无需标注就能从激活中读出概念，因而常被当作免费的分布外评估器；但探针方向会在保持标签的语义漂移下发生旋转。当一个只用分布内数据的信号与它要预测的漂移量共享估计器的有限样本噪声时，朴素相关并不可靠。我们提出一条效度标准，即「对称零假设」：用一个独立的零漂移安慰剂充当假目标。在它面前，头条结论是循环的：分布内稳定性预测旋转的 ρ = 0.945，预测安慰剂的 ρ = 0.966。7 个候选信号中只有 1 个保留超出零假设的漂移特异部分；在同一批探针上的第二类信号里，没有一个通过。",
         "scale": "12 个概念（14 个数据集）· 7 个模型 × 5 个种子 · 472 个配置 · 7 个候选信号 · 关键数字均可在 CPU 上秒级复算",
-        "links": [],
+        "links": [
+          {
+            "kind": "data",
+            "label": "数据集 (HF)",
+            "href": "https://huggingface.co/datasets/Beicicc/probeshift-activation-cache"
+          }
+        ],
         "pdf": null
       },
       {
@@ -248,7 +284,13 @@
         "takeaway": "11 个系统在受控子集 98.7–99.8%，在外部真实语料 79.7–90.6%，所以受控分数量的是基准自己的构造。",
         "summary": "十一个系统在受控子集上贴着天花板（98.7–99.8%），一旦题目换成外部真实语料就跌到 79.7–90.6%。这个落差本身就是结论：宽口径的受控探针会恰好掩盖近似干扰项所暴露的真实难度，只报受控分数的基准，衡量的其实是它自己的构造方式。",
         "scale": "3,533 条题目 · 三个子集 · 11 个系统 · 388,630 次打分调用 · 2,499 条盲验证",
-        "links": [],
+        "links": [
+          {
+            "kind": "code",
+            "label": "代码",
+            "href": "https://github.com/Beiciccc/pcp-benchmark"
+          }
+        ],
         "pdf": null
       },
       {
@@ -267,7 +309,13 @@
         "takeaway": "标准抽取式设定下，词面重叠可以冒充忠实性（r = 0.99）。匹配构造把这一混淆减半，且在 RAGTruth 上探针方向低于 NLI 与词面重叠。",
         "summary": "标准抽取式设定下，忠实性标签与词面重叠的相关系数高达 r = 0.99，所谓 grounding 探针可能只是字符串匹配器；匹配构造把这一混淆减半至 r = 0.50，且在 RAGTruth 上探针方向低于 NLI 与词面重叠。",
         "scale": "4 个模型家族 · 匹配对设计 · RAGTruth + NQ-Swap · 单卡 A100",
-        "links": [],
+        "links": [
+          {
+            "kind": "code",
+            "label": "代码",
+            "href": "https://github.com/Beiciccc/GroundLM"
+          }
+        ],
         "pdf": null
       }
     ],
