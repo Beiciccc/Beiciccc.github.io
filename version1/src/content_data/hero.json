@@ -1,8 +1,8 @@
 {
   "en": {
-    "kicker": "PhD applicant, entry 2027/28 · LLM post-training, alignment, evaluation",
+    "kicker": "PhD applicant, entry 2027/28",
     "name": "Kun Zhang",
-    "tagline": "Post-training and alignment, on the attribution side: did the gain come from what was trained, or from something cheaper?",
+    "tagline": "Post-training · Alignment · Evaluation",
     "intro": "MSc Advanced Computer Science, University of Leeds, 2025 to 2026. Five first-author papers accepted in 2026: PRICAI, ACML and NLPCC, all three oral, and two EMNLP workshop papers. Two more under review, both in Phase 2.",
     "ctaPrimary": {
       "label": "Publications",
@@ -16,9 +16,9 @@
     "crestYears": "2025 – 2026"
   },
   "zh": {
-    "kicker": "博士申请人，2027/28 入学 · 大语言模型后训练、对齐、评测",
+    "kicker": "博士申请人，2027/28 入学",
     "name": "张鲲",
-    "tagline": "后训练与对齐的归因侧：一次增益来自训练的内容，还是来自更廉价的替代物？",
+    "tagline": "后训练 · 对齐 · 评测",
     "intro": "利兹大学高级计算机科学硕士，2025 至 2026。2026 年 5 篇第一作者论文录用：PRICAI、ACML 与 NLPCC（均口头报告），以及 EMNLP 研讨会两篇。另有 2 篇在投，均已进入第二阶段评审。",
     "ctaPrimary": {
       "label": "论文",

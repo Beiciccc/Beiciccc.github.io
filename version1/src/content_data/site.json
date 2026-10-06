@@ -1,7 +1,7 @@
 {
   "en": {
     "siteTitle": "Kun Zhang",
-    "siteDescription": "Kun Zhang. LLM post-training and alignment, on the attribution side. Five first-author papers accepted in 2026, two under review.",
+    "siteDescription": "Kun Zhang. LLM post-training, alignment and evaluation. Five first-author papers accepted in 2026, two under review.",
     "counts": {
       "accepted": 5,
       "underReview": 2,
@@ -33,11 +33,11 @@
     "blogIntro": "Research notes. One post per finding, with the numbers that support it.",
     "readMore": "Read more",
     "backHome": "Home",
-    "homeTitle": "Kun Zhang · PhD applicant · LLM post-training and alignment"
+    "homeTitle": "Kun Zhang · PhD applicant · LLM post-training, alignment, evaluation"
   },
   "zh": {
     "siteTitle": "张鲲",
-    "siteDescription": "张鲲。大语言模型后训练与对齐的归因侧。2026 年 5 篇第一作者论文录用，2 篇在投。",
+    "siteDescription": "张鲲。大语言模型后训练、对齐与评测。2026 年 5 篇第一作者论文录用，2 篇在投。",
     "counts": {
       "accepted": 5,
       "underReview": 2,
@@ -69,6 +69,6 @@
     "blogIntro": "研究笔记。一篇一个发现，附支撑它的数字。",
     "readMore": "阅读全文",
     "backHome": "首页",
-    "homeTitle": "张鲲 · 博士申请人 · 大语言模型后训练与对齐"
+    "homeTitle": "张鲲 · 博士申请人 · 大语言模型后训练、对齐、评测"
   }
 }
