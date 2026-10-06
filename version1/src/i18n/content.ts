@@ -74,7 +74,7 @@ export const ui = {
     minRead: 'min read',
     onThisSite: 'On this site',
     pubCorresponding: 'corresponding',
-    pubAbstract: 'Abstract',
+    pubAbstract: 'Summary',
     pubLinks: { pdf: 'PDF', code: 'Code', doi: 'DOI', request: 'PDF on request', requestSubject: 'PDF request: ' },
     themeLight: 'Theme: light',
     themeDark: 'Theme: dark',
@@ -125,7 +125,7 @@ export const ui = {
       publications: '第一作者论文 · 2026',
       research: '研究方向',
       about: '教育与学术服务',
-      contact: '联系方式',
+      contact: '欢迎来信',
     },
     stats: {
       // No-break after the year, a break opportunity after 年 (keep-all labels).
