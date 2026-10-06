@@ -32,8 +32,8 @@
             "corresponding": true
           }
         ],
-        "takeaway": "GNN stock selection: the snapshot-graph gain over point-in-time graphs collapses under multi-seed and degree-preserved nulls. A leakage channel exists; the models do not use it.",
-        "summary": "A performance gap between a snapshot graph and a point-in-time graph is routinely read as leakage. It often is not. Controlling for seed luck and graph stability, no model shows leakage that survives the controls across two graph modalities and three model classes: one apparent positive exactly equals its degree-preserved null and collapses under sparsification, the other is a single-seed fluke that becomes sign-unstable over five seeds. A leakage source does exist: end-snapshot-only edges are more predictive of future returns. But the models do not exploit it. Leakable is not leaked.",
+        "takeaway": "In GNN stock selection, a graph built from the final snapshot seems to beat graphs built only from information available at each date. The gap disappears with several random seeds and against random graphs with the same node degrees. Future information can leak through the graph, but the models do not use it.",
+        "summary": "A performance gap between a snapshot graph and a point-in-time graph is often taken as evidence of look-ahead leakage. Usually it is not. Across two kinds of graph and three model classes, controlling for luck in the random seed and for how stable the graph is over time, no model shows leakage that survives these controls. One apparent positive is exactly matched by a random graph with the same node degrees and disappears when the graph is sparsified; the other comes from a single seed and flips sign across five seeds. A leakage source does exist: edges that appear only in the final snapshot are more predictive of future returns. The models simply do not exploit it. Leakage being possible is not the same as leakage happening.",
         "scale": "13F filings 2013–2026 · 2 graph modalities × 3 model classes · multi-seed + degree-preserved nulls + sparsity sweep + BH-FDR",
         "links": [
           {
@@ -61,8 +61,8 @@
             "corresponding": true
           }
         ],
-        "takeaway": "Stability seems to predict how far a probe direction rotates under semantic shift (ρ = 0.945), yet it predicts a zero-shift placebo at least as well (ρ = 0.966). Of seven candidate signals, one survives the null.",
-        "summary": "Linear probes are attractive as label-free out-of-distribution evaluators, but a probe's direction rotates under label-preserving semantic shift. When an in-distribution signal and the shift quantity it predicts share the estimator's finite-sample noise, the naive correlation is unreliable. We propose a validity standard, the symmetric null: an independent zero-shift placebo used as a fake target. Under it the headline is circular: ID-only stability predicts rotation at ρ = 0.945 and the placebo at ρ = 0.966. Of seven candidate signals only one keeps a shift-specific excess over the null; in a second signal family on the same probes, none does.",
+        "takeaway": "A probe's stability appears to predict how much its direction rotates when the data shift in meaning (ρ = 0.945). But it predicts a placebo with no shift at all even better (ρ = 0.966), so the apparent signal is mostly sampling noise. Only one of seven candidate signals passes this check.",
+        "summary": "Linear probes are attractive as label-free tools for evaluating models on out-of-distribution data, but a probe's direction rotates when the data shift in meaning while the labels stay the same. If an in-distribution signal and the shift it is meant to predict share the same finite-sample noise, a simple correlation between them can mislead. We propose a check we call the symmetric null: an independent placebo with zero shift, used as a fake target. Under this check the headline result turns out to be circular: in-distribution stability predicts rotation at ρ = 0.945 and the placebo at ρ = 0.966. Of seven candidate signals, only one predicts the real shift better than the placebo; in a second family of signals on the same probes, none does.",
         "scale": "12 concepts from 14 datasets · 7 models × 5 seeds · 472 configurations · 7 candidate signals · every headline number recomputes on CPU in seconds",
         "links": [
           {
@@ -90,8 +90,8 @@
             "corresponding": true
           }
         ],
-        "takeaway": "Predicted from tokenizers before any GPU run: 12 of 64 model-by-label-set cells make first-token argmax undefined. All 64 predictions held. The ranking belongs to the scorer.",
-        "summary": "The standard first-token scorer for multiple-choice benchmarks is mathematically undefined for many Chinese models: when a tokenizer maps all four answer labels onto a shared first token, argmax reports a tie-break, not a score. Which model and label-set pairs degenerate follows from the tokenizer alone, so it is predictable on a laptop CPU before any GPU run. We pre-registered those predictions and confirmed 64 of 64 on the real runs. The paper's one inferential contrast goes to the negative control, where the two scorers do not differ (p = 0.453), not to the 12 degenerate cells, whose p-values are tautological.",
+        "takeaway": "Using only the tokenizers, before running any model, we predicted that 12 of 64 model and answer-label combinations would break the standard first-token scoring method. All 64 predictions were confirmed. Where it breaks, the ranking reflects the scoring method, not the model.",
+        "summary": "Multiple-choice benchmarks are usually scored by comparing the model's probabilities for the first token of each answer label. For many Chinese models this is mathematically undefined: when the tokenizer maps all four answer labels to the same first token, the “answer” is decided by how ties are broken, not by the model. Which model and label-set pairs are affected follows from the tokenizer alone, so it can be predicted on a laptop CPU before any GPU run. We pre-registered these predictions and all 64 were confirmed on the real runs. The paper's only statistical test is on the negative control, where the two scoring methods do not differ (p = 0.453), not on the 12 broken cases, where a test would be meaningless.",
         "scale": "18 checkpoints · 7 tokenizer families · 12,925 items · ~2.5M released scoring records · smoke test ≈ 5 s",
         "links": [
           {
@@ -120,8 +120,8 @@
             "self": true
           }
         ],
-        "takeaway": "In the standard extractive setup lexical overlap can stand in for faithfulness (r = 0.99). A matched construction halves that confound, and on RAGTruth the probe direction scores below NLI and lexical overlap.",
-        "summary": "In the standard extractive setup the faithfulness label correlates with lexical overlap at r = 0.99, so a grounding probe can be a string matcher. A matched construction halves the confound (r = 0.50); on RAGTruth the probe direction scores below NLI and lexical overlap.",
+        "takeaway": "In the standard extractive setup, faithfulness labels track simple word overlap almost perfectly (r = 0.99), so a “grounding” probe may just be matching strings. A matched-pair design cuts this confound in half, and on RAGTruth the probe does worse than an NLI model and plain word overlap.",
+        "summary": "In the standard extractive setup, the faithfulness label correlates with word overlap at r = 0.99, so a grounding probe can succeed simply by matching strings. A matched-pair construction reduces this correlation to r = 0.50, and on RAGTruth the probe direction scores below both NLI and word overlap.",
         "scale": "4 model families · matched-pair design · RAGTruth + NQ-Swap · single A100",
         "links": [
           {
@@ -145,8 +145,8 @@
             "self": true
           }
         ],
-        "takeaway": "Eleven systems sit at 98.7–99.8% on the controlled split and 79.7–90.6% on grounded cases, so the controlled number was measuring the benchmark's own construction.",
-        "summary": "Eleven systems sit within a point or two of ceiling on the controlled split (98.7–99.8%) and fall to 79.7–90.6% once the items are externally grounded. The gap is the finding: a broad controlled probe can hide exactly the difficulty that close distractors expose, so a benchmark that only reports the controlled number is measuring its own construction.",
+        "takeaway": "Eleven systems score 98.7–99.8% on the controlled split but only 79.7–90.6% on items grounded in external real-world text. The near-perfect controlled scores say more about how that split was built than about the systems.",
+        "summary": "Eleven systems come within a point or two of the ceiling on the controlled split (98.7–99.8%) but drop to 79.7–90.6% once the items are grounded in external real-world text. This gap is the main finding: a broad controlled test can hide exactly the difficulty that close distractors reveal, so a benchmark that reports only the controlled score mostly measures how it was built.",
         "scale": "3,533 items across three splits · 11 systems · 388,630 scored calls · 2,499 blind-validated items",
         "links": [
           {
@@ -160,7 +160,7 @@
     ],
     "underReview": {
       "heading": "Under review",
-      "body": "Two further first-author manuscripts are under review, both now in Phase 2; titles and venues are withheld while review is anonymous. By direction:",
+      "body": "Two more first-author papers are under review, both in Phase 2. Titles and venues are not shown while review is anonymous. Topics:",
       "areas": [
         "Evaluation validity and leakage control",
         "Alignment: attributing post-training gains"
@@ -193,8 +193,8 @@
             "corresponding": true
           }
         ],
-        "takeaway": "GNN 选股：快照图相对逐时点图的优势，在多种子与保度数零模型下归零。泄漏通道存在，模型没有用它。",
-        "summary": "快照图与时点图之间的性能差，通常被直接当作泄漏的证据。多数情况下它不是。在控制了种子运气与图稳定性之后，两种图模态 × 三类模型中没有任何一个显示出能通过对照的泄漏：一个看似为正的结果恰好等于它自己的保度数零模型，并在稀疏化后归零；另一个只是单种子的偶然，跨五个种子后符号都不稳定。泄漏源确实存在：仅出现在末期快照中的边对未来收益更具预测性。但模型并没有利用它。可泄漏，不等于已泄漏。",
+        "takeaway": "在 GNN 选股任务中，用期末快照构建的图看起来优于只用当期信息构建的图。但换用多个随机种子、并与保持节点度数的随机图对比后，这一优势消失了。未来信息确实可能通过图泄漏，但模型并没有利用它。",
+        "summary": "快照图和逐时点图之间的性能差距，常被直接当作前视泄漏的证据，但多数情况下并非如此。我们在两种图、三类模型上控制了随机种子带来的偶然性和图随时间的稳定性，没有任何模型表现出能通过这些对照的泄漏：一个看似阳性的结果与保持节点度数的随机图完全一致，图稀疏化后也随之消失；另一个只出现在单个种子上，换成五个种子后连正负号都不稳定。泄漏源确实存在：只出现在期末快照里的边，对未来收益的预测力更强。但模型并没有用到它。可能泄漏，不等于真的泄漏了。",
         "scale": "13F 持仓 2013–2026 · 2 种图模态 × 3 类模型 · 多种子 + 保度数零模型 + 稀疏化扫描 + BH-FDR",
         "links": [
           {
@@ -222,8 +222,8 @@
             "corresponding": true
           }
         ],
-        "takeaway": "稳定性看似能预测探针方向在语义漂移下旋转多少（ρ = 0.945），但它预测零漂移安慰剂至少同样准（ρ = 0.966）。7 个候选信号中只有 1 个通过零假设。",
-        "summary": "线性探针无需标注就能从激活中读出概念，因而常被当作免费的分布外评估器；但探针方向会在保持标签的语义漂移下发生旋转。当一个只用分布内数据的信号与它要预测的漂移量共享估计器的有限样本噪声时，朴素相关并不可靠。我们提出一条效度标准，即「对称零假设」：用一个独立的零漂移安慰剂充当假目标。在它面前，头条结论是循环的：分布内稳定性预测旋转的 ρ = 0.945，预测安慰剂的 ρ = 0.966。7 个候选信号中只有 1 个保留超出零假设的漂移特异部分；在同一批探针上的第二类信号里，没有一个通过。",
+        "takeaway": "探针的稳定性看似能预测数据发生语义漂移时探针方向会旋转多少（ρ = 0.945），但它对一个完全没有漂移的安慰剂预测得更准（ρ = 0.966），说明这个信号主要来自采样噪声。7 个候选信号中只有 1 个通过了这项检验。",
+        "summary": "线性探针不需要标注就能从模型激活中读出概念，因此常被用作分布外评估工具；但当数据在标签不变的前提下发生语义漂移时，探针方向会随之旋转。如果一个只用分布内数据算出的信号，和它要预测的漂移量共享同一份有限样本噪声，两者之间的简单相关就不可靠。我们提出一种检验方法，称为「对称零假设」：用一个独立的、零漂移的安慰剂充当假目标。在这一检验下，原本的结论其实是循环的：分布内稳定性预测旋转的 ρ = 0.945，预测安慰剂的 ρ = 0.966。7 个候选信号中只有 1 个对真实漂移的预测明显好于安慰剂；在同一批探针上的另一类信号中，一个都没有。",
         "scale": "12 个概念（14 个数据集）· 7 个模型 × 5 个种子 · 472 个配置 · 7 个候选信号 · 关键数字均可在 CPU 上秒级复算",
         "links": [
           {
@@ -251,8 +251,8 @@
             "corresponding": true
           }
         ],
-        "takeaway": "开 GPU 之前、只凭 tokenizer 预测：64 个模型×标签集格子里，12 个会让首 token argmax 失去定义。64 项预测全中。排名属于打分器。",
-        "summary": "主流多选题评测采用的「首 token argmax」打分法，在许多中文模型上数学上是未定义的：当 tokenizer 把四个选项标签映射到同一个首 token 时，argmax 比较的是平局打破策略，而不是模型能力。哪些「模型 × 标签集」组合会退化，只由 tokenizer 决定，因此可以在跑任何 GPU 之前用笔记本 CPU 预测出来。我们预注册了这些预测，并在真实运行中 64/64 全部命中。论文唯一一处推断性对比给了阴性对照（两种打分器不相异，p = 0.453），而不是那 12 个退化格子，它们的 p 值是同义反复。",
+        "takeaway": "不运行任何模型、只看 tokenizer，我们预测出 64 个「模型 × 选项标签」组合中有 12 个会让常用的首 token 打分法失效。64 项预测全部得到验证。在这些情况下，排名反映的是打分方法，而不是模型本身。",
+        "summary": "多选题评测通常比较模型对各选项标签首个 token 的概率来打分。但对许多中文模型来说，这种做法在数学上没有定义：如果 tokenizer 把四个选项标签都映射到同一个首 token，最终的「答案」由平局如何打破决定，而不是由模型决定。哪些模型和标签组合会出问题，只取决于 tokenizer，因此可以在跑 GPU 之前用笔记本电脑的 CPU 预测出来。我们事先登记了这些预测，在真实运行中 64 项全部命中。论文唯一的统计检验放在阴性对照上（两种打分方法没有差异，p = 0.453），而不是那 12 个失效组合上，因为对它们做检验没有意义。",
         "scale": "18 个检查点 · 7 个 tokenizer 家族 · 12,925 道题 · 公开约 250 万条打分记录 · smoke test ≈ 5 秒",
         "links": [
           {
@@ -281,8 +281,8 @@
             "self": true
           }
         ],
-        "takeaway": "标准抽取式设定下，词面重叠可以冒充忠实性（r = 0.99）。匹配构造把这一混淆减半，且在 RAGTruth 上探针方向低于 NLI 与词面重叠。",
-        "summary": "标准抽取式设定下，忠实性标签与词面重叠的相关系数高达 r = 0.99，所谓 grounding 探针可能只是字符串匹配器；匹配构造把这一混淆减半至 r = 0.50，且在 RAGTruth 上探针方向低于 NLI 与词面重叠。",
+        "takeaway": "在标准的抽取式设定下，忠实性标签与简单的词语重叠几乎完全一致（r = 0.99），所谓的 grounding 探针可能只是在做字符串匹配。匹配对设计把这一混淆减半；在 RAGTruth 上，探针方向的表现不如 NLI 模型和单纯的词语重叠。",
+        "summary": "在标准的抽取式设定下，忠实性标签与词语重叠的相关系数高达 r = 0.99，因此 grounding 探针完全可能只靠字符串匹配就取得好成绩。匹配对构造把这一相关降到 r = 0.50；在 RAGTruth 上，探针方向的得分低于 NLI 和词语重叠。",
         "scale": "4 个模型家族 · 匹配对设计 · RAGTruth + NQ-Swap · 单卡 A100",
         "links": [
           {
@@ -306,8 +306,8 @@
             "self": true
           }
         ],
-        "takeaway": "11 个系统在受控子集 98.7–99.8%，在外部真实语料 79.7–90.6%，所以受控分数量的是基准自己的构造。",
-        "summary": "十一个系统在受控子集上贴着天花板（98.7–99.8%），一旦题目换成外部真实语料就跌到 79.7–90.6%。这个落差本身就是结论：宽口径的受控探针会恰好掩盖近似干扰项所暴露的真实难度，只报受控分数的基准，衡量的其实是它自己的构造方式。",
+        "takeaway": "11 个系统在受控子集上得分 98.7–99.8%，但在外部真实语料上只有 79.7–90.6%。受控子集上近乎满分的成绩，更多反映的是这个子集的构造方式，而不是系统的真实能力。",
+        "summary": "11 个系统在受控子集上的得分都接近满分（98.7–99.8%），但题目换成外部真实语料后，跌到 79.7–90.6%。这个落差就是论文的主要发现：宽泛的受控测试恰好会掩盖相近干扰项所暴露的难度；只报告受控分数的基准，测到的主要是它自己的构造方式。",
         "scale": "3,533 条题目 · 三个子集 · 11 个系统 · 388,630 次打分调用 · 2,499 条盲验证",
         "links": [
           {
@@ -321,7 +321,7 @@
     ],
     "underReview": {
       "heading": "在投",
-      "body": "另有 2 篇第一作者稿件在审，均已进入第二阶段评审；匿名评审期间不公开题目与会场。按方向：",
+      "body": "另有 2 篇第一作者论文在审，均已进入第二阶段评审。匿名评审期间不公开题目与发表渠道。研究方向：",
       "areas": [
         "评测效度与泄漏控制",
         "对齐：后训练增益的归因"

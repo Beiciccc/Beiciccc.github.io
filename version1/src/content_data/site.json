@@ -30,7 +30,7 @@
     "themeToggleLabel": "Theme: light / dark / system",
     "langToggleLabel": "Switch to Chinese",
     "blogTitle": "Notes",
-    "blogIntro": "Research notes. One post per finding, with the numbers that support it.",
+    "blogIntro": "Research notes.",
     "readMore": "Read more",
     "backHome": "Home",
     "homeTitle": "Kun Zhang · PhD applicant · LLM post-training, alignment, evaluation"
@@ -66,7 +66,7 @@
     "themeToggleLabel": "主题：浅色 / 深色 / 跟随系统",
     "langToggleLabel": "Switch to English / 切换到英文",
     "blogTitle": "笔记",
-    "blogIntro": "研究笔记。一篇一个发现，附支撑它的数字。",
+    "blogIntro": "研究笔记。",
     "readMore": "阅读全文",
     "backHome": "首页",
     "homeTitle": "张鲲 · 博士申请人 · 大语言模型后训练、对齐、评测"
