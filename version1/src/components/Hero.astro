@@ -1,6 +1,5 @@
 ---
 import { type Lang, hero, site, publications, contact, ui, pick } from '../i18n/content';
-import { splitWords } from '../i18n/split';
 import Corner from './Corner.astro';
 import Ornament from './Ornament.astro';
 
@@ -46,8 +45,9 @@ const profiles = [
 // stays available to assistive tech (.sr-only) and the letters are hidden.
 let ci = 0;
 const nameWords = h.name.split(' ').map((word) => Array.from(word, (ch) => ({ ch, i: ci++ })));
-// The tagline surfaces word by word (Chinese is segmented, see split.ts).
-const tagline = splitWords(h.tagline, lang);
+// The research directions, one term each, set off by gilt diamonds; each
+// term surfaces in turn.
+const directions = h.tagline.split(/\s*·\s*/);
 
 // Affiliation crest: the official University of Leeds mark, supplied as a
 // file in src/assets/crest/ (SVG or transparent PNG) and set in ivory on a
@@ -106,9 +106,18 @@ const CREST_TINT: 'foil' | 'ivory' | 'original' = 'foil';
         </span>
       </h1>
       <p class="hero__tagline">
-        <em>
-          {tagline.map((wd, i) => (wd === ' ' ? ' ' : <span class="hero__tw" style={`--w: ${i}`}>{wd}</span>))}
-        </em>
+        {
+          directions.map((term, i) => (
+            <Fragment>
+              {i > 0 && <span class="hero__sep hero__tw" style={`--w: ${i * 2 - 1}`} aria-hidden="true" />}
+              {i > 0 && ' '}
+              <span class="hero__term hero__tw" style={`--w: ${i * 2}`}>
+                {term}
+              </span>
+              {i < directions.length - 1 && ' '}
+            </Fragment>
+          ))
+        }
       </p>
       <p class="hero__intro rise" style="--d: 3">{intro}</p>
       <div class="hero__actions rise" style="--d: 4">
