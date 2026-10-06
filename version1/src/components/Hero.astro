@@ -26,9 +26,6 @@ const stats = [
   { n: s.counts.reviewerRoles, label: t.stats.reviewer, href: '#about', sub: '' },
 ];
 
-// Kicker in two lines: the role, then the fields (each field kept whole).
-const [kRole, kFields = ''] = h.kicker.split(' · ');
-const fieldParts = kFields.split(/(,\s*|、)/);
 // "Phase 2" never splits across lines.
 const intro = h.intro.replace(/Phase (\d)/g, 'Phase\u00a0$1');
 
@@ -46,7 +43,8 @@ const profiles = [
 let ci = 0;
 const nameWords = h.name.split(' ').map((word) => Array.from(word, (ch) => ({ ch, i: ci++ })));
 // The research directions, one term each, set off by gilt diamonds; each
-// term surfaces in turn.
+// term surfaces in turn. A diamond travels with the term after it, so a
+// line break can never leave one hanging at a line end.
 const directions = h.tagline.split(/\s*·\s*/);
 
 // Affiliation crest: the official University of Leeds mark, supplied as a
@@ -75,16 +73,7 @@ const CREST_TINT: 'foil' | 'ivory' | 'original' = 'foil';
     <div class="hero__text">
       <p class="hero__kicker rise" style="--d: 0">
         <span class="hero__kicker-rule" aria-hidden="true"></span>
-        <span class="hero__kicker-text">
-          <span class="hero__role">{kRole}</span>
-          {
-            kFields && (
-              <span class="hero__fields">
-                {fieldParts.map((part) => (/^(,\s*|、)$/.test(part) ? part : <span class="nobr">{part}</span>))}
-              </span>
-            )
-          }
-        </span>
+        <span class="hero__role">{h.kicker}</span>
       </p>
       <h1 id="hero-name" class="hero__name">
         <span class="sr-only">{h.name}</span>
@@ -109,12 +98,13 @@ const CREST_TINT: 'foil' | 'ivory' | 'original' = 'foil';
         {
           directions.map((term, i) => (
             <Fragment>
-              {i > 0 && <span class="hero__sep hero__tw" style={`--w: ${i * 2 - 1}`} aria-hidden="true" />}
               {i > 0 && ' '}
-              <span class="hero__term hero__tw" style={`--w: ${i * 2}`}>
-                {term}
+              <span class="hero__dir">
+                {i > 0 && <span class="hero__sep hero__tw" style={`--w: ${i * 2 - 1}`} aria-hidden="true" />}
+                <span class="hero__term hero__tw" style={`--w: ${i * 2}`}>
+                  {term}
+                </span>
               </span>
-              {i < directions.length - 1 && ' '}
             </Fragment>
           ))
         }
