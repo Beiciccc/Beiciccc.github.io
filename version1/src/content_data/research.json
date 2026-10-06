@@ -1,7 +1,7 @@
 {
   "en": {
     "heading": "What I work on",
-    "intro": "Three kinds of claim are made about a model after post-training: that a score measures a capability, that an internal direction is a concept, and that a training gain came from what was trained.",
+    "intro": "After post-training, we usually take three things on trust: that a benchmark score reflects the skill it is named after, that a probe reads the concept it is named after, and that an improvement comes from the training itself. My work checks each of these.",
     "themes": [
       {
         "title": "Evaluation validity and leakage control",
@@ -10,7 +10,7 @@
           "nlpcc2026",
           "luhme2026"
         ],
-        "body": "When a reported score measures the protocol, a look-ahead, or a controlled split rather than the capability."
+        "body": "Checking whether a benchmark score really measures the ability it claims to, rather than quirks of the scoring method, information leaking from the future, or the way the test set was built."
       },
       {
         "title": "Mechanistic interpretability",
@@ -18,20 +18,20 @@
           "acml2026",
           "groundlm2026"
         ],
-        "body": "Whether a probe or a steering direction measures the concept it is named for, or a cheaper correlate such as lexical overlap or sampling noise."
+        "body": "Checking whether a probe or steering direction really captures the concept it is named after, or just picks up simpler signals such as word overlap or random noise."
       },
       {
         "title": "Alignment and safety",
         "refs": [],
         "note": "under review",
-        "body": "Which properties a post-training run installs, which it only appears to, and what evidence tells the two apart."
+        "body": "Working out which behaviours post-training really changes, which only appear to change, and what evidence can tell the two apart."
       }
     ],
-    "outro": "The evaluation layer is the five accepted papers above. The training layer runs at pilot scale: under 200 preference pairs per adapter, one algorithm, one A100. Raising that half to research scale is what the PhD is for."
+    "outro": "The five accepted papers above are all on the evaluation side. My work on training itself is still small-scale: fewer than 200 preference pairs per adapter, one algorithm, one A100 GPU. Taking that part to full research scale is what I want to do in a PhD."
   },
   "zh": {
     "heading": "我在做什么",
-    "intro": "后训练之后，人们对一个模型会做三种声称：一个分数度量了一项能力，一个内部方向就是一个概念，一次训练增益来自训练的内容。",
+    "intro": "后训练之后，我们通常默认三件事：基准分数反映的就是它所对应的能力；探针读出的就是它所对应的概念；性能提升确实来自训练本身。我的工作就是逐一检验这三点。",
     "themes": [
       {
         "title": "评测效度与泄漏控制",
@@ -40,7 +40,7 @@
           "nlpcc2026",
           "luhme2026"
         ],
-        "body": "当一个被报告的分数量的是协议、前视泄漏或受控子集，而不是能力。"
+        "body": "检验一个评测分数是否真的反映了它声称的能力，而不是打分方法的副作用、来自未来的信息泄漏，或测试集本身的构造方式。"
       },
       {
         "title": "机制可解释性",
@@ -48,15 +48,15 @@
           "acml2026",
           "groundlm2026"
         ],
-        "body": "一个探针或一个引导方向，量的是它所命名的概念，还是词面重叠、采样噪声这类更廉价的相关物。"
+        "body": "检验探针或引导方向是否真的捕捉到了它所对应的概念，还是只在利用词语重叠、随机噪声这类更简单的信号。"
       },
       {
         "title": "对齐与安全",
         "refs": [],
         "note": "在投",
-        "body": "一次后训练装进了哪些属性，哪些只是看起来装进了，什么证据能把两者分开。"
+        "body": "弄清后训练真正改变了模型的哪些行为，哪些只是看起来改变了，以及用什么证据区分两者。"
       }
     ],
-    "outro": "评估层是上面五篇已录用论文。训练层停在 pilot 规模：每个适配器不到 200 个偏好对、一种算法、一张 A100。把这一半提到研究级，就是读博的目的。"
+    "outro": "上面五篇已录用论文都属于评测方向。训练方面的工作目前规模还小：每个适配器不到 200 个偏好对、一种算法、一张 A100。在博士阶段把这部分做到完整的研究规模，是我的目标。"
   }
 }
