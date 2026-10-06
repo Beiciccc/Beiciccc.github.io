@@ -920,10 +920,10 @@ html:not(.js) .scroll-progress { display: none; }
   align-items: center;
 }
 .hero__text { min-width: 0; }
-/* Kicker in two lines: the role in small capitals, the fields in the sans. */
+/* Kicker: the role in small capitals after a short gilt rule. */
 .hero__kicker {
   display: flex;
-  align-items: flex-start;
+  align-items: center;
   gap: 14px;
   line-height: 1.4;
   margin: 0 0 20px;
@@ -932,10 +932,8 @@ html:not(.js) .scroll-progress { display: none; }
   flex: none;
   width: 46px;
   height: 1px;
-  margin-top: 0.8em;
   background: linear-gradient(90deg, transparent, var(--night-gold));
 }
-.hero__kicker-text { display: grid; gap: 4px; }
 .hero__role {
   font-family: var(--font-inscr);
   font-size: 0.98rem;
@@ -944,14 +942,6 @@ html:not(.js) .scroll-progress { display: none; }
   text-transform: lowercase;
   font-synthesis: none;
   color: var(--night-gold);
-}
-.hero__fields {
-  font-family: var(--font-sans);
-  font-size: 1.02rem;
-  font-weight: 600;
-  letter-spacing: 0.01em;
-  line-height: 1.35;
-  color: var(--navy);
 }
 .hero__name {
   position: relative;
@@ -1011,7 +1001,7 @@ html:not(.js) .scroll-progress { display: none; }
   color: var(--navy);
   margin: 0 0 20px;
 }
-.hero__term { white-space: nowrap; }
+.hero__dir { display: inline-flex; align-items: center; column-gap: 0.55em; white-space: nowrap; }
 .hero__sep {
   width: 0.2em;
   height: 0.2em;
@@ -2302,9 +2292,12 @@ html:not(.js) .to-top { display: none; }
 :lang(zh) .hero__name { letter-spacing: 0.08em; line-height: 1.1; font-weight: 600; }
 :lang(zh) .hero__name::after { left: 0.08em; }
 :lang(zh) .hero__tagline { font-style: normal; font-family: var(--font-serif-cjk); font-weight: 600; font-size: clamp(1.4rem, 1rem + 1.1vw, 1.9rem); line-height: 1.4; letter-spacing: 0.12em; column-gap: 0.7em; }
+:lang(zh) .hero__dir { column-gap: 0.7em; }
+/* The tracking also follows each term's last character: take it back so
+   the diamonds sit midway. */
+:lang(zh) .hero__term { margin-inline-end: -0.12em; }
 :lang(zh) .hero__intro { line-height: 1.85; }
 :lang(zh) .hero__role { letter-spacing: 0.1em; font-size: 0.92rem; }
-:lang(zh) .hero__fields { letter-spacing: 0.04em; font-size: 0.98rem; }
 :lang(zh) .sec-head__title { font-weight: 600; letter-spacing: 0.08em; font-size: clamp(2.1rem, 1.3rem + 2.4vw, 3.2rem); }
 :lang(zh) .sec-head__eyebrow { letter-spacing: 0.2em; font-size: 0.85rem; }
 :lang(zh) .section-lede,
@@ -2417,7 +2410,7 @@ html:not(.js) .to-top { display: none; }
   .hero__kicker { margin-bottom: 16px; }
   .hero__kicker-rule { width: 28px; }
   .hero__name { margin-bottom: 26px; }
-  .hero__tagline { font-size: 1.45rem; margin-bottom: 16px; }
+  .hero__tagline { font-size: min(1.45rem, 5.7vw); margin-bottom: 16px; }
   .hero__intro { font-size: 0.97rem; margin-bottom: 22px; }
   .stat { padding: 16px 10px 18px; }
   .stat + .stat::before { top: 16px; bottom: 18px; }
@@ -2711,6 +2704,7 @@ html[data-motion="still"] [data-scroll-lit] .lw { opacity: 1; }
    FORCED COLORS / high contrast
    ========================================================================== */
 @media (forced-colors: active) {
+  .hero__sep { forced-color-adjust: none; background: CanvasText; }
   .foil, .stat__num, .notfound .section-mark, .hero__ch {
     background: none;
     -webkit-text-fill-color: currentColor;
@@ -2819,8 +2813,8 @@ html[data-motion="still"] [data-scroll-lit] .lw { opacity: 1; }
   .hero__inner { display: block; }
   .hero__name { font-size: 26pt; filter: none; margin-bottom: 6pt; }
   .foil, .stat__num, .notfound .section-mark, .hero__ch { background: none; -webkit-text-fill-color: #000; color: #000; }
-  .hero__tagline { font-size: 13pt; color: #000; }
-  .hero__sep { transform: rotate(45deg) !important; background: #000; }
+  .hero__tagline, :lang(zh) .hero__tagline { font-size: 13pt; color: #000; }
+  .hero__sep { transform: rotate(45deg) !important; background: #000; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
   .hero__stats { margin-top: 10pt; border-top: 1px solid #999; }
   .hero__stats::before { display: none; }
   .stat { padding: 6pt 4pt; }
@@ -2840,7 +2834,7 @@ html[data-motion="still"] [data-scroll-lit] .lw { opacity: 1; }
   }
   .pub::after, .theme::before, .pub--review::before { display: none; }
   .pub__venue-long { color: #333; }
-  .hero__fields, .hero__role { color: #000; }
+  .hero__role { color: #000; }
   .pub { display: block; padding: 8pt 10pt; }
   .pub__aside { display: block; border: 0; padding: 0; text-align: left; }
   .pub__medal { width: auto; aspect-ratio: auto; background: none; box-shadow: none; display: inline; color: #000; }
