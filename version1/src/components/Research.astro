@@ -28,9 +28,10 @@ const ORBITS = [
 ];
 ---
 
-<!-- Three themes as arched panels (a triptych). Each carries an engraved
-     figure of its argument (a claim against its control, dashed), its Roman
-     numeral and [n] back-references into the paper list. -->
+<!-- Themes as arched panels, one column per theme. Each carries an engraved
+     figure (a claim against its control, dashed), its Roman numeral and [n]
+     back-references into the paper list, plus a link to the under-review
+     papers when the theme has any. -->
 <section id="research" class="section section--research" aria-labelledby="research-heading">
   <div class="orbits" aria-hidden="true">
     <svg viewBox="-700 -700 1400 1400" width="1400" height="1400" focusable="false">
@@ -62,7 +63,7 @@ const ORBITS = [
       </p>
     </div>
 
-    <ol class="themes" role="list">
+    <ol class="themes" role="list" style={`--n: ${r.themes.length}`}>
       {
         r.themes.map((th, i) => (
           <li class="theme reveal" style={`--i: ${i}`}>
@@ -80,24 +81,9 @@ const ORBITS = [
                         <path class="fig-dash" d="M12 26h48" />
                       </Fragment>
                     )}
-                    {i === 1 && (
+                    {i >= 1 && (
                       <Fragment>
-                        {/* A probe direction beside a second, dashed direction. */}
-                        <g fill="currentColor" stroke="none">
-                          <circle cx="14" cy="30" r="1.6" />
-                          <circle cx="20" cy="22" r="1.6" />
-                          <circle cx="24" cy="34" r="1.6" />
-                          <circle cx="30" cy="26" r="1.6" />
-                          <circle cx="18" cy="38" r="1.6" />
-                        </g>
-                        <path class="draw" pathLength="1" d="M22 30 52 12" />
-                        <path class="draw" pathLength="1" d="M46 11l6 1-3 5" />
-                        <path class="fig-dash" d="M22 30 54 34M48 30.5l6 3.5-6 2.5" />
-                      </Fragment>
-                    )}
-                    {i >= 2 && (
-                      <Fragment>
-                        {/* A training gain beside a second, dashed curve. */}
+                        {/* A series against a dashed baseline. */}
                         <circle cx="12" cy="30" r="2" fill="currentColor" stroke="none" />
                         <path class="draw" pathLength="1" d="M14 29C28 20 40 16 55 14.5" />
                         <circle cx="58" cy="14" r="2.4" fill="currentColor" stroke="none" />
@@ -110,9 +96,9 @@ const ORBITS = [
               </div>
               <h3 class="theme__title">
                 {th.title}
-                {th.note && <span class="theme__note">{paren(th.note)}</span>}
+                {th.note && th.refs.length === 0 && <span class="theme__note">{paren(th.note)}</span>}
               </h3>
-              <p class="theme__body">{th.body}</p>
+              {th.body && <p class="theme__body">{th.body}</p>}
             </div>
             {th.refs.length > 0 ? (
               <p class="theme__refs">
@@ -133,6 +119,7 @@ const ORBITS = [
                     </a>
                   );
                 })}
+                {th.note && <a href="#under-review" class="theme__sealed">{p.underReview.heading}</a>}
               </p>
             ) : (
               th.note && (

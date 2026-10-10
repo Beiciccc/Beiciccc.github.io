@@ -1,60 +1,52 @@
 {
   "en": {
     "heading": "What I work on",
-    "intro": "After post-training, we usually take three things on trust: that a benchmark score measures the skill the benchmark is meant to test, that a probe or steering direction captures the concept it is named after, and that a gain after training comes from what was actually trained. My work checks each of these.",
+    "intro": "My work is on large language models (evaluation, alignment and post-training) and on AI for finance.",
     "themes": [
       {
-        "title": "Evaluation validity and leakage control",
-        "refs": [
-          "pricai2026",
-          "nlpcc2026",
-          "luhme2026"
-        ],
-        "body": "Checking whether a reported score really measures the ability it is meant to measure, rather than quirks of the scoring method, information leaked from the future, or the way the test set was built."
-      },
-      {
-        "title": "Mechanistic interpretability",
+        "title": "LLM evaluation, alignment and post-training",
         "refs": [
           "acml2026",
-          "groundlm2026"
+          "nlpcc2026",
+          "groundlm2026",
+          "luhme2026"
         ],
-        "body": "Checking whether a probe or steering direction really captures the concept it is named after, or just picks up simpler signals such as word overlap or sampling noise."
+        "note": "under review",
+        "body": ""
       },
       {
-        "title": "Alignment and safety",
-        "refs": [],
+        "title": "AI for Finance",
+        "refs": [
+          "pricai2026"
+        ],
         "note": "under review",
-        "body": "Working out which behaviours post-training really changes, which only appear to change, and what evidence can tell the two apart."
+        "body": ""
       }
     ],
     "outro": "The five accepted papers above are all on the evaluation side. My work on training itself is still small-scale: fewer than 200 preference pairs per adapter, one algorithm, one A100 GPU. Taking that part to full research scale is what I want to do in a PhD."
   },
   "zh": {
     "heading": "我在做什么",
-    "intro": "后训练之后，我们通常默认三件事：基准分数衡量的就是它要测的能力；探针或引导方向捕捉到的就是它所对应的概念；性能提升确实来自所训练的内容。我的工作就是逐一检验这三点。",
+    "intro": "研究工作围绕大语言模型的评测、对齐与后训练展开，另有 AI for Finance 方向的工作。",
     "themes": [
       {
-        "title": "评测效度与泄漏控制",
-        "refs": [
-          "pricai2026",
-          "nlpcc2026",
-          "luhme2026"
-        ],
-        "body": "检验一个报告出来的分数是否真的反映了它要衡量的能力，而不是打分方法的副作用、未来信息的泄漏，或测试集本身的构造方式。"
-      },
-      {
-        "title": "机制可解释性",
+        "title": "大语言模型评测、对齐与后训练",
         "refs": [
           "acml2026",
-          "groundlm2026"
+          "nlpcc2026",
+          "groundlm2026",
+          "luhme2026"
         ],
-        "body": "检验探针或引导方向是否真的捕捉到了它所对应的概念，还是只在利用词语重叠、采样噪声这类更简单的信号。"
+        "note": "在投",
+        "body": ""
       },
       {
-        "title": "对齐与安全",
-        "refs": [],
+        "title": "AI for Finance（金融人工智能）",
+        "refs": [
+          "pricai2026"
+        ],
         "note": "在投",
-        "body": "弄清后训练真正改变了模型的哪些行为，哪些只是看起来改变了，以及用什么证据区分两者。"
+        "body": ""
       }
     ],
     "outro": "上面五篇已录用论文都是评测层面的工作。训练方面的工作目前规模还小：每个适配器不到 200 个偏好对、一种算法、一张 A100。读博期间，我希望把这部分扩展到真正的研究规模。"

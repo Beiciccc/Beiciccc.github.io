@@ -1629,7 +1629,7 @@ html:not(.js) .scroll-progress { display: none; }
 }
 
 /* =============================================================================
-   II · RESEARCH — pull quote and an arched triptych
+   II · RESEARCH — pull quote and arched theme panels
    ========================================================================== */
 .section--research {
   overflow: hidden;
@@ -1687,7 +1687,8 @@ html:not(.js) .scroll-progress { display: none; }
   padding: 0;
   margin: 0 auto;
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns: repeat(var(--n, 3), minmax(0, 1fr));
+  max-width: calc(var(--n, 3) * 26rem);
   gap: clamp(18px, 2.4vw, 32px);
   align-items: stretch;
 }
@@ -1771,8 +1772,8 @@ html:not(.js) .scroll-progress { display: none; }
 }
 .theme__body { margin-bottom: 22px; }
 .theme__refs { border-top: 1px solid var(--gold-faint); }
-/* Side by side, the three arches share their rows (subgrid), so the rule
-   over "Papers" runs at one height across the triptych. */
+/* Side by side, the arches share their rows (subgrid), so the rule
+   over "Papers" runs at one height across the row. */
 @media (min-width: 741px) {
   .themes { row-gap: 0; }
   .theme { display: grid; grid-row: span 2; grid-template-rows: subgrid; justify-items: center; }
@@ -2353,7 +2354,7 @@ html:not(.js) .to-top { display: none; }
   .stat:nth-child(n + 3) { border-top: 1px solid var(--night-line); }
   .orbits { display: none; }
 
-  /* Tablets keep the triptych: three arches side by side. */
+  /* Tablets keep the arches side by side. */
   .themes { gap: 14px; }
   .theme { padding: 0 14px 22px; }
   .theme__fig { width: 84px; height: 56px; }
