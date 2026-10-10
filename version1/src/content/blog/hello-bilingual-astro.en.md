@@ -31,7 +31,7 @@ It's deliberately modest. The point is the writing, not the framework.
 
 Roughly three threads, matching the things I actually spend time on:
 
-- **NLP & LLMs.** Notes from coursework and side projects — things like legal information retrieval, model reasoning challenges, and pulling structured data out of documents. Expect more "here's what I tried and what broke" than grand claims.
+- **LLM evaluation, alignment and post-training; AI for finance.** Notes from my research and side projects. Expect more "here's what I tried and what broke" than grand claims.
 - **ML competitions.** I treat Kaggle as a lab. I've poked at a wide range of problems — bird-sound classification, the ARC-AGI reasoning benchmark, F1 pit-stop prediction, vehicle detection, stellar-object classification, and more. Most of those live as public experiment logs on my [GitHub](https://github.com/Beiciccc), and I'd like to write up the lessons rather than just the leaderboard.
 - **Studying at Leeds.** The occasional reflection on the MSc itself — what's clicking, what isn't, and the gap between a tidy lecture and a messy real dataset.
 
