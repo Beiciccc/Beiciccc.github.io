@@ -16,12 +16,12 @@
     "pdfNote": "Paper PDFs not yet posted here are available by email.",
     "items": [
       {
-        "id": "pricai2026",
+        "id": "nlpcc2026",
         "tier": "main",
-        "venue": "PRICAI 2026",
-        "venueLong": "Main track, regular paper · Springer LNAI · CORE B",
+        "venue": "NLPCC 2026",
+        "venueLong": "Resources and Evaluation track · Springer LNCS",
         "format": "Oral",
-        "title": "A Point-in-Time Audit of Graph-Snapshot Leakage in GNN Stock Selection",
+        "title": "Same Exam, Different Scores: A Tokenizer-Grounded Audit of Evaluation-Protocol Sensitivity on Chinese Benchmarks",
         "authors": [
           {
             "name": "Kun Zhang",
@@ -32,14 +32,19 @@
             "corresponding": true
           }
         ],
-        "takeaway": "In GNN stock selection, a graph built from the final snapshot seems to beat graphs built only from information available at each date. The gap disappears once several random seeds are used and the result is compared with random graphs that keep the same node degrees. Future information can leak through the graph, but the models do not use it.",
-        "summary": "A performance gap between a snapshot graph and a point-in-time graph is routinely taken as evidence of look-ahead leakage. Often it is not. We test two kinds of graph and three model classes, controlling for seed luck and for graph stability. No model shows leakage that survives these controls: one apparent positive is exactly matched by a random graph with the same node degrees and disappears when the graph is sparsified; the other comes from a single seed and flips sign across five seeds. A leakage source does exist: edges that appear only in the final snapshot are more predictive of future returns. The models simply do not exploit it.",
-        "scale": "13F filings 2013–2026 · 2 graph modalities × 3 model classes · multi-seed + degree-preserved nulls + sparsity sweep + BH-FDR",
+        "takeaway": "Using only the tokenizers, before running any model, we predicted that 12 of 64 model and label-set combinations would break the standard first-token scoring method. All 64 predictions were confirmed. Where it breaks, the ranking reflects the scoring method, not the model.",
+        "summary": "Multiple-choice benchmarks are usually scored by comparing the model's probabilities for the first token of each answer label. For many Chinese models this is mathematically undefined: when the tokenizer maps all four answer labels to the same first token, the “answer” is decided by how ties are broken, not by the model. Which model and label-set pairs are affected follows from the tokenizer alone, so it can be predicted on a laptop CPU before any GPU run. We pre-registered these predictions and all 64 were confirmed on the real runs. The paper's only statistical test is on the negative control, where the two scoring methods show no significant difference (p = 0.453), not on the 12 broken cases, whose outcome is fixed by construction, so a test there would prove nothing.",
+        "scale": "18 checkpoints · 7 tokenizer families · 12,925 items · ~2.5M released scoring records · smoke test ≈ 5 s",
         "links": [
           {
             "kind": "code",
             "label": "Code",
-            "href": "https://github.com/Beiciccc/GTF-Bench"
+            "href": "https://github.com/Beiciccc/zh-protocolcube"
+          },
+          {
+            "kind": "doi",
+            "label": "Artifact (DOI)",
+            "href": "https://doi.org/10.17605/OSF.IO/53C87"
           }
         ],
         "pdf": null
@@ -74,12 +79,12 @@
         "pdf": null
       },
       {
-        "id": "nlpcc2026",
+        "id": "pricai2026",
         "tier": "main",
-        "venue": "NLPCC 2026",
-        "venueLong": "Resources and Evaluation track · Springer LNCS",
+        "venue": "PRICAI 2026",
+        "venueLong": "Main track, regular paper · Springer LNAI · CORE B",
         "format": "Oral",
-        "title": "Same Exam, Different Scores: A Tokenizer-Grounded Audit of Evaluation-Protocol Sensitivity on Chinese Benchmarks",
+        "title": "A Point-in-Time Audit of Graph-Snapshot Leakage in GNN Stock Selection",
         "authors": [
           {
             "name": "Kun Zhang",
@@ -90,19 +95,14 @@
             "corresponding": true
           }
         ],
-        "takeaway": "Using only the tokenizers, before running any model, we predicted that 12 of 64 model and label-set combinations would break the standard first-token scoring method. All 64 predictions were confirmed. Where it breaks, the ranking reflects the scoring method, not the model.",
-        "summary": "Multiple-choice benchmarks are usually scored by comparing the model's probabilities for the first token of each answer label. For many Chinese models this is mathematically undefined: when the tokenizer maps all four answer labels to the same first token, the “answer” is decided by how ties are broken, not by the model. Which model and label-set pairs are affected follows from the tokenizer alone, so it can be predicted on a laptop CPU before any GPU run. We pre-registered these predictions and all 64 were confirmed on the real runs. The paper's only statistical test is on the negative control, where the two scoring methods show no significant difference (p = 0.453), not on the 12 broken cases, whose outcome is fixed by construction, so a test there would prove nothing.",
-        "scale": "18 checkpoints · 7 tokenizer families · 12,925 items · ~2.5M released scoring records · smoke test ≈ 5 s",
+        "takeaway": "In GNN stock selection, a graph built from the final snapshot seems to beat graphs built only from information available at each date. The gap disappears once several random seeds are used and the result is compared with random graphs that keep the same node degrees. Future information can leak through the graph, but the models do not use it.",
+        "summary": "A performance gap between a snapshot graph and a point-in-time graph is routinely taken as evidence of look-ahead leakage. Often it is not. We test two kinds of graph and three model classes, controlling for seed luck and for graph stability. No model shows leakage that survives these controls: one apparent positive is exactly matched by a random graph with the same node degrees and disappears when the graph is sparsified; the other comes from a single seed and flips sign across five seeds. A leakage source does exist: edges that appear only in the final snapshot are more predictive of future returns. The models simply do not exploit it.",
+        "scale": "13F filings 2013–2026 · 2 graph modalities × 3 model classes · multi-seed + degree-preserved nulls + sparsity sweep + BH-FDR",
         "links": [
           {
             "kind": "code",
             "label": "Code",
-            "href": "https://github.com/Beiciccc/zh-protocolcube"
-          },
-          {
-            "kind": "doi",
-            "label": "Artifact (DOI)",
-            "href": "https://doi.org/10.17605/OSF.IO/53C87"
+            "href": "https://github.com/Beiciccc/GTF-Bench"
           }
         ],
         "pdf": null
@@ -160,10 +160,11 @@
     ],
     "underReview": {
       "heading": "Under review",
-      "body": "Two more first-author papers are under review, both in Phase 2. Titles and venues are not shown while review is anonymous. Topics:",
+      "body": "Three more first-author papers are under review, two of them in Phase 2. Titles and venues are not shown while review is anonymous. Topics:",
       "areas": [
         "Evaluation validity and leakage control",
-        "Alignment: attributing post-training gains"
+        "Alignment: attributing post-training gains",
+        "Alignment and post-training: theoretical analysis"
       ]
     }
   },
@@ -177,12 +178,12 @@
     "pdfNote": "尚未挂出的论文 PDF 可邮件索取。",
     "items": [
       {
-        "id": "pricai2026",
+        "id": "nlpcc2026",
         "tier": "main",
-        "venue": "PRICAI 2026",
-        "venueLong": "主会长文 · Springer LNAI · CCF-C",
+        "venue": "NLPCC 2026",
+        "venueLong": "Resources and Evaluation 方向 · Springer LNCS · CCF-C",
         "format": "Oral",
-        "title": "A Point-in-Time Audit of Graph-Snapshot Leakage in GNN Stock Selection",
+        "title": "Same Exam, Different Scores: A Tokenizer-Grounded Audit of Evaluation-Protocol Sensitivity on Chinese Benchmarks",
         "authors": [
           {
             "name": "张鲲",
@@ -193,14 +194,19 @@
             "corresponding": true
           }
         ],
-        "takeaway": "在 GNN 选股任务中，用期末快照构建的图看起来优于只用当期信息构建的图。但换用多个随机种子、并与保持节点度数的随机图对比后，这一优势消失了。未来信息确实可能通过图泄漏，但模型并没有利用它。",
-        "summary": "快照图和逐时点图之间的性能差距，常被直接当作前视泄漏的证据，但很多时候并非如此。我们在两种图、三类模型上控制了随机种子带来的偶然性和图的稳定性，没有任何模型表现出在这些控制下仍然成立的泄漏：一个看似存在泄漏的结果，与保持节点度数的随机图得到的结果完全相同，图稀疏化后也随之消失；另一个只出现在单个种子上，换成五个种子后连正负号都不稳定。泄漏源确实存在：只出现在期末快照里的边，对未来收益的预测力更强。但模型并没有用到它。",
-        "scale": "13F 持仓 2013–2026 · 2 种图模态 × 3 类模型 · 多种子 + 保度数零模型 + 稀疏化扫描 + BH-FDR",
+        "takeaway": "不运行任何模型、只看 tokenizer，我们预测出 64 个「模型 × 选项标签集」组合中有 12 个会让常用的首 token 打分法失效。64 项预测全部得到验证。在这些情况下，排名反映的是打分方法，而不是模型本身。",
+        "summary": "多选题评测通常通过比较模型给各选项标签首个 token 的概率来打分。但对许多中文模型来说，这种做法在数学上没有定义：如果 tokenizer 把四个选项标签都映射到同一个首 token，最终的「答案」取决于平局时按什么规则取舍，而不是模型本身。哪些模型和标签集组合会出问题，只取决于 tokenizer，因此可以在跑 GPU 之前用笔记本电脑的 CPU 预测出来。我们在运行前预注册了这些预测，在真实运行中 64 项全部命中。论文唯一的统计检验放在阴性对照上（两种打分方法没有显著差异，p = 0.453），而不是那 12 个失效组合上，因为它们的结果在构造上就已确定，检验没有意义。",
+        "scale": "18 个检查点 · 7 个 tokenizer 家族 · 12,925 道题 · 公开约 250 万条打分记录 · smoke test ≈ 5 秒",
         "links": [
           {
             "kind": "code",
             "label": "代码",
-            "href": "https://github.com/Beiciccc/GTF-Bench"
+            "href": "https://github.com/Beiciccc/zh-protocolcube"
+          },
+          {
+            "kind": "doi",
+            "label": "数据工件 (DOI)",
+            "href": "https://doi.org/10.17605/OSF.IO/53C87"
           }
         ],
         "pdf": null
@@ -235,12 +241,12 @@
         "pdf": null
       },
       {
-        "id": "nlpcc2026",
+        "id": "pricai2026",
         "tier": "main",
-        "venue": "NLPCC 2026",
-        "venueLong": "Resources and Evaluation 方向 · Springer LNCS · CCF-C",
+        "venue": "PRICAI 2026",
+        "venueLong": "主会长文 · Springer LNAI · CCF-C",
         "format": "Oral",
-        "title": "Same Exam, Different Scores: A Tokenizer-Grounded Audit of Evaluation-Protocol Sensitivity on Chinese Benchmarks",
+        "title": "A Point-in-Time Audit of Graph-Snapshot Leakage in GNN Stock Selection",
         "authors": [
           {
             "name": "张鲲",
@@ -251,19 +257,14 @@
             "corresponding": true
           }
         ],
-        "takeaway": "不运行任何模型、只看 tokenizer，我们预测出 64 个「模型 × 选项标签集」组合中有 12 个会让常用的首 token 打分法失效。64 项预测全部得到验证。在这些情况下，排名反映的是打分方法，而不是模型本身。",
-        "summary": "多选题评测通常通过比较模型给各选项标签首个 token 的概率来打分。但对许多中文模型来说，这种做法在数学上没有定义：如果 tokenizer 把四个选项标签都映射到同一个首 token，最终的「答案」取决于平局时按什么规则取舍，而不是模型本身。哪些模型和标签集组合会出问题，只取决于 tokenizer，因此可以在跑 GPU 之前用笔记本电脑的 CPU 预测出来。我们在运行前预注册了这些预测，在真实运行中 64 项全部命中。论文唯一的统计检验放在阴性对照上（两种打分方法没有显著差异，p = 0.453），而不是那 12 个失效组合上，因为它们的结果在构造上就已确定，检验没有意义。",
-        "scale": "18 个检查点 · 7 个 tokenizer 家族 · 12,925 道题 · 公开约 250 万条打分记录 · smoke test ≈ 5 秒",
+        "takeaway": "在 GNN 选股任务中，用期末快照构建的图看起来优于只用当期信息构建的图。但换用多个随机种子、并与保持节点度数的随机图对比后，这一优势消失了。未来信息确实可能通过图泄漏，但模型并没有利用它。",
+        "summary": "快照图和逐时点图之间的性能差距，常被直接当作前视泄漏的证据，但很多时候并非如此。我们在两种图、三类模型上控制了随机种子带来的偶然性和图的稳定性，没有任何模型表现出在这些控制下仍然成立的泄漏：一个看似存在泄漏的结果，与保持节点度数的随机图得到的结果完全相同，图稀疏化后也随之消失；另一个只出现在单个种子上，换成五个种子后连正负号都不稳定。泄漏源确实存在：只出现在期末快照里的边，对未来收益的预测力更强。但模型并没有用到它。",
+        "scale": "13F 持仓 2013–2026 · 2 种图模态 × 3 类模型 · 多种子 + 保度数零模型 + 稀疏化扫描 + BH-FDR",
         "links": [
           {
             "kind": "code",
             "label": "代码",
-            "href": "https://github.com/Beiciccc/zh-protocolcube"
-          },
-          {
-            "kind": "doi",
-            "label": "数据工件 (DOI)",
-            "href": "https://doi.org/10.17605/OSF.IO/53C87"
+            "href": "https://github.com/Beiciccc/GTF-Bench"
           }
         ],
         "pdf": null
@@ -321,10 +322,11 @@
     ],
     "underReview": {
       "heading": "在投",
-      "body": "另有 2 篇第一作者论文在投，均已进入第二阶段评审。匿名评审期间不公开题目与发表渠道。研究方向：",
+      "body": "另有 3 篇第一作者论文在投，其中 2 篇已进入第二阶段评审。匿名评审期间不公开题目与发表渠道。研究方向：",
       "areas": [
         "评测效度与泄漏控制",
-        "对齐：后训练增益的归因"
+        "对齐：后训练增益的归因",
+        "对齐与后训练：理论研究"
       ]
     }
   }

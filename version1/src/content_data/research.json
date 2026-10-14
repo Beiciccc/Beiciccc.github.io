@@ -6,8 +6,8 @@
       {
         "title": "LLM evaluation, alignment and post-training",
         "refs": [
-          "acml2026",
           "nlpcc2026",
+          "acml2026",
           "groundlm2026",
           "luhme2026"
         ],
@@ -32,8 +32,8 @@
       {
         "title": "大语言模型评测、对齐与后训练",
         "refs": [
-          "acml2026",
           "nlpcc2026",
+          "acml2026",
           "groundlm2026",
           "luhme2026"
         ],

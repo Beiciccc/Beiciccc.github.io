@@ -89,7 +89,7 @@ export const ui = {
     stats: {
       accepted: 'First-author papers accepted in 2026',
       oral: 'Oral presentations',
-      underReview: 'Under review · Phase 2',
+      underReview: 'Under review',
       reviewer: 'Reviewer roles, 2026',
     },
     oral: 'Oral',
@@ -131,7 +131,7 @@ export const ui = {
       // No-break after the year, a break opportunity after 年 (keep-all labels).
       accepted: '2026\u00a0年\u200b第一作者论文录用',
       oral: '口头报告',
-      underReview: '在投 · 第二阶段评审',
+      underReview: '在投',
       reviewer: '2026\u00a0年审稿服务',
     },
     oral: '口头报告',
