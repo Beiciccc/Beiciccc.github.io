@@ -19,140 +19,127 @@ const requestHref = (title: string) =>
   `mailto:${email}?subject=${encodeURIComponent(t.pubLinks.requestSubject + title)}`;
 // Hyphenated compounds in titles ("Graph-Snapshot") never break at the hyphen.
 const titleWords = (title: string) => title.split(' ');
-
-// Wax seal outline for the under-review note: a circle with a soft, uneven
-// scalloped edge, computed once at build time.
-const waxPath =
-  'M' +
-  Array.from({ length: 96 }, (_, k) => {
-    const a = (k / 96) * Math.PI * 2;
-    const r = 34 + 2.2 * Math.sin(a * 11) + 1.1 * Math.sin(a * 5 + 1.3);
-    return `${(40 + r * Math.cos(a)).toFixed(2)} ${(40 + r * Math.sin(a)).toFixed(2)}`;
-  }).join('L') +
-  'Z';
+// Presentation only: "(ρ = 0.945)" never breaks around the equals sign.
+const nbspEq = (s: string) => s.replace(/(\S) = (\S)/g, '$1 = $2');
 ---
 
-<!-- Numbered bibliography. The [n] sits in an engraved dial ring and stays
-     readable text: the Research section refers back to these numbers. -->
-<section id="publications" class="section section--pubs" aria-labelledby="publications-heading">
+<!-- Numbered bibliography, set as a ruled index: [n] | venue, format and
+     track | the paper. The [n] stays plain text: the Research section
+     refers back to these numbers. Rows are never hidden for an entrance. -->
+<section id="publications" class="section" aria-labelledby="publications-heading">
   <div class="container">
-    <SectionHead id="publications-heading" numeral="I" eyebrow={t.eyebrow.publications} heading={p.heading} />
-    <p class="section-lede reveal">{p.intro}</p>
+    <div class="section__inner">
+      <SectionHead id="publications-heading" heading={p.heading} sub={p.intro} aside={anyMissingPdf ? p.pdfNote : undefined} />
 
-    {
-      tiers.map((tier) => {
-        const group = p.items.filter((i) => i.tier === tier);
-        return (
-          <div class="pubs__group">
-            <h3 class="pubs__group-title reveal">
-              <span>{p.groups[tier]}</span>
-            </h3>
-            <ol class="pubs__list" role="list">
-              {group.map((item) => {
-                const oral = item.format === 'Oral';
-                const words = titleWords(item.title);
-                return (
-                  <li class="pub reveal" id={item.id}>
-                    <div class="pub__aside">
-                      <span class="pub__medal">
-                        <span class="pub__num"><span class="pub__bracket">[</span>{pubIndex(item.id)}<span class="pub__bracket">]</span></span>
-                      </span>
-                    </div>
-
-                    <div class="pub__main">
-                      <p class="pub__meta">
-                        <span class="pub__venue">{item.venue}</span>
-                        {item.format &&
-                          (oral ? (
-                            <span class="badge badge--oral">{t.oral}</span>
-                          ) : (
-                            <span class="badge">{item.format}</span>
-                          ))}
-                      </p>
-                      <p class="pub__venue-long">
-                        {item.venueLong.split(' · ').map((seg, k) => (
-                          <Fragment>
-                            {k > 0 && ' · '}
-                            {seg.length <= 16 ? <span class="nobr">{seg}</span> : seg}
-                          </Fragment>
-                        ))}
-                      </p>
-                      <h4 class="pub__title" lang="en">
-                        {words.map((w, k) => (
-                          <Fragment>
-                            {w.includes('-') ? <span class="nobr">{w}</span> : w}
-                            {k < words.length - 1 ? ' ' : ''}
-                          </Fragment>
-                        ))}
-                      </h4>
-                      <p class="pub__byline">
-                        {item.authors.map((a, k) => (
-                          <Fragment>
-                            {k > 0 && sep}
-                            {a.self ? <strong class="pub__self">{a.name}</strong> : a.name}
-                            {a.corresponding && <span class="pub__corr">{paren(t.pubCorresponding)}</span>}
-                          </Fragment>
-                        ))}
-                      </p>
-                      <p class="pub__takeaway">{item.takeaway}</p>
-                      <div class="pub__foot">
-                        <details class="pub__more">
-                          <summary>
-                            <span>{t.pubAbstract}</span>
-                            <svg class="pub__chev" aria-hidden="true" focusable="false" viewBox="0 0 12 12" width="10" height="10">
-                              <path d="M2.5 4.5 6 8l3.5-3.5" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-                            </svg>
-                          </summary>
-                          <div class="pub__abstract">
-                            <p class="pub__summary">{item.summary}</p>
-                            <p class="pub__scale">{item.scale}</p>
-                          </div>
-                        </details>
-                        <p class="pub__links">
-                          {item.pdf && (
-                            <a class="chip" href={item.pdf} type="application/pdf">
-                              {t.pubLinks.pdf}
-                            </a>
+      <div class="pubs__body">
+        {
+          tiers.map((tier) => (
+            <section class="pubs__group" aria-labelledby={`g-${tier}`}>
+              <h3 id={`g-${tier}`} class="pubs__group-title">
+                {p.groups[tier]}
+              </h3>
+              <ol class="pubs__list" role="list">
+                {p.items
+                  .filter((i) => i.tier === tier)
+                  .map((item) => {
+                    const oral = item.format === 'Oral';
+                    const words = titleWords(item.title);
+                    return (
+                      <li class="pub" id={item.id}>
+                        <p class="pub__num">[{pubIndex(item.id)}]</p>
+                        <p class="pub__meta">
+                          <span class="pub__venue">{item.venue}</span>
+                          {item.format && (
+                            <span class:list={['pub__format', { 'pub__format--oral': oral }]}>{oral ? t.oral : item.format}</span>
                           )}
-                          {item.links.map((l) => (
-                            <a class="chip" href={l.href} rel="noopener noreferrer">
-                              {l.label}
-                            </a>
-                          ))}
-                          {!item.pdf && email && (
-                            <a class="chip chip--request" href={requestHref(item.title)}>
-                              {t.pubLinks.request}
-                            </a>
-                          )}
+                          <span class="pub__track">
+                            {item.venueLong.split(' · ').map((seg, k) => (
+                              <Fragment>
+                                {k > 0 && (
+                                  <span class="dot" aria-hidden="true">
+                                    {' · '}
+                                  </span>
+                                )}
+                                <span class:list={['seg', { nobr: seg.length <= 16 }]}>{seg}</span>
+                              </Fragment>
+                            ))}
+                          </span>
                         </p>
-                      </div>
-                    </div>
-                  </li>
-                );
-              })}
-            </ol>
+                        <div class="pub__main">
+                          <h4 class="pub__title" lang="en">
+                            {words.map((w, k) => (
+                              <Fragment>
+                                {w.includes('-') ? <span class="nobr">{w}</span> : w}
+                                {k < words.length - 1 ? ' ' : ''}
+                              </Fragment>
+                            ))}
+                          </h4>
+                          <p class="pub__byline">
+                            {item.authors.map((a, k) => (
+                              <Fragment>
+                                {k > 0 && sep}
+                                {a.self ? <strong class="pub__self">{a.name}</strong> : a.name}
+                                {a.corresponding && paren(t.pubCorresponding)}
+                              </Fragment>
+                            ))}
+                          </p>
+                          <p class="pub__takeaway">{nbspEq(item.takeaway)}</p>
+                          <details class="pub__more">
+                            <summary>
+                              <span>{t.pubAbstract}</span>
+                              <svg class="pub__chev" aria-hidden="true" focusable="false" viewBox="0 0 12 12" width="10" height="10">
+                                <path d="M2.5 4.5 6 8l3.5-3.5" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                              </svg>
+                            </summary>
+                            <div class="pub__abstract">
+                              <p class="pub__summary">{nbspEq(item.summary)}</p>
+                              <p class="pub__scale">
+                                {item.scale.split('–').map((x, k) => (
+                                  <Fragment>
+                                    {k > 0 && <span class="ndash">–</span>}
+                                    {x}
+                                  </Fragment>
+                                ))}
+                              </p>
+                            </div>
+                          </details>
+                          <p class="pub__links">
+                            {item.pdf && (
+                              <a href={item.pdf} type="application/pdf">
+                                {t.pubLinks.pdf}
+                              </a>
+                            )}
+                            {item.links.map((l) => (
+                              <a href={l.href} rel="noopener noreferrer">
+                                {l.label}
+                              </a>
+                            ))}
+                            {!item.pdf && email && <a href={requestHref(item.title)}>{t.pubLinks.request}</a>}
+                          </p>
+                        </div>
+                      </li>
+                    );
+                  })}
+              </ol>
+            </section>
+          ))
+        }
+
+        <!-- Under review: heading, body, topic areas and the withheld-details
+             label only. Never a venue, venue type, rank, track or title. -->
+        <aside id="under-review" class="review" aria-labelledby="ur-heading">
+          <h3 id="ur-heading" class="pubs__group-title">{p.underReview.heading}</h3>
+          <div class="review__panel">
+            <p class="review__label">{t.sealedTitle}</p>
+            <div class="review__body">
+              <p class="review__text">{p.underReview.body}</p>
+              <ul class="review__areas" role="list">
+                {p.underReview.areas.map((a) => <li>{a}</li>)}
+              </ul>
+            </div>
           </div>
-        );
-      })
-    }
-
-    {anyMissingPdf && <p class="pubs__note reveal">{p.pdfNote}</p>}
-
-    <aside id="under-review" class="pub--review reveal" aria-labelledby="ur-heading">
-      <div class="review__seal" aria-hidden="true">
-        <svg viewBox="0 0 80 80" width="80" height="80" focusable="false">
-          <path d={waxPath} class="review__wax" />
-          <circle cx="40" cy="40" r="24" class="review__wax-ring" />
-          <text x="40" y="48.3" text-anchor="middle" class="review__wax-mono review__wax-mono--hi">KZ</text>
-          <text x="40" y="47.5" text-anchor="middle" class="review__wax-mono">KZ</text>
-        </svg>
+        </aside>
       </div>
-      <div class="review__body">
-        <p class="review__kicker">{t.sealedTitle}</p>
-        <h3 id="ur-heading" class="review__title">{p.underReview.heading}</h3>
-        <p>{p.underReview.body}</p>
-        <ul class="pub__areas">{p.underReview.areas.map((a) => <li>{a}</li>)}</ul>
-      </div>
-    </aside>
+    </div>
   </div>
 </section>

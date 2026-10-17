@@ -9,44 +9,25 @@ interface Props {
 const { posts, lang } = Astro.props;
 ---
 
+<!-- An index table without a header row: date | category | title. -->
 <div class="post-list">
   {
     posts.map((post) => {
-      const slug = baseSlug(post.filePath);
-      const href = localePath(lang, `/blog/${slug}/`);
-      const cat = post.data.tags?.[0];
+      const href = localePath(lang, `/blog/${baseSlug(post.filePath)}/`);
       return (
-        <article class="post">
-          <time class="post__date" datetime={post.data.pubDate.toISOString()}>
+        <article class="post-row">
+          <time class="post-row__date" datetime={post.data.pubDate.toISOString()}>
             {formatDate(post.data.pubDate, lang)}
           </time>
-          <div class="post__body">
-            {cat && <span class="post__cat">{cat}</span>}
-            <h2 class="post__title">
+          <span class="post-row__cat">{post.data.tags?.[0] ?? ''}</span>
+          <div>
+            <h2 class="post-row__title">
               <a href={href}>{post.data.title}</a>
             </h2>
-            <p class="post__excerpt">{post.data.description}</p>
-            {post.data.tags && (
-              <ul class="tags post__tags">
-                {post.data.tags.map((tag) => (
-                  <li class="tag">{tag}</li>
-                ))}
-              </ul>
-            )}
+            <p class="post-row__excerpt">{post.data.description}</p>
           </div>
         </article>
       );
     })
   }
 </div>
-
-<style>
-  .post__body {
-    min-width: 0;
-  }
-  .post__tags {
-    list-style: none;
-    padding: 0;
-    margin: 0.7rem 0 0;
-  }
-</style>

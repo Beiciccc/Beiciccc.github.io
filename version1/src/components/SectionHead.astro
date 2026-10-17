@@ -1,23 +1,22 @@
 ---
-import Ornament from './Ornament.astro';
-
-// Chapter head shared by the homepage sections: a Roman numeral and a small
-// inscriptional eyebrow, the display heading, and a fleuron rule under it.
+// Section head shared by Publications and Research: the heading (with an
+// optional one-line sub) on the left, a serif lede or a small aside on the
+// right, on the same 12-column grid as the title block.
 interface Props {
   id: string;
-  numeral: string;
-  eyebrow: string;
   heading: string;
+  sub?: string;
+  lede?: string;
+  aside?: string;
 }
-const { id, numeral, eyebrow, heading } = Astro.props;
+const { id, heading, sub, lede, aside } = Astro.props;
 ---
 
-<header class="sec-head reveal">
-  <p class="sec-head__eyebrow">
-    <span class="sec-head__num" aria-hidden="true">{numeral}</span>
-    <span class="sec-head__bar" aria-hidden="true"></span>
-    <span>{eyebrow}</span>
-  </p>
-  <h2 id={id} class="sec-head__title">{heading}</h2>
-  <Ornament />
+<header class:list={['sec-head', 'grid', 'reveal', { 'sec-head--aside': aside }]}>
+  <div class="sec-head__main">
+    <h2 id={id} class="sec-head__title">{heading}</h2>
+    {sub && <p class="sec-head__sub">{sub}</p>}
+  </div>
+  {lede && <p class="sec-head__lede">{lede}</p>}
+  {aside && <p class="sec-head__aside">{aside}</p>}
 </header>

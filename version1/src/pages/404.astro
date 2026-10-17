@@ -10,20 +10,22 @@ const t = ui[lang];
 ---
 
 <BaseLayout lang={lang} title="404 · Page not found · Kun Zhang" description="The page you are looking for does not exist." altUrl={null}>
-  <section class="section notfound" aria-labelledby="nf-heading">
-    <div class="section__inner">
-      <p class="section-mark">404</p>
-      <h1 id="nf-heading">{t.notFoundTitle}</h1>
-      <p class="lede">{t.notFoundBody}</p>
-      <div class="hero__actions">
-        <a class="btn" href="/">
+  <section class="page-head container grid" aria-labelledby="nf-heading">
+    <div class="page-head__main">
+      <p class="page-head__label">404</p>
+      <h1 id="nf-heading" class="page-head__title">{t.notFoundTitle}</h1>
+    </div>
+    <div class="page-head__body">
+      <p class="page-head__lede">{t.notFoundBody}</p>
+      <p class="page-head__actions">
+        <a class="btn btn--dark btn--lg" href="/">
           {t.notFoundCta}
-          <svg class="btn__arrow" aria-hidden="true" focusable="false" viewBox="0 0 16 16" width="14" height="14">
+          <svg aria-hidden="true" focusable="false" viewBox="0 0 16 16" width="14" height="14">
             <path d="M2.5 8h11M9 3.5 13.5 8 9 12.5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" />
           </svg>
         </a>
-        <a class="btn btn--ghost" href="/zh/" hreflang="zh-Hans">{t.notFoundAlt}</a>
-      </div>
+        <a class="btn btn--quiet btn--lg" href="/zh/" hreflang="zh-Hans">{t.notFoundAlt}</a>
+      </p>
     </div>
   </section>
 </BaseLayout>
