@@ -127,94 +127,103 @@ const xDefault = enHref ?? canonical;
     </main>
     <Footer lang={lang} />
 
-    <script is:inline>
-    (function () {
-      var root = document.documentElement;
-      function add(el) { el.classList.add('is-in'); }
+    <!-- Theme toggle, header hairline, scroll reveals, the figure draw,
+         scrollspy and print. Hidden states exist only in CSS under html.js
+         and no-preference motion, and every failure path shows everything. -->
+    <script>
+(function () {
+  var root = document.documentElement, mq = function (q) { return window.matchMedia(q).matches; };
+  var reduce = mq('(prefers-reduced-motion: reduce)'), IO = 'IntersectionObserver' in window;
+  function add(el) { el.classList.add('is-in'); }
 
-      // THEME: unchanged three-state logic (system → light → dark → system).
-      var btn = document.getElementById('theme-toggle');
-      function stored() { try { var v = localStorage.getItem('theme'); return v === 'light' || v === 'dark' ? v : 'system'; } catch (e) { return 'system'; } }
-      function apply(state) {
-        if (state === 'system') root.removeAttribute('data-theme'); else root.setAttribute('data-theme', state);
-        if (!btn) return;
-        btn.setAttribute('data-state', state);
-        var label = btn.getAttribute('data-label-' + state);
-        if (label) { btn.setAttribute('aria-label', label); btn.setAttribute('title', label); }
-      }
-      apply(stored());
-      if (btn) btn.addEventListener('click', function () {
-        var order = ['system', 'light', 'dark'];
-        var next = order[(order.indexOf(stored()) + 1) % order.length];
-        try { if (next === 'system') localStorage.removeItem('theme'); else localStorage.setItem('theme', next); } catch (e) {}
-        apply(next);
-      });
+  // Theme: system -> light -> dark -> system; the switch itself is instant.
+  var btn = document.getElementById('theme-toggle');
+  function stored() { try { var v = localStorage.getItem('theme'); return v === 'light' || v === 'dark' ? v : 'system'; } catch (e) { return 'system'; } }
+  function apply(st) {
+    if (st === 'system') root.removeAttribute('data-theme'); else root.setAttribute('data-theme', st);
+    if (!btn) return;
+    btn.setAttribute('data-state', st);
+    var l = btn.getAttribute('data-label-' + st);
+    if (l) { btn.setAttribute('aria-label', l); btn.setAttribute('title', l); }
+  }
+  apply(stored());
+  if (btn) btn.addEventListener('click', function () {
+    var o = ['system', 'light', 'dark'], next = o[(o.indexOf(stored()) + 1) % 3];
+    try { if (next === 'system') localStorage.removeItem('theme'); else localStorage.setItem('theme', next); } catch (e) {}
+    root.classList.add('theme-switch');
+    apply(next);
+    getComputedStyle(root).color;
+    requestAnimationFrame(function () { root.classList.remove('theme-switch'); });
+  });
 
-      // HEADER EDGE: body.scrolled once the top sentinel leaves the viewport (no scroll listener).
-      try {
-        var sentinel = document.getElementById('top-sentinel');
-        if (sentinel && 'IntersectionObserver' in window) {
-          new IntersectionObserver(function (es) { document.body.classList.toggle('scrolled', !es[0].isIntersecting); }).observe(sentinel);
-        }
-      } catch (e) {}
+  // Smooth anchor scrolling only after load, so a deep link jumps straight there.
+  window.addEventListener('load', function () { requestAnimationFrame(function () { root.classList.add('smooth'); }); });
 
-      // REVEALS + FIGURE DRAW. Hidden states exist only in CSS under html.js + no-preference.
-      var reveals = document.querySelectorAll('.reveal');
-      var draws = document.querySelectorAll('[data-draw]');
-      function showAll() { reveals.forEach(add); draws.forEach(add); }
-      function showTarget() {
-        var id = location.hash && decodeURIComponent(location.hash.slice(1));
-        var tgt = id && document.getElementById(id);
-        if (!tgt) return;
-        if (tgt.matches('.reveal,[data-draw]')) add(tgt);
-        var outer = tgt.closest('.reveal'); if (outer) add(outer);
-        tgt.querySelectorAll('.reveal,[data-draw]').forEach(add);
-      }
-      try {
-        if (!('IntersectionObserver' in window) || window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-          showAll();
-        } else {
-          var io = new IntersectionObserver(function (es) {
-            es.forEach(function (e) { if (e.isIntersecting) { add(e.target); io.unobserve(e.target); } });
-          }, { rootMargin: '0px 0px -8% 0px', threshold: 0.08 });
-          reveals.forEach(function (el) { io.observe(el); });
-          var fio = new IntersectionObserver(function (es) {
-            es.forEach(function (e) { if (e.isIntersecting) { add(e.target); fio.unobserve(e.target); } });
-          }, { threshold: 0.35 });
-          draws.forEach(function (el) { fio.observe(el); });
-          showTarget();
-          window.addEventListener('hashchange', showTarget);
-          window.addEventListener('beforeprint', showAll);
-        }
-      } catch (e) { showAll(); }
+  // Header hairline once the top sentinel leaves the viewport.
+  var sentinel = document.getElementById('top-sentinel');
+  if (sentinel && IO) new IntersectionObserver(function (es) { document.body.classList.toggle('scrolled', !es[0].isIntersecting); }).observe(sentinel);
 
-      // SCROLLSPY: unchanged, except the phone breakpoint.
-      try {
-        var narrow = window.matchMedia('(max-width: 767px)');
-        var links = {};
-        document.querySelectorAll('.nav__links a[href*="#"]').forEach(function (a) { links[a.getAttribute('href').split('#')[1]] = a; });
-        var ids = Object.keys(links);
-        if (ids.length && 'IntersectionObserver' in window) {
-          var spy = new IntersectionObserver(function (es) {
-            es.forEach(function (e) {
-              var a = links[e.target.id]; if (!a) return;
-              if (e.isIntersecting) {
-                ids.forEach(function (id) { links[id].removeAttribute('aria-current'); });
-                a.setAttribute('aria-current', 'location');
-                var row = a.parentElement;
-                if (narrow.matches && row && row.scrollWidth > row.clientWidth) row.scrollTo({ left: a.offsetLeft - (row.clientWidth - a.offsetWidth) / 2, behavior: 'smooth' });
-              } else if (a.getAttribute('aria-current')) { a.removeAttribute('aria-current'); }
-            });
-          }, { rootMargin: '-45% 0px -50% 0px' });
-          ids.forEach(function (id) { var s = document.getElementById(id); if (s) spy.observe(s); });
-        }
-      } catch (e) {}
+  // Reveals and the figure draw. Reveals already in view on load wait for
+  // the hero to settle (--rd).
+  var reveals = document.querySelectorAll('.reveal'), draws = document.querySelectorAll('[data-draw]');
+  function showAll() { reveals.forEach(add); draws.forEach(add); }
+  function showTarget() {
+    var id = location.hash && decodeURIComponent(location.hash.slice(1)), t = id && document.getElementById(id);
+    if (!t) return;
+    if (t.matches('.reveal,[data-draw]')) add(t);
+    var o = t.closest('.reveal'); if (o) add(o);
+    t.querySelectorAll('.reveal,[data-draw]').forEach(add);
+  }
+  function once(opts, first) {
+    var io = new IntersectionObserver(function (es) {
+      es.forEach(function (e) { if (e.isIntersecting) { if (first) e.target.style.setProperty('--rd', '.56s'); add(e.target); io.unobserve(e.target); } });
+      first = false;
+    }, opts);
+    return io;
+  }
+  try {
+    if (!IO || reduce) showAll();
+    else {
+      var rio = once({ rootMargin: '0px 0px -8% 0px', threshold: 0.08 }, true), fio = once({ threshold: 0.35 });
+      reveals.forEach(function (el) { rio.observe(el); });
+      draws.forEach(function (el) { fio.observe(el); });
+      showTarget();
+      window.addEventListener('hashchange', showTarget);
+    }
+  } catch (e) { showAll(); }
 
-      // PRINT: open every abstract, then restore (unchanged).
-      var details = document.querySelectorAll('details.pub__more');
-      window.addEventListener('beforeprint', function () { details.forEach(function (d) { d.setAttribute('data-was-open', d.open ? '1' : ''); d.open = true; }); });
-      window.addEventListener('afterprint', function () { details.forEach(function (d) { d.open = d.getAttribute('data-was-open') === '1'; d.removeAttribute('data-was-open'); }); });
-    })();
+  // Scrollspy; on phones the current link is kept in view in the nav row.
+  try {
+    var links = {};
+    document.querySelectorAll('.nav__links a[href*="#"]').forEach(function (a) { links[a.getAttribute('href').split('#')[1]] = a; });
+    var ids = Object.keys(links);
+    if (ids.length && IO) {
+      var spy = new IntersectionObserver(function (es) {
+        es.forEach(function (e) {
+          var a = links[e.target.id];
+          if (!a) return;
+          if (e.isIntersecting) {
+            ids.forEach(function (id) { links[id].removeAttribute('aria-current'); });
+            a.setAttribute('aria-current', 'location');
+            var row = a.parentElement;
+            if (mq('(max-width: 47.9375em)') && row.scrollWidth > row.clientWidth) row.scrollTo({ left: a.offsetLeft - (row.clientWidth - a.offsetWidth) / 2, behavior: reduce ? 'auto' : 'smooth' });
+          } else a.removeAttribute('aria-current');
+        });
+      }, { rootMargin: '-45% 0px -50% 0px' });
+      ids.forEach(function (id) { var sec = document.getElementById(id); if (sec) spy.observe(sec); });
+    }
+  } catch (e) {}
+
+  // Print: show everything and open every abstract, then restore.
+  var details = document.querySelectorAll('details.pub__more');
+  window.addEventListener('beforeprint', function () {
+    showAll();
+    details.forEach(function (d) { d.setAttribute('data-was-open', d.open ? '1' : ''); d.open = true; });
+  });
+  window.addEventListener('afterprint', function () {
+    details.forEach(function (d) { d.open = d.getAttribute('data-was-open') === '1'; d.removeAttribute('data-was-open'); });
+  });
+})();
     </script>
   </body>
 </html>

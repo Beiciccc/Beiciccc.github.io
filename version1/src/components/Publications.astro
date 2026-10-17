@@ -19,8 +19,14 @@ const requestHref = (title: string) =>
   `mailto:${email}?subject=${encodeURIComponent(t.pubLinks.requestSubject + title)}`;
 // Hyphenated compounds in titles ("Graph-Snapshot") never break at the hyphen.
 const titleWords = (title: string) => title.split(' ');
-// Presentation only: "(ρ = 0.945)" never breaks around the equals sign.
-const nbspEq = (s: string) => s.replace(/(\S) = (\S)/g, '$1 = $2');
+// Presentation only: "(ρ = 0.945)" never breaks around the equals sign and
+// "Phase 2" never splits.
+const nbspEq = (s: string) => s.replace(/(\S) = (\S)/g, '$1\u00a0=\u00a0$2');
+const nbspPhase = (s: string) => s.replace(/Phase (\d)/g, 'Phase\u00a0$1');
+// Venue names break only after their comma ("GroundLM 2026," / "workshop at
+// EMNLP 2026"), so a workshop venue never splits inside its parts.
+const venueChunks = (v: string) =>
+  v.split(/(?<=[,，])\s*/).map((text, k, all) => ({ text, space: k > 0 && all[k - 1].endsWith(',') }));
 ---
 
 <!-- Numbered bibliography, set as a ruled index: [n] | venue, format and
@@ -48,20 +54,18 @@ const nbspEq = (s: string) => s.replace(/(\S) = (\S)/g, '$1 = $2');
                       <li class="pub" id={item.id}>
                         <p class="pub__num">[{pubIndex(item.id)}]</p>
                         <p class="pub__meta">
-                          <span class="pub__venue">{item.venue}</span>
+                          <span class="pub__venue">
+                            {venueChunks(item.venue).map((c) => <Fragment>{c.space && ' '}<span class="nobr">{c.text}</span></Fragment>)}
+                          </span>
                           {item.format && (
                             <span class:list={['pub__format', { 'pub__format--oral': oral }]}>{oral ? t.oral : item.format}</span>
                           )}
+                          {/* On the one-line meta (below 1024px) each separator is glued to
+                              the end of its segment, so a line can break after a dot but
+                              never start with one. */}
                           <span class="pub__track">
-                            {item.venueLong.split(' · ').map((seg, k) => (
-                              <Fragment>
-                                {k > 0 && (
-                                  <span class="dot" aria-hidden="true">
-                                    {' · '}
-                                  </span>
-                                )}
-                                <span class:list={['seg', { nobr: seg.length <= 16 }]}>{seg}</span>
-                              </Fragment>
+                            {item.venueLong.split(' · ').map((seg, k, segs) => (
+                              <Fragment>{k > 0 && ' '}<span class:list={['seg', { nobr: seg.length <= 16 }]}>{seg}{k < segs.length - 1 && <span class="dot" aria-hidden="true">{'\u00a0·'}</span>}</span></Fragment>
                             ))}
                           </span>
                         </p>
@@ -132,7 +136,7 @@ const nbspEq = (s: string) => s.replace(/(\S) = (\S)/g, '$1 = $2');
           <div class="review__panel">
             <p class="review__label">{t.sealedTitle}</p>
             <div class="review__body">
-              <p class="review__text">{p.underReview.body}</p>
+              <p class="review__text">{nbspPhase(p.underReview.body)}</p>
               <ul class="review__areas" role="list">
                 {p.underReview.areas.map((a) => <li>{a}</li>)}
               </ul>
