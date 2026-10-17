@@ -1,76 +1,52 @@
 ---
-import { type Lang, contact, ui, pick } from '../i18n/content';
-import SectionHead from './SectionHead.astro';
-import Corner from './Corner.astro';
-import Ornament from './Ornament.astro';
+import { type Lang, contact, pick } from '../i18n/content';
 
 interface Props {
   lang: Lang;
 }
 const { lang } = Astro.props;
 const c = pick(contact, lang);
-const t = ui[lang];
 // Profiles without a URL yet (Scholar, ORCID) are not rendered.
 const pending = c.pending.filter((x) => x.href);
-const kind = (href: string) =>
-  href.startsWith('mailto:') ? 'mail' : href.endsWith('.pdf') ? 'doc' : 'code';
+const kind = (href: string) => (href.startsWith('mailto:') ? 'mail' : href.endsWith('.pdf') ? 'doc' : 'code');
 const cards = [
   ...c.links.map((l) => ({ label: l.label, value: l.value, href: l.href, kind: kind(l.href) })),
   ...pending.map((l) => ({ label: l.label, value: l.label, href: l.href!, kind: 'code' })),
 ];
 ---
 
-<!-- Closing band: the imprint. One gilt-framed plate, the counterpart of
-     the title page's, with a line per channel set on dotted leaders. -->
-<section id="contact" class="section section--contact band" aria-labelledby="contact-heading">
-  <div class="band__sky" aria-hidden="true">
-    <canvas class="band__canvas"></canvas>
-  </div>
+<!-- Side-head like About: the intro, then one ruled row per channel. -->
+<section id="contact" class="section" aria-labelledby="contact-heading">
   <div class="container">
-    <SectionHead id="contact-heading" numeral="IV" eyebrow={t.eyebrow.contact} heading={c.heading} />
-    <p class="section-lede reveal">{c.intro}</p>
-
-    <div class="imprint reveal">
-      {['tl', 'tr', 'bl', 'br'].map((k) => <Corner class={`imprint__corner imprint__corner--${k}`} />)}
-      <Ornament variant="fleuron" class="imprint__orn" />
-      <dl class="imprint__rows">
-        {
-          cards.map((card) => (
-            <div class:list={['imprint__row', { 'imprint__row--primary': card.kind === 'mail' }]}>
-              <dt>{card.label}</dt>
-              <dd>
-                {card.href.endsWith('.pdf') ? (
-                  <a href={card.href} type="application/pdf">
-                    {card.value}
-                  </a>
-                ) : card.href.startsWith('http') ? (
-                  <a href={card.href} rel="me noopener noreferrer">
-                    {card.value}
-                  </a>
-                ) : (
-                  <a href={card.href}>{card.value}</a>
-                )}
-              </dd>
-            </div>
-          ))
-        }
-      </dl>
+    <div class="section__inner">
+      <div class="side grid reveal">
+        <h2 id="contact-heading" class="side__title">{c.heading}</h2>
+        <div class="side__body">
+          <p class="contact__lede">{c.intro}</p>
+          <dl class="contact__list">
+            {
+              cards.map((card) => (
+                <div class:list={['contact__row', { 'contact__row--primary': card.kind === 'mail' }]}>
+                  <dt>{card.label}</dt>
+                  <dd>
+                    {card.href.endsWith('.pdf') ? (
+                      <a href={card.href} type="application/pdf">
+                        {card.value}
+                      </a>
+                    ) : card.href.startsWith('http') ? (
+                      <a href={card.href} rel="me noopener noreferrer">
+                        {card.value}
+                      </a>
+                    ) : (
+                      <a href={card.href}>{card.value}</a>
+                    )}
+                  </dd>
+                </div>
+              ))
+            }
+          </dl>
+        </div>
+      </div>
     </div>
   </div>
 </section>
-
-<script>
-  import { mountSky } from '../scripts/sky';
-
-  // The closing band gets its own, quieter chart: the Plough and Lyra in
-  // the margins, the odd shooting star, a star charted where the visitor
-  // clicks.
-  const band = document.querySelector<HTMLElement>('.section--contact');
-  const canvas = band?.querySelector<HTMLCanvasElement>('.band__canvas');
-  if (band && canvas) {
-    const avoid = [band.querySelector('.sec-head'), band.querySelector('.section-lede'), band.querySelector('.imprint')].filter(
-      (el): el is Element => !!el
-    );
-    mountSky(band, canvas, { asterisms: 'contact', nodeArea: 17000, starArea: 3000, motes: 12, flecks: 6, meteors: [22, 45], avoid, interactive: true });
-  }
-</script>

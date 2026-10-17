@@ -79,13 +79,7 @@ export const ui = {
     themeLight: 'Theme: light',
     themeDark: 'Theme: dark',
     themeSystem: 'Theme: system',
-    // Ornamental apparatus of the redesigned homepage (numerals, eyebrows, stats).
-    eyebrow: {
-      publications: 'First-author papers · 2026',
-      research: 'Research',
-      about: 'Education and service',
-      contact: 'Get in touch',
-    },
+    // Homepage apparatus (headline figures, paper rows, research refs).
     stats: {
       accepted: 'First-author papers accepted in 2026',
       oral: 'Oral presentations',
@@ -96,11 +90,9 @@ export const ui = {
     oralSplit: (m: number, w: number) => `${m} conference · ${w} workshop`,
     relatedPapers: 'Papers',
     sealedTitle: 'Details withheld during anonymous review',
-    colophon: 'Set in Cormorant, Source Serif 4 and Source Sans 3.',
+    colophon: 'Set in Schibsted Grotesk and Literata.',
     toTop: 'Back to top',
     crestAlt: 'University of Leeds',
-    motionPause: 'Pause motion',
-    motionResume: 'Resume motion',
   },
   zh: {
     backToBlog: '← 返回全部文章',
@@ -121,12 +113,6 @@ export const ui = {
     themeLight: '主题：浅色',
     themeDark: '主题：深色',
     themeSystem: '主题：跟随系统',
-    eyebrow: {
-      publications: '第一作者论文 · 2026',
-      research: '研究方向',
-      about: '教育与学术服务',
-      contact: '欢迎来信',
-    },
     stats: {
       // No-break after the year, a break opportunity after 年 (keep-all labels).
       accepted: '2026\u00a0年\u200b第一作者论文录用',
@@ -138,11 +124,9 @@ export const ui = {
     oralSplit: (m: number, w: number) => `会议 ${m} · 研讨会 ${w}`,
     relatedPapers: '相关论文',
     sealedTitle: '匿名评审期间暂不公开细节',
-    colophon: '西文字体 Cormorant、Source Serif 4 与 Source Sans 3；中文标题 Noto Serif SC，正文使用系统黑体。',
+    colophon: '西文字体 Schibsted Grotesk 与 Literata；中文导语 Noto Serif SC，标题与正文使用系统黑体。',
     toTop: '回到顶部',
     crestAlt: '利兹大学',
-    motionPause: '暂停动效',
-    motionResume: '恢复动效',
   },
 } as const;
 

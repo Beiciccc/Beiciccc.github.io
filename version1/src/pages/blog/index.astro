@@ -19,13 +19,23 @@ const posts = (await getCollection('blog', ({ data }) => data.lang === 'en' && !
   description={s.blogIntro}
   altUrl="/zh/blog/"
 >
-  <section class="section blog-index" aria-labelledby="blog-heading">
-  <div class="section__inner">
-    <div class="blog-index__head">
-            <h1 id="blog-heading">{s.blogTitle}</h1>
-      <p class="lede blog-index__intro">{s.blogIntro}</p>
+  <section class="page-head container grid" aria-labelledby="blog-heading">
+    <div class="page-head__main">
+      <h1 id="blog-heading" class="page-head__title">{s.blogTitle}</h1>
     </div>
-    {posts.length > 0 ? <PostList posts={posts} lang={lang} /> : <p class="meta">{t.noPosts}</p>}
+    <div class="page-head__body">
+      <p class="page-head__lede">{s.blogIntro}</p>
     </div>
   </section>
+  <div class="container">
+    {
+      posts.length > 0 ? (
+        <PostList posts={posts} lang={lang} />
+      ) : (
+        <div class="post-list">
+          <p class="post-empty">{t.noPosts}</p>
+        </div>
+      )
+    }
+  </div>
 </BaseLayout>

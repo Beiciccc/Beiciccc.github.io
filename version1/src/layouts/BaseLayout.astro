@@ -1,22 +1,14 @@
 ---
 // Self-hosted type (Vite hashes the woff2 into _astro/; unicode-range means
 // only the latin files are fetched for these pages).
-// Source Serif 4: roman with the opsz axis + true italic — running text.
-// Source Sans 3:  roman, wght axis — apparatus (bylines, nav, buttons).
-// Cormorant Garamond: roman + italic, wght axis — display (name, headings, titles).
-// Cormorant SC: the same design with true small-cap glyphs at the lowercase
-//   code points — every inscription (eyebrows, kicker, nav, captions).
+// Schibsted Grotesk: wght axis — names, headings, navigation, apparatus.
+// Literata: roman + italic, wght axis — running text and ledes.
 // Imported before global.css so the @font-face rules precede their first use.
-import '@fontsource-variable/source-serif-4/opsz.css';
-import '@fontsource-variable/source-serif-4/wght-italic.css';
-import '@fontsource-variable/source-sans-3/wght.css';
-import '@fontsource-variable/cormorant-garamond/wght.css';
-import '@fontsource-variable/cormorant-garamond/wght-italic.css';
-import '@fontsource/cormorant-sc/latin-500.css';
-import '@fontsource/cormorant-sc/latin-600.css';
-import '@fontsource/cormorant-sc/latin-700.css';
-import serifWoff2 from '@fontsource-variable/source-serif-4/files/source-serif-4-latin-opsz-normal.woff2?url';
-import displayWoff2 from '@fontsource-variable/cormorant-garamond/files/cormorant-garamond-latin-wght-normal.woff2?url';
+import '@fontsource-variable/schibsted-grotesk/wght.css';
+import '@fontsource-variable/literata/wght.css';
+import '@fontsource-variable/literata/wght-italic.css';
+import sansWoff2 from '@fontsource-variable/schibsted-grotesk/files/schibsted-grotesk-latin-wght-normal.woff2?url';
+import serifWoff2 from '@fontsource-variable/literata/files/literata-latin-wght-normal.woff2?url';
 import '../styles/global.css';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
@@ -61,18 +53,18 @@ const xDefault = enHref ?? canonical;
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="color-scheme" content="light dark" />
-    <meta name="theme-color" media="(prefers-color-scheme: light)" content="#fbfaf6" />
-    <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#0b1226" />
+    <meta name="theme-color" media="(prefers-color-scheme: light)" content="#faf9f5" />
+    <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#1f1e1d" />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
     <link rel="sitemap" href="/sitemap-index.xml" />
 
-    <!-- Only the files the first paint needs (display h1 + running text). The
-         italics, the sans and Cormorant SC arrive via font-display: swap behind
-         fallbacks declared in global.css. -->
-    <link rel="preload" as="font" type="font/woff2" crossorigin href={displayWoff2} />
+    <!-- Only the files the first paint needs (sans + serif roman). The italic
+         and the Greek subset arrive via font-display: swap behind the
+         metric-matched fallbacks declared in global.css. -->
+    <link rel="preload" as="font" type="font/woff2" crossorigin href={sansWoff2} />
     <link rel="preload" as="font" type="font/woff2" crossorigin href={serifWoff2} />
-    <!-- Chinese pages: the subset Song face for the name and the headings. -->
+    <!-- Chinese pages: the subset Song face for the ledes. -->
     {lang === 'zh' && <link rel="preload" as="font" type="font/woff2" crossorigin href="/fonts/kz-serif-sc.woff2" />}
 
     <title>{title}</title>
@@ -108,8 +100,8 @@ const xDefault = enHref ?? canonical;
     )}
 
     <!-- No-flash bootstrap: mark JS-enabled and apply a stored theme choice
-         (and a stored "pause motion") before first paint. No stored choice =
-         follow the OS (no attribute). -->
+         before first paint. No stored choice = follow the OS (no attribute).
+         The old "pause motion" preference is cleared: nothing loops now. -->
     <script is:inline>
       (function () {
         var root = document.documentElement;
@@ -117,7 +109,7 @@ const xDefault = enHref ?? canonical;
         try {
           var v = localStorage.getItem('theme');
           if (v === 'light' || v === 'dark') root.setAttribute('data-theme', v);
-          if (localStorage.getItem('motion') === 'still') root.setAttribute('data-motion', 'still');
+          localStorage.removeItem('motion');
         } catch (e) {
           /* storage unavailable: follow the OS */
         }
@@ -125,6 +117,9 @@ const xDefault = enHref ?? canonical;
     </script>
   </head>
   <body>
+    <!-- Watched by the header script: once it leaves the viewport the sticky
+         header shows its hairline (no scroll listener). -->
+    <span id="top-sentinel" aria-hidden="true"></span>
     <a class="skip-link" href="#main">{t.skipToContent}</a>
     <Header lang={lang} altUrl={altUrl} />
     <main id="main">
@@ -132,206 +127,94 @@ const xDefault = enHref ?? canonical;
     </main>
     <Footer lang={lang} />
 
-    <!-- Back to top: a small gilt dial whose ring fills as the page is read.
-         Appears once the title page has scrolled away. -->
-    <a class="to-top" href="#main" aria-label={t.toTop} title={t.toTop}>
-      <svg viewBox="0 0 48 48" width="48" height="48" aria-hidden="true" focusable="false">
-        <circle class="to-top__track" cx="24" cy="24" r="21" />
-        <circle class="to-top__bar" cx="24" cy="24" r="21" pathLength="1" />
-        <g class="to-top__dial">
-          <path d="M24 5.5v3M24 39.5v3M5.5 24h3M39.5 24h3" />
-        </g>
-        <path class="to-top__arrow" d="M24 31V17.5M18.5 23 24 17.5 29.5 23" />
-      </svg>
-    </a>
-
     <script is:inline>
-      (function () {
-        var root = document.documentElement;
+    (function () {
+      var root = document.documentElement;
+      function add(el) { el.classList.add('is-in'); }
 
-        // THEME: three states, system → light → dark → system. The icon is
-        // keyed off data-state (CSS); the label names the current setting.
-        var btn = document.getElementById('theme-toggle');
-        function stored() {
-          try {
-            var v = localStorage.getItem('theme');
-            return v === 'light' || v === 'dark' ? v : 'system';
-          } catch (e) {
-            return 'system';
-          }
-        }
-        function apply(state) {
-          if (state === 'system') root.removeAttribute('data-theme');
-          else root.setAttribute('data-theme', state);
-          if (!btn) return;
-          btn.setAttribute('data-state', state);
-          var label = btn.getAttribute('data-label-' + state);
-          if (label) {
-            btn.setAttribute('aria-label', label);
-            btn.setAttribute('title', label);
-          }
-        }
-        apply(stored());
-        if (btn) {
-          btn.addEventListener('click', function () {
-            var order = ['system', 'light', 'dark'];
-            var next = order[(order.indexOf(stored()) + 1) % order.length];
-            try {
-              if (next === 'system') localStorage.removeItem('theme');
-              else localStorage.setItem('theme', next);
-            } catch (e) {}
-            apply(next);
-          });
-        }
+      // THEME: unchanged three-state logic (system → light → dark → system).
+      var btn = document.getElementById('theme-toggle');
+      function stored() { try { var v = localStorage.getItem('theme'); return v === 'light' || v === 'dark' ? v : 'system'; } catch (e) { return 'system'; } }
+      function apply(state) {
+        if (state === 'system') root.removeAttribute('data-theme'); else root.setAttribute('data-theme', state);
+        if (!btn) return;
+        btn.setAttribute('data-state', state);
+        var label = btn.getAttribute('data-label-' + state);
+        if (label) { btn.setAttribute('aria-label', label); btn.setAttribute('title', label); }
+      }
+      apply(stored());
+      if (btn) btn.addEventListener('click', function () {
+        var order = ['system', 'light', 'dark'];
+        var next = order[(order.indexOf(stored()) + 1) % order.length];
+        try { if (next === 'system') localStorage.removeItem('theme'); else localStorage.setItem('theme', next); } catch (e) {}
+        apply(next);
+      });
 
-        // MOTION: pause / resume every perpetual motion. The attribute
-        // freezes CSS loops; the sky and the pointer effects listen for
-        // 'motionchange'.
-        var mbtn = document.getElementById('motion-toggle');
-        function applyMotion(still) {
-          if (still) root.setAttribute('data-motion', 'still');
-          else root.removeAttribute('data-motion');
-          if (!mbtn) return;
-          // A toggle button: its name stays "Pause motion"; aria-pressed
-          // carries the state. The tooltip names the action on offer.
-          mbtn.setAttribute('aria-pressed', still ? 'true' : 'false');
-          var tip = mbtn.getAttribute(still ? 'data-label-resume' : 'data-label-pause');
-          if (tip) mbtn.setAttribute('title', tip);
+      // HEADER EDGE: body.scrolled once the top sentinel leaves the viewport (no scroll listener).
+      try {
+        var sentinel = document.getElementById('top-sentinel');
+        if (sentinel && 'IntersectionObserver' in window) {
+          new IntersectionObserver(function (es) { document.body.classList.toggle('scrolled', !es[0].isIntersecting); }).observe(sentinel);
         }
-        applyMotion(root.getAttribute('data-motion') === 'still');
-        if (mbtn) {
-          mbtn.addEventListener('click', function () {
-            var still = root.getAttribute('data-motion') !== 'still';
-            try {
-              if (still) localStorage.setItem('motion', 'still');
-              else localStorage.removeItem('motion');
-            } catch (e) {}
-            applyMotion(still);
-            window.dispatchEvent(new Event('motionchange'));
-          });
-        }
+      } catch (e) {}
 
-        // NAV: settle the sticky bar once scrolled and advance the gilt
-        // reading-progress hairline. One rAF-throttled listener. On phones
-        // the dial only offers itself while the reader scrolls back up.
-        var bar = document.querySelector('.scroll-progress span');
-        var toTop = document.querySelector('.to-top');
-        var narrow = window.matchMedia('(max-width: 740px)');
-        var lastY = window.scrollY;
-        var ticking = false;
-        function onScroll() {
-          if (ticking) return;
-          ticking = true;
-          requestAnimationFrame(function () {
-            var y = window.scrollY;
-            document.body.classList.toggle('scrolled', y > 8);
-            var max = document.documentElement.scrollHeight - window.innerHeight;
-            var p = max > 0 ? Math.min(1, y / max) : 0;
-            if (bar) bar.style.transform = 'scaleX(' + p.toFixed(4) + ')';
-            if (toTop) {
-              toTop.style.setProperty('--progress', p.toFixed(4));
-              var shown = narrow.matches
-                ? y > window.innerHeight * 1.5 && (y < lastY || (y === lastY && toTop.classList.contains('is-shown')))
-                : y > window.innerHeight * 0.8;
-              toTop.classList.toggle('is-shown', shown);
-            }
-            lastY = y;
-            ticking = false;
-          });
-        }
-        onScroll();
-        window.addEventListener('scroll', onScroll, { passive: true });
-        window.addEventListener('resize', onScroll, { passive: true });
-
-        // REVEAL: blocks marked .reveal rise into place the first time they
-        // enter the viewport. The hidden state only exists in CSS under
-        // html.js + no-preference motion, so no-JS and reduced-motion
-        // visitors always see everything; any failure here shows it all too.
-        var reveals = document.querySelectorAll('.reveal');
-        function showAll() {
-          reveals.forEach(function (el) { el.classList.add('is-in'); });
-        }
-        try {
-          if (!('IntersectionObserver' in window) || window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-            showAll();
-          } else {
-            var io = new IntersectionObserver(function (entries) {
-              entries.forEach(function (e) {
-                if (e.isIntersecting) {
-                  e.target.classList.add('is-in');
-                  io.unobserve(e.target);
-                }
-              });
-            }, { rootMargin: '0px 0px -8% 0px', threshold: 0.08 });
-            reveals.forEach(function (el) { io.observe(el); });
-            // Printing or jumping to a #fragment must never meet hidden blocks.
-            window.addEventListener('beforeprint', showAll);
-            window.addEventListener('hashchange', function () {
-              var tgt = location.hash && document.getElementById(location.hash.slice(1));
-              if (tgt) {
-                tgt.classList.add('is-in');
-                var inner = tgt.closest('.reveal');
-                if (inner) inner.classList.add('is-in');
-              }
-            });
-          }
-        } catch (e) {
+      // REVEALS + FIGURE DRAW. Hidden states exist only in CSS under html.js + no-preference.
+      var reveals = document.querySelectorAll('.reveal');
+      var draws = document.querySelectorAll('[data-draw]');
+      function showAll() { reveals.forEach(add); draws.forEach(add); }
+      function showTarget() {
+        var id = location.hash && decodeURIComponent(location.hash.slice(1));
+        var tgt = id && document.getElementById(id);
+        if (!tgt) return;
+        if (tgt.matches('.reveal,[data-draw]')) add(tgt);
+        var outer = tgt.closest('.reveal'); if (outer) add(outer);
+        tgt.querySelectorAll('.reveal,[data-draw]').forEach(add);
+      }
+      try {
+        if (!('IntersectionObserver' in window) || window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
           showAll();
+        } else {
+          var io = new IntersectionObserver(function (es) {
+            es.forEach(function (e) { if (e.isIntersecting) { add(e.target); io.unobserve(e.target); } });
+          }, { rootMargin: '0px 0px -8% 0px', threshold: 0.08 });
+          reveals.forEach(function (el) { io.observe(el); });
+          var fio = new IntersectionObserver(function (es) {
+            es.forEach(function (e) { if (e.isIntersecting) { add(e.target); fio.unobserve(e.target); } });
+          }, { threshold: 0.35 });
+          draws.forEach(function (el) { fio.observe(el); });
+          showTarget();
+          window.addEventListener('hashchange', showTarget);
+          window.addEventListener('beforeprint', showAll);
         }
+      } catch (e) { showAll(); }
 
-        // SCROLLSPY: mark the nav link of the section being read.
-        try {
-          var links = {};
-          document.querySelectorAll('.nav__links a[href*="#"]').forEach(function (a) {
-            links[a.getAttribute('href').split('#')[1]] = a;
-          });
-          var ids = Object.keys(links);
-          if (ids.length && 'IntersectionObserver' in window) {
-            var spy = new IntersectionObserver(function (entries) {
-              entries.forEach(function (e) {
-                var a = links[e.target.id];
-                if (!a) return;
-                if (e.isIntersecting) {
-                  ids.forEach(function (id) { links[id].removeAttribute('aria-current'); });
-                  a.setAttribute('aria-current', 'location');
-                  // Phones: keep the current link in view in the scrolling row.
-                  var row = a.parentElement;
-                  if (narrow.matches && row && row.scrollWidth > row.clientWidth) {
-                    row.scrollTo({ left: a.offsetLeft - (row.clientWidth - a.offsetWidth) / 2, behavior: 'smooth' });
-                  }
-                } else if (a.getAttribute('aria-current')) {
-                  a.removeAttribute('aria-current');
-                }
-              });
-            }, { rootMargin: '-45% 0px -50% 0px' });
-            ids.forEach(function (id) {
-              var sec = document.getElementById(id);
-              if (sec) spy.observe(sec);
+      // SCROLLSPY: unchanged, except the phone breakpoint.
+      try {
+        var narrow = window.matchMedia('(max-width: 767px)');
+        var links = {};
+        document.querySelectorAll('.nav__links a[href*="#"]').forEach(function (a) { links[a.getAttribute('href').split('#')[1]] = a; });
+        var ids = Object.keys(links);
+        if (ids.length && 'IntersectionObserver' in window) {
+          var spy = new IntersectionObserver(function (es) {
+            es.forEach(function (e) {
+              var a = links[e.target.id]; if (!a) return;
+              if (e.isIntersecting) {
+                ids.forEach(function (id) { links[id].removeAttribute('aria-current'); });
+                a.setAttribute('aria-current', 'location');
+                var row = a.parentElement;
+                if (narrow.matches && row && row.scrollWidth > row.clientWidth) row.scrollTo({ left: a.offsetLeft - (row.clientWidth - a.offsetWidth) / 2, behavior: 'smooth' });
+              } else if (a.getAttribute('aria-current')) { a.removeAttribute('aria-current'); }
             });
-          }
-        } catch (e) {}
+          }, { rootMargin: '-45% 0px -50% 0px' });
+          ids.forEach(function (id) { var s = document.getElementById(id); if (s) spy.observe(s); });
+        }
+      } catch (e) {}
 
-        // PRINT: open every abstract for the printed page, then restore.
-        var details = document.querySelectorAll('details.pub__more');
-        window.addEventListener('beforeprint', function () {
-          details.forEach(function (d) {
-            d.setAttribute('data-was-open', d.open ? '1' : '');
-            d.open = true;
-          });
-        });
-        window.addEventListener('afterprint', function () {
-          details.forEach(function (d) {
-            d.open = d.getAttribute('data-was-open') === '1';
-            d.removeAttribute('data-was-open');
-          });
-        });
-      })();
-    </script>
-
-    <!-- Pointer and scroll ornament (spotlight, tilt, cursor dust, scroll-lit
-         quote). Bundled and deferred; the page is complete without it. -->
-    <script>
-      import '../scripts/effects';
+      // PRINT: open every abstract, then restore (unchanged).
+      var details = document.querySelectorAll('details.pub__more');
+      window.addEventListener('beforeprint', function () { details.forEach(function (d) { d.setAttribute('data-was-open', d.open ? '1' : ''); d.open = true; }); });
+      window.addEventListener('afterprint', function () { details.forEach(function (d) { d.open = d.getAttribute('data-was-open') === '1'; d.removeAttribute('data-was-open'); }); });
+    })();
     </script>
   </body>
 </html>
