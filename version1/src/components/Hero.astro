@@ -26,7 +26,7 @@ const stats = [
 ];
 
 // "Phase 2" never splits across lines; the year range never breaks.
-const intro = h.intro.replace(/Phase (\d)/g, 'Phase $1');
+const intro = h.intro.replace(/Phase (\d)/g, 'Phase\u00a0$1');
 const introParts = intro.split(/(\d{4}–\d{4})/).map((text, k) => ({ text, years: k % 2 === 1 }));
 // The research directions, set off by middle dots.
 const directions = h.tagline.split(/\s*·\s*/);
