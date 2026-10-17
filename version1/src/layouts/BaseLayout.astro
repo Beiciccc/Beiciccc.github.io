@@ -130,7 +130,7 @@ const xDefault = enHref ?? canonical;
     <!-- Theme toggle, header hairline, scroll reveals, the figure draw,
          scrollspy and print. Hidden states exist only in CSS under html.js
          and no-preference motion, and every failure path shows everything. -->
-    <script>
+    <script is:inline>
 (function () {
   var root = document.documentElement, mq = function (q) { return window.matchMedia(q).matches; };
   var reduce = mq('(prefers-reduced-motion: reduce)'), IO = 'IntersectionObserver' in window;
@@ -160,11 +160,13 @@ const xDefault = enHref ?? canonical;
   window.addEventListener('load', function () { requestAnimationFrame(function () { root.classList.add('smooth'); }); });
 
   // Header hairline once the top sentinel leaves the viewport.
-  var sentinel = document.getElementById('top-sentinel');
-  if (sentinel && IO) new IntersectionObserver(function (es) { document.body.classList.toggle('scrolled', !es[0].isIntersecting); }).observe(sentinel);
+  try {
+    var sentinel = document.getElementById('top-sentinel');
+    if (sentinel && IO) new IntersectionObserver(function (es) { document.body.classList.toggle('scrolled', !es[0].isIntersecting); }).observe(sentinel);
+  } catch (e) {}
 
-  // Reveals and the figure draw. Reveals already in view on load wait for
-  // the hero to settle (--rd).
+  // Reveals and the figure draw. Reveals in view on a top-of-page load wait
+  // for the hero to settle (--rd); deep links and restored scroll do not.
   var reveals = document.querySelectorAll('.reveal'), draws = document.querySelectorAll('[data-draw]');
   function showAll() { reveals.forEach(add); draws.forEach(add); }
   function showTarget() {
@@ -176,7 +178,7 @@ const xDefault = enHref ?? canonical;
   }
   function once(opts, first) {
     var io = new IntersectionObserver(function (es) {
-      es.forEach(function (e) { if (e.isIntersecting) { if (first) e.target.style.setProperty('--rd', '.56s'); add(e.target); io.unobserve(e.target); } });
+      es.forEach(function (e) { if (e.isIntersecting) { if (first && !window.scrollY && !e.target.classList.contains('is-in')) e.target.style.setProperty('--rd', '.56s'); add(e.target); io.unobserve(e.target); } });
       first = false;
     }, opts);
     return io;

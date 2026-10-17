@@ -17,14 +17,15 @@ const paren = (s: string) => (lang === 'zh' ? `（${s}）` : ` (${s})`);
 const email = pick(contact, lang).links.find((l) => l.href.startsWith('mailto:'))?.value;
 const requestHref = (title: string) =>
   `mailto:${email}?subject=${encodeURIComponent(t.pubLinks.requestSubject + title)}`;
-// Hyphenated compounds in titles ("Graph-Snapshot") never break at the hyphen.
+// Hyphenated compounds in titles ("Graph-Snapshot") break at the hyphen only
+// when the whole word cannot fit a line (very narrow screens, large text).
 const titleWords = (title: string) => title.split(' ');
 // Presentation only: "(ρ = 0.945)" never breaks around the equals sign and
 // "Phase 2" never splits.
 const nbspEq = (s: string) => s.replace(/(\S) = (\S)/g, '$1\u00a0=\u00a0$2');
 const nbspPhase = (s: string) => s.replace(/Phase (\d)/g, 'Phase\u00a0$1');
-// Venue names break only after their comma ("GroundLM 2026," / "workshop at
-// EMNLP 2026"), so a workshop venue never splits inside its parts.
+// Venue names break after their comma ("GroundLM 2026," / "workshop at
+// EMNLP 2026"); a part wraps inside itself only when it cannot fit a line.
 const venueChunks = (v: string) =>
   v.split(/(?<=[,，])\s*/).map((text, k, all) => ({ text, space: k > 0 && all[k - 1].endsWith(',') }));
 ---
@@ -55,7 +56,7 @@ const venueChunks = (v: string) =>
                         <p class="pub__num">[{pubIndex(item.id)}]</p>
                         <p class="pub__meta">
                           <span class="pub__venue">
-                            {venueChunks(item.venue).map((c) => <Fragment>{c.space && ' '}<span class="nobr">{c.text}</span></Fragment>)}
+                            {venueChunks(item.venue).map((c) => <Fragment>{c.space && ' '}<span class="pub__venue-part">{c.text}</span></Fragment>)}
                           </span>
                           {item.format && (
                             <span class:list={['pub__format', { 'pub__format--oral': oral }]}>{oral ? t.oral : item.format}</span>
@@ -73,7 +74,7 @@ const venueChunks = (v: string) =>
                           <h4 class="pub__title" lang="en">
                             {words.map((w, k) => (
                               <Fragment>
-                                {w.includes('-') ? <span class="nobr">{w}</span> : w}
+                                {w.includes('-') ? <span class="pub__word">{w}</span> : w}
                                 {k < words.length - 1 ? ' ' : ''}
                               </Fragment>
                             ))}
