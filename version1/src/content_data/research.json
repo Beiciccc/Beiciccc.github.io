@@ -1,24 +1,37 @@
 {
   "en": {
     "heading": "What I work on",
-    "intro": "My work is on large language models (evaluation, alignment and post-training) and on AI for finance.",
+    "intro": "My work focuses on the evaluation, alignment and post-training of large language models.",
     "themes": [
       {
-        "title": "LLM evaluation, alignment and post-training",
+        "title": "Evaluation protocols and benchmarks",
         "refs": [
           "nlpcc2026",
-          "acml2026",
-          "groundlm2026",
           "luhme2026"
+        ],
+        "note": "",
+        "body": ""
+      },
+      {
+        "title": "Validity of probes on model internals",
+        "refs": [
+          "acml2026",
+          "groundlm2026"
+        ],
+        "note": "",
+        "body": ""
+      },
+      {
+        "title": "Leakage and confounds in forecasting",
+        "refs": [
+          "pricai2026"
         ],
         "note": "under review",
         "body": ""
       },
       {
-        "title": "AI for Finance",
-        "refs": [
-          "pricai2026"
-        ],
+        "title": "Alignment and post-training",
+        "refs": [],
         "note": "under review",
         "body": ""
       }
@@ -27,24 +40,37 @@
   },
   "zh": {
     "heading": "我在做什么",
-    "intro": "研究工作围绕大语言模型的评测、对齐与后训练展开，另有 AI for Finance 方向的工作。",
+    "intro": "研究工作围绕大语言模型的评测、对齐与后训练展开。",
     "themes": [
       {
-        "title": "大语言模型评测、对齐与后训练",
+        "title": "评测协议与基准",
         "refs": [
           "nlpcc2026",
-          "acml2026",
-          "groundlm2026",
           "luhme2026"
+        ],
+        "note": "",
+        "body": ""
+      },
+      {
+        "title": "内部表征探针的效度",
+        "refs": [
+          "acml2026",
+          "groundlm2026"
+        ],
+        "note": "",
+        "body": ""
+      },
+      {
+        "title": "预测任务中的信息泄漏与混淆因素",
+        "refs": [
+          "pricai2026"
         ],
         "note": "在投",
         "body": ""
       },
       {
-        "title": "AI for Finance（金融人工智能）",
-        "refs": [
-          "pricai2026"
-        ],
+        "title": "对齐与后训练",
+        "refs": [],
         "note": "在投",
         "body": ""
       }
