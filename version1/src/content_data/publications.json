@@ -32,8 +32,8 @@
             "corresponding": true
           }
         ],
-        "takeaway": "Using only the tokenizers, before running any model, we predicted that 12 of 64 model and label-set combinations would break the standard first-token scoring method. All 64 predictions were confirmed. Where it breaks, the score reflects the tie-break rule, not the model.",
-        "summary": "Multiple-choice benchmarks are usually scored by comparing the model's probabilities for the first token of each answer label. For many Chinese models this is mathematically undefined: when the tokenizer maps all four answer labels to the same first token, the “answer” is decided by how ties are broken, not by the model. Which model and label-set pairs are affected follows from the tokenizer alone, so it can be predicted on a laptop CPU before any GPU run. We pre-registered these predictions and all 64 were confirmed on the real runs. The paper's only statistical test is on the negative control, where the two scoring methods show no significant difference (p = 0.453), not on the 12 broken cases, whose outcome is fixed by construction, so a test there would prove nothing.",
+        "takeaway": "Multiple-choice benchmarks are often scored by which answer label's first token the model rates highest. When the labels are written as circled digits or full-width letters, some tokenizers give all four the same first token, and this rule cannot pick an answer. From the tokenizers alone, before running any model, we predicted that 12 of the 64 pairings of 16 models and 4 label sets would break it; all 64 predictions were right.",
+        "summary": "A model's accuracy on a multiple-choice benchmark also depends on choices the benchmark leaves open: how answers are scored, which label symbols are used, how many examples are shown, and how the options are ordered. On Chinese benchmarks one of these choices can break the usual first-token scorer outright. When a tokenizer turns all four answer labels into the same first token (circled digits under Qwen, full-width letters under GLM-4 and Yi), the first-token score carries no information, and the “answer” comes from how ties are broken. Because this can be read off the tokenizer, we wrote down which model and label-set pairs would break before any GPU run; running 16 models on C-Eval and CMMLU confirmed every prediction, and scoring the full label sequence recovers real accuracy in each broken case. Separately, with ordinary A–D labels, letting models write out their answers instead of scoring the full label sequence moved the rankings far beyond sampling noise (under strict answer extraction, one top model fell eight places), a shift largely consistent with answers that broke the required format.",
         "scale": "18 checkpoints · 7 tokenizer families · 12,925 items · ~2.5M released scoring records · smoke test ≈ 5 s",
         "links": [
           {
@@ -66,8 +66,8 @@
             "corresponding": true
           }
         ],
-        "takeaway": "A probe's stability appears to predict how much its direction rotates under a semantic shift that keeps the labels unchanged (ρ = 0.945). But it predicts a placebo with no shift at least as well (ρ = 0.966). Only one of seven candidate signals passes this check.",
-        "summary": "Linear probes are attractive as label-free tools for evaluating models on out-of-distribution data, but a probe's direction rotates under a semantic shift, even when the labels stay the same. If an in-distribution signal and the shift it is meant to predict share the same finite-sample noise, a simple correlation between them is unreliable. We propose a check we call the symmetric null: an independent placebo with zero shift, used as a fake target. Under this check the headline result turns out to be circular: in-distribution stability predicts rotation at ρ = 0.945 and the placebo at ρ = 0.966. Of seven candidate signals, only one predicts the real shift better than it predicts the placebo; in a second family of signals on the same probes, none does.",
+        "takeaway": "Linear probes read concepts such as truth or sentiment from a model's hidden states, but their direction drifts when inputs are reworded. A stability signal computed from in-distribution data alone seemed to predict this drift almost perfectly (ρ = 0.945), yet it predicted a placebo with no rewording even better (ρ = 0.966): it was mostly tracking sampling noise.",
+        "summary": "Probes are cheap and need no labels once trained, so it is tempting to use them to judge a model on new kinds of data. That only works if a probe's direction holds when inputs are reworded. Several recent signals can be computed from in-distribution data alone and used to predict this, though some were built for other purposes. The problem is that if such a signal and the drift it predicts share the same finite-sample noise, a high correlation can appear even when nothing about the rewording is predicted. We use a simple check, which we call a symmetric null. Its fake target is a placebo with no rewording at all: how far the direction moves between probes trained on two random halves of the same training data. A signal gets credit only if it predicts the real drift significantly better than it predicts this placebo. Of seven candidate signals, only one did, and so far only for back-translated paraphrases with logistic-regression probes. Two confidence-based signals on the same probes also predicted the placebo better than the real drift, and neither passed.",
         "scale": "12 concepts from 14 datasets · 7 models × 5 seeds · 472 configurations · 7 candidate signals · every headline number recomputes on CPU in seconds",
         "links": [
           {
@@ -95,8 +95,8 @@
             "corresponding": true
           }
         ],
-        "takeaway": "In GNN stock selection, a graph built from the final snapshot seems to beat graphs built only from information available at each date. The gap disappears once several random seeds are used and the result is compared with random graphs that keep the same node degrees. Future information can leak through the graph, but the models do not use it.",
-        "summary": "A performance gap between a snapshot graph and a point-in-time graph is routinely taken as evidence of look-ahead leakage. Often it is not. We test two kinds of graph and three model classes, controlling for seed luck and for graph stability. No model shows leakage that survives these controls: one apparent positive is exactly matched by a random graph with the same node degrees and disappears when the graph is sparsified; the other comes from a single seed and flips sign across five seeds. A leakage source does exist: edges that appear only in the final snapshot are more predictive of future returns. The models simply do not exploit it.",
+        "takeaway": "Stock-selection GNNs are often backtested on a relation graph built at the end of the sample period, which may include links that were not yet public. We rebuilt the graph using only fund holdings (SEC 13F) already public at each date. Two apparent leakage effects vanished with more random seeds and random-graph controls; in a higher-powered daily test the end-of-sample graph did score significantly higher, but mainly because it is more stable, and the part left for leakage was not significant.",
+        "summary": "If the graph used for a past prediction contains relations that were only known later, the backtest is fed information from the future. The obvious check runs the same model on the end-of-sample graph and on a point-in-time graph, built only from what was public at each date, and reads any gap as leakage. We found that check unreliable: the end-of-sample graph stays fixed while the point-in-time graph keeps changing, so a more stable graph, or a lucky random seed, can produce the same kind of gap. We tested two kinds of graph over 417 U.S. stocks and 164 months: one links stocks held by the same funds, the other links stocks whose returns are strongly correlated. Two results that first looked like leakage, one on each graph, did not survive repeated seeds or random graphs that keep each stock's number of links. On the holdings graph, a daily evaluation with more statistical power did show the end-of-sample version significantly ahead, but about two thirds of that gap came from it being more stable, and the part left for leakage was not significant. Edges that appear only in the final snapshot do carry information about the future; none of the three model types we tested turned it into a significant gain.",
         "scale": "13F filings 2013–2026 · 2 graph modalities × 3 model classes · multi-seed + degree-preserved nulls + sparsity sweep + BH-FDR",
         "links": [
           {
@@ -120,8 +120,8 @@
             "self": true
           }
         ],
-        "takeaway": "In the standard extractive setup, faithfulness labels track simple word overlap almost perfectly (r = 0.99), so a grounding probe may just be matching strings. A matched-pair design cuts this confound in half, and on RAGTruth the probe does worse than an NLI model and plain word overlap.",
-        "summary": "In the standard extractive setup, the faithfulness label correlates with word overlap at r = 0.99, so a grounding probe can succeed simply by matching strings. A matched-pair construction reduces this correlation to r = 0.50, and on RAGTruth the probe direction scores below both NLI and word overlap.",
+        "takeaway": "Hallucination detectors that read a “faithful to the context” direction from hidden states may just be spotting copied words: in the standard extractive QA setup, an answer is faithful exactly when its words appear in the context (r = 0.99). On matched pairs holding word overlap fixed, the learned direction mostly tracked whether an answer fits the question; on real hallucinations (RAGTruth, three model families) it trailed NLI and word overlap.",
+        "summary": "One cheap way to detect hallucinations is to read a “faithful to the context” direction from a model's hidden states, with no external judge. Probes of this kind are usually built on extractive QA data, where an answer counts as faithful exactly when it appears in the context, so faithfulness and word overlap almost coincide (r = 0.99). I built matched pairs that partly pull the two apart, including answers that appear in the context but answer a different question; this halves the confound (r = 0.50). I then compared only answers that appear in the context, so word overlap is fixed. Across four 7–9B model families, the direction learned from these pairs mostly tracked whether an answer fits the question, not whether the model used the context: it did almost as well with the context removed. On real hallucinations (RAGTruth, the three families I could test), it scored below NLI, model confidence and word overlap; only a probe trained on the same hidden states with RAGTruth's human labels gave a usable signal.",
         "scale": "4 model families · matched-pair design · RAGTruth + NQ-Swap · single A100",
         "links": [
           {
@@ -145,9 +145,9 @@
             "self": true
           }
         ],
-        "takeaway": "Eleven systems score 98.7–99.8% on the controlled split but only 79.7–90.6% on items grounded in external real-world text, so the controlled score was measuring how the benchmark was built.",
-        "summary": "Eleven systems come within a point or two of the ceiling on the controlled split (98.7–99.8%) but drop to 79.7–90.6% once the items are grounded in external real-world text. This gap is the main finding: a broad controlled test can hide exactly the difficulty that close distractors reveal, so a benchmark that reports only the controlled score is measuring how it was built.",
-        "scale": "3,533 items across three splits · 11 systems · 388,630 scored calls · 2,499 blind-validated items",
+        "takeaway": "In clinical conversations people often hedge, play down serious worries or ask for help politely. On my 3,533-item benchmark, ten of eleven models picked what the speaker wanted 95.5–98.4% of the time but named the type of cue behind it only 56.6–64.5% of the time.",
+        "summary": "Medical LLMs are mostly tested on facts that are stated outright. PCP tests something else: whether a model recovers what a speaker means when it is said indirectly, through hedging, understatement, politeness or implication. It has three parts: a broad controlled synthetic set, a harder synthetic set with close distractors, and a small set adapted from public doctor–patient dialogue datasets; every hard and dialogue item, plus a 300-item sample of the broad set, was checked blind by three annotators. Across all 3,533 four-option questions, ten of eleven models nearly always picked what the speaker wanted but often could not say which kind of cue it was (hedging, politeness and so on), a 32–40 point gap on the same items. The six API models were near ceiling on the broad synthetic set (98.7–99.8%) but dropped to 83.4–90.6% on the harder set and 79.7–90.6% on the dialogue-based items, so a broad controlled test on its own can overstate how robust models are. PCP measures this narrow skill; it does not show that a model is ready for clinical use.",
+        "scale": "3,533 items across three splits · 11 systems · 388,630 recognition calls · 833 blind-validated items (2,499 judgments)",
         "links": [
           {
             "kind": "code",
@@ -194,9 +194,9 @@
             "corresponding": true
           }
         ],
-        "takeaway": "不运行任何模型、只看 tokenizer，我们预测出 64 个「模型 × 选项标签集」组合中有 12 个会让常用的首 token 打分法失效。64 项预测全部得到验证。在这些情况下，排名反映的是打分方法，而不是模型本身。",
-        "summary": "多选题评测通常通过比较模型给各选项标签首个 token 的概率来打分。但对许多中文模型来说，这种做法在数学上没有定义：如果 tokenizer 把四个选项标签都映射到同一个首 token，最终的「答案」取决于平局时按什么规则取舍，而不是模型本身。哪些模型和标签集组合会出问题，只取决于 tokenizer，因此可以在跑 GPU 之前用笔记本电脑的 CPU 预测出来。我们在运行前预注册了这些预测，在真实运行中 64 项全部命中。论文唯一的统计检验放在阴性对照上（两种打分方法没有显著差异，p = 0.453），而不是那 12 个失效组合上，因为它们的结果在构造上就已确定，检验没有意义。",
-        "scale": "18 个检查点 · 7 个 tokenizer 家族 · 12,925 道题 · 公开约 250 万条打分记录 · smoke test ≈ 5 秒",
+        "takeaway": "选择题基准常按「哪个选项标签的首个 token 概率最高」打分。如果选项标签写成带圈数字或全角字母，部分分词器会把四个标签切成同一个首 token，这条规则就选不出答案。我们在运行任何模型之前、只凭分词器预测了 16 个模型 × 4 套标签共 64 个组合中哪 12 个会失效，64 项预测全部正确。",
+        "summary": "模型在选择题基准上的准确率，还取决于基准本身没有规定的做法：答案怎么打分、选项标签用什么符号、给几个示例、选项按什么顺序排。我们发现，在中文基准上，其中一项选择会让常用的首 token 打分直接失效：如果分词器把四个选项标签切成同一个首 token（比如 Qwen 下的带圈数字，GLM-4、Yi 下的全角字母），首 token 打分就不含任何信息，「答案」取决于平局时怎么取舍。这只看分词器就能判断，所以我们在跑 GPU 之前就写定了哪些「模型 × 标签集」组合会失效；在 C-Eval 和 CMMLU 上跑了 16 个模型，预测全部成立；改用整段标签序列打分，每个失效组合都能恢复真实准确率。另外，在普通 ABCD 标签下，从整段标签序列打分改为让模型直接写出答案后，排名变动远超抽样噪声（按严格的答案抽取规则，一个靠前的模型掉了 8 名），这一变化大体与答案格式不合规相符。",
+        "scale": "18 个检查点 · 7 个分词器家族 · 12,925 道题 · 公开约 250 万条打分记录 · smoke test ≈ 5 秒",
         "links": [
           {
             "kind": "code",
@@ -228,8 +228,8 @@
             "corresponding": true
           }
         ],
-        "takeaway": "探针的稳定性看似能预测数据发生语义漂移时探针方向会旋转多少（ρ = 0.945），但它预测一个完全没有漂移的安慰剂至少同样准（ρ = 0.966）。7 个候选信号中只有 1 个通过了这项检验。",
-        "summary": "线性探针不需要标注就能从模型激活中读出概念，因此常被用作分布外评估工具；但即使标签不变，探针方向也会在语义漂移下发生旋转。如果一个只用分布内数据算出的信号，和它要预测的漂移量共享同一份有限样本噪声，两者之间的简单相关就不可靠。我们提出一种检验方法，称为「对称零假设」：用一个独立的、零漂移的安慰剂充当假目标。在这一检验下，原本的结论其实是循环的：分布内稳定性预测旋转的 ρ = 0.945，预测安慰剂的 ρ = 0.966。7 个候选信号中只有 1 个预测真实漂移的效果高于预测安慰剂的效果；在同一批探针上的另一类信号中，一个都没有。",
+        "takeaway": "线性探针从模型隐藏状态里读出「真假」「情感」等概念，但输入换个说法，探针方向就会偏转。一个只用分布内数据算的稳定性信号看似几乎能完美预测这种偏转（ρ = 0.945），对完全不换说法的安慰剂却预测得更好（ρ = 0.966），说明它的预测力主要来自抽样噪声。",
+        "summary": "探针成本低，训练好后不再需要标注，所以很容易被拿来评估模型在新数据上的表现；能不能这样用，取决于输入换个说法时探针方向稳不稳。近来有几种只用分布内数据就能算出的信号，可以拿来预测这一点，不过其中有些原本另有用途。问题在于，如果这类信号和它要预测的偏转受同样的有限样本噪声影响，即使根本没有预测到换说法带来的变化，相关也可能很高。我们用一个简单的检验，称为对称零假设：把同一份训练数据随机分成两半、各训一个探针，两个方向之间的偏转完全不涉及换说法，拿它当安慰剂（假目标）；信号只有预测真实偏转显著好于预测这个安慰剂，才算有效。7 个候选信号里只有 1 个做到了，而且目前只在回译改写、逻辑回归探针这一种设定下得到证实；同一批探针上另有两个基于置信度的信号，预测安慰剂也比预测真实偏转更好，都没有通过。",
         "scale": "12 个概念（14 个数据集）· 7 个模型 × 5 个种子 · 472 个配置 · 7 个候选信号 · 关键数字均可在 CPU 上秒级复算",
         "links": [
           {
@@ -257,8 +257,8 @@
             "corresponding": true
           }
         ],
-        "takeaway": "在 GNN 选股任务中，用期末快照构建的图看起来优于只用当期信息构建的图。但换用多个随机种子、并与保持节点度数的随机图对比后，这一优势消失了。未来信息确实可能通过图泄漏，但模型并没有利用它。",
-        "summary": "快照图和逐时点图之间的性能差距，常被直接当作前视泄漏的证据，但很多时候并非如此。我们在两种图、三类模型上控制了随机种子带来的偶然性和图的稳定性，没有任何模型表现出在这些控制下仍然成立的泄漏：一个看似存在泄漏的结果，与保持节点度数的随机图得到的结果完全相同，图稀疏化后也随之消失；另一个只出现在单个种子上，换成五个种子后连正负号都不稳定。泄漏源确实存在：只出现在期末快照里的边，对未来收益的预测力更强。但模型并没有用到它。",
+        "takeaway": "选股图神经网络回测时，常用样本期末建好的关系图，里面可能有预测时还没公开的关系。我们只用各日期已公开的 SEC 13F 机构持仓重建关系图。两个乍看像泄漏的结果，在多随机种子和随机图对照下都不成立；在统计功效更高的日频检验里，期末图确实显著更好，但主要因为图更稳定，剩下归于泄漏的部分不显著。",
+        "summary": "如果回测用的图里有事后才知道的关系，历史预测的输入里就混进了未来信息。最直接的检查办法，是让同一个模型用期末图和逐时点图（只用各日期已公开信息建的图）各跑一遍，把差距当作泄漏。我们发现这个检查并不可靠：期末图始终不变，逐时点图却随时间变化，单是图更稳定，或者随机种子碰巧有利，都可能造成同样的差距。我们在美国 417 只股票、164 个月的数据上测了两种图：一种把被相同机构同时持有的股票连起来，另一种把收益高度相关的股票连起来。两个乍看像泄漏的结果（两种图上各一个），换多个随机种子、或与保持每只股票连边数不变的随机图对比后都不成立。在持股图上改用统计功效更高的日频检验，期末图确实显著更好，但差距约三分之二来自图更稳定，剩下归于泄漏的部分不显著。只在期末快照里出现的边确实含有未来信息，但我们测试的三类模型都没能借此取得显著提升。",
         "scale": "13F 持仓 2013–2026 · 2 种图模态 × 3 类模型 · 多种子 + 保度数零模型 + 稀疏化扫描 + BH-FDR",
         "links": [
           {
@@ -282,8 +282,8 @@
             "self": true
           }
         ],
-        "takeaway": "在标准的抽取式设定下，忠实性标签与简单的词语重叠高度相关（r = 0.99），所谓的 grounding 探针可能只是在做字符串匹配。匹配对设计把这一混淆减半；在 RAGTruth 上，探针方向的表现不如 NLI 模型和单纯的词语重叠。",
-        "summary": "在标准的抽取式设定下，忠实性标签与词语重叠的相关系数高达 r = 0.99，因此 grounding 探针可能只靠字符串匹配就取得好成绩。匹配对构造把这一相关降到 r = 0.50；在 RAGTruth 上，探针方向的得分低于 NLI 和词语重叠。",
+        "takeaway": "从隐藏状态读出「答案是否忠于上下文」的幻觉检测探针，可能只是在找照抄的词：在常用的抽取式问答数据里，答案忠实就等于答案原样出现在上下文中（r = 0.99）。在词面重叠相同的样本对上，学到的方向主要反映问答是否匹配；在真实幻觉数据 RAGTruth 上（三个模型家族），它还不如 NLI 和词面重叠。",
+        "summary": "一种低成本的幻觉检测办法，是从模型隐藏状态里读出一个「是否忠于上下文」的方向，不需要外部评判模型。这类探针通常在抽取式问答数据上训练，而在这种数据里，答案是否忠实就看它是否出现在上下文中，于是忠实与词面重叠几乎重合（r = 0.99）。我构造了配对样本来部分拆开两者，其中包括答案出现在上下文里、却回答了另一个问题的陷阱题，两者的相关因此减半（r = 0.50）。接着我只比较答案都出现在上下文里的样本，这样词面重叠相同。在四个 7–9B 模型家族上，从这些配对样本学到的方向主要反映答案和问题是否匹配，而不是模型有没有用上下文：去掉上下文，它的区分效果几乎不变。在真实幻觉数据 RAGTruth 上（能测的三个模型家族），它不如 NLI、模型置信度和词面重叠；只有在同一批隐藏状态上、用 RAGTruth 人工标注训练的探针给出了可用的信号。",
         "scale": "4 个模型家族 · 匹配对设计 · RAGTruth + NQ-Swap · 单卡 A100",
         "links": [
           {
@@ -307,9 +307,9 @@
             "self": true
           }
         ],
-        "takeaway": "11 个系统在受控子集上得分 98.7–99.8%，但在外部真实语料上只有 79.7–90.6%。可见受控分数衡量的其实是基准本身的构造方式。",
-        "summary": "11 个系统在受控子集上的得分都接近满分（98.7–99.8%），但题目换成外部真实语料后，跌到 79.7–90.6%。这个落差就是论文的主要发现：宽泛的受控测试恰好会掩盖相近干扰项所暴露的难度；只报告受控分数的基准，测到的其实是它自己的构造方式。",
-        "scale": "3,533 条题目 · 三个子集 · 11 个系统 · 388,630 次打分调用 · 2,499 条盲验证",
+        "takeaway": "医疗对话里常有委婉的说法：含糊其辞、把严重的担忧说轻、客气地求助。在我构建的 3,533 题基准上，11 个模型中有 10 个能在 95.5–98.4% 的题上选出说话人真正想要的处理，但只在 56.6–64.5% 的题上说对背后是哪种语用现象。",
+        "summary": "医疗大模型的评测大多考的是明说出来的事实。PCP 考的是另一件事：话说得委婉时（含糊、轻描淡写、客气、言外之意），模型能不能听出说话人的真实意图。它分三部分：大规模的常规合成题、带相近干扰项的合成难题，以及由公开医患对话数据集改写的一小组题；难题和对话改写题全部、常规合成题抽样 300 题，都由三名标注者盲审验证。在全部 3,533 道四选一题上，11 个模型中有 10 个几乎总能选出说话人要的处理，却常常说不出背后是哪种语用现象（含糊、客气等），同一批题上相差 32–40 个百分点。6 个 API 模型在常规合成题上接近满分（98.7–99.8%），在带相近干扰项的难题上降到 83.4–90.6%，在对话改写题上降到 79.7–90.6%，可见只看宽泛的受控测试会高估模型的稳健性。PCP 测的只是这一项能力，不代表模型可以用于临床。",
+        "scale": "3,533 条题目 · 三个子集 · 11 个系统 · 388,630 次识别调用 · 833 题经人工盲审（2,499 次判断）",
         "links": [
           {
             "kind": "code",
