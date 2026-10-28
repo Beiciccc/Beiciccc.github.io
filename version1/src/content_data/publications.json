@@ -32,7 +32,7 @@
             "corresponding": true
           }
         ],
-        "takeaway": "Using only the tokenizers, before running any model, we predicted that 12 of 64 model and label-set combinations would break the standard first-token scoring method. All 64 predictions were confirmed. Where it breaks, the ranking reflects the scoring method, not the model.",
+        "takeaway": "Using only the tokenizers, before running any model, we predicted that 12 of 64 model and label-set combinations would break the standard first-token scoring method. All 64 predictions were confirmed. Where it breaks, the score reflects the tie-break rule, not the model.",
         "summary": "Multiple-choice benchmarks are usually scored by comparing the model's probabilities for the first token of each answer label. For many Chinese models this is mathematically undefined: when the tokenizer maps all four answer labels to the same first token, the “answer” is decided by how ties are broken, not by the model. Which model and label-set pairs are affected follows from the tokenizer alone, so it can be predicted on a laptop CPU before any GPU run. We pre-registered these predictions and all 64 were confirmed on the real runs. The paper's only statistical test is on the negative control, where the two scoring methods show no significant difference (p = 0.453), not on the 12 broken cases, whose outcome is fixed by construction, so a test there would prove nothing.",
         "scale": "18 checkpoints · 7 tokenizer families · 12,925 items · ~2.5M released scoring records · smoke test ≈ 5 s",
         "links": [
